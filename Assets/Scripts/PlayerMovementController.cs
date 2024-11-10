@@ -1,21 +1,19 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 public class PlayerMovementController : MonoBehaviour
 {
 	public bool canMove = true;
-	private bool ShouldSprint => isSprinting && movespeedSettings.canSprint && characterController.isGrounded;
-	private bool ShouldJump => isJumping && characterController.isGrounded;
-	private bool ShouldCrouch => isCrouching && !duringCrouchAnimation && characterController.isGrounded;
+	//Properties - To avoid multiple if statements later. May change if need be.
+	private bool ShouldSprint => isSprinting && movespeedSettings.canSprint && isGrounded;
+	private bool ShouldJump => isJumping && isGrounded;
+	private bool ShouldCrouch => isCrouching && isGrounded;
 
-
-	public bool isGrounded { get; private set; }
-	public bool hasJumpedThisFrame { get; private set; }
+	[Header("Movement States")]
+	[SerializeField] private bool isGrounded;
+	private bool hasJumpedThisFrame;
 	[SerializeField] private bool isSprinting = false;
-	[SerializeField] private bool isCrouched = false;
+	[SerializeField] private bool isCrouching = false;
 	[SerializeField] private bool isJumping = false;
 
 
@@ -31,10 +29,10 @@ public class PlayerMovementController : MonoBehaviour
 		public float airAcceleration = 25f;
 		public float maxAirSpeed = 10f;
 	}
-
+	[Header("Configurations")]
 	public MovespeedSettings movespeedSettings;
 
-
+	//Jump force and gravity settings
 	[Serializable]
 	public class JumpSettings
 	{
@@ -43,28 +41,36 @@ public class PlayerMovementController : MonoBehaviour
 		public float gravity = 10.0F;
 
 	}
-
 	public JumpSettings jumpSettings;
 	private float lastTimeJumped = 0f;
 
+	//Settings for crouch height, speed, positions etc
 	[Serializable]
 	public class CrouchSettings
 	{
 		public bool canCrouch = true;
-		public float crouchHeight = 0.5f;
+		public float crouchHeight = 0.8f;
 		public float standingHeight = 2f;
 		public float timeToCrouch = 0.5f;
 		public Vector3 crouchingCenter = new Vector3(0, 0.5f, 0);
 		public Vector3 standingCenter = new Vector3(0, 0, 0);
-		public float crouchSpeed = 0.5f;
-	}
+		public float crouchSpeed = 1.2f;
+		public AnimationCurve crouchSpeedCurve;
+		public float crouchTime = 0.7f;
 
+	}
 	public CrouchSettings crouchSettings;
 
 	[Header("Crouch States")]
-	private bool isCrouching;
 	private bool duringCrouchAnimation;
-	private float targetCharacterHeight;
+	public float targetCharacterHeight;
+	//0-1 Value, 1 is top of character model, 0 is feet.
+	public float cameraHeightRatio = 0.36f;
+	public float crouchTimer = 0f;
+	public bool crouchInProgress = false;
+	private float originalCharacterHeight;
+	public bool wasCrouching = false;
+
 
 	//Settings for what layers are considered the ground
 	[Serializable]
@@ -82,6 +88,8 @@ public class PlayerMovementController : MonoBehaviour
 	Vector3 groundNormal;
 
 
+
+
 	[Header("Additional Values")]
 	private Camera playerCamera;
 	private CameraController cameraController;
@@ -94,11 +102,8 @@ public class PlayerMovementController : MonoBehaviour
 	/// <summary>
 	/// The final velocity considering moveDirection, speed and deltaTime
 	/// </summary>
-	private Vector3 moveVelocity;
 	public Vector3 characterVelocity;
 	private Vector3 latestImpactSpeed;
-	
-	public float CameraHeightRatio = 0.9f; //0-1 Value, 1 is top of character model, 0 is feet.
 
 	//Rotation values
 	private float rotationX = 0;
@@ -121,9 +126,11 @@ public class PlayerMovementController : MonoBehaviour
 		InputManager.Instance.OnSprintReleased += HandleSprintReleased;
 		InputManager.Instance.OnJumpPressed += HandleJumpPressed;
 		InputManager.Instance.OnJumpReleased += HandleJumpReleased;
+
+		//UpdateCharacterHeight(true);
 	}
 
-	private void OnDisable()
+	private void OnDestroy()
 	{
 		if (InputManager.Instance != null)
 		{
@@ -138,19 +145,19 @@ public class PlayerMovementController : MonoBehaviour
 
 	private void Update()
 	{
-
-
 		if (canMove)
 		{
 			bool wasGrounded = isGrounded;
 			CheckGrounded();
 
-            if (ShouldCrouch)
-            {
-                
-            }
 
-            CalculateVelocities();
+			if (crouchInProgress)
+			{
+				UpdateCharacterHeight(false);
+			}
+
+
+			CalculateVelocities();
 
 			ApplyFinalMovements();
 
@@ -171,7 +178,6 @@ public class PlayerMovementController : MonoBehaviour
 		else if (ShouldCrouch)
 		{
 			currentSpeed = movespeedSettings.crouchSpeed;
-			StartCoroutine(CrouchStand());
 		}
 		else
 		{
@@ -181,24 +187,24 @@ public class PlayerMovementController : MonoBehaviour
 		if (ShouldJump)
 		{
 			moveDirection.y = jumpSettings.jumpForce;
-		}	
+		}
 
 		//moveDirection is a world space vector, so the local vector is transformed into world space
 		moveDirection = ((transform.TransformDirection(Vector3.forward) * currentMoveInput.y)
 			+ (transform.TransformDirection(Vector3.right) * currentMoveInput.x))
-			* currentSpeed;	
+			* currentSpeed;
 
 
 		if (isGrounded)
 		{
 			Vector3 targetVelocity = moveDirection;
-            if (isCrouching)
-            {
+			if (isCrouching)
+			{
 				targetVelocity = targetVelocity.normalized;
 				targetVelocity *= movespeedSettings.crouchSpeed;
-            }
+			}
 
-			characterVelocity = Vector3.Lerp(characterVelocity, targetVelocity,	movespeedSettings.movementInertia * Time.deltaTime);
+			characterVelocity = Vector3.Lerp(characterVelocity, targetVelocity, movespeedSettings.movementInertia * Time.deltaTime);
 
 			if (isJumping)
 			{
@@ -217,67 +223,56 @@ public class PlayerMovementController : MonoBehaviour
 			Vector3 horizontalVelocity = Vector3.ProjectOnPlane(characterVelocity, Vector3.up);
 			horizontalVelocity = Vector3.ClampMagnitude(horizontalVelocity, movespeedSettings.maxAirSpeed);
 			characterVelocity = horizontalVelocity + (Vector3.up * verticalVelocity);
-			
+
 			characterVelocity += Vector3.down * jumpSettings.gravity * Time.deltaTime;
 		}
 
 	}
 
-	private IEnumerator CrouchStand()
+
+	private void UpdateCharacterHeight(bool instant)
 	{
-		if (isCrouching && Physics.Raycast(playerCamera.transform.position, Vector3.up, 2f))
-			yield break;
 
-		duringCrouchAnimation = true;
-
-		float timeElapsed = 0;
-		float targetHeight = isCrouching ? crouchSettings.standingHeight : crouchSettings.crouchHeight;
-		float currentHeight = characterController.height;
-		Vector3 targetCenter = isCrouching ? crouchSettings.standingCenter : crouchSettings.crouchingCenter;
-		Vector3 currentCenter = characterController.center;
-
-		while (timeElapsed < crouchSettings.timeToCrouch)
+		if (instant)
 		{
-			characterController.height = Mathf.Lerp(currentHeight, targetHeight, timeElapsed / crouchSettings.timeToCrouch);
-			characterController.center = Vector3.Lerp(currentCenter, targetCenter, timeElapsed / crouchSettings.timeToCrouch);
-			timeElapsed += Time.deltaTime;
-			yield return null;
-		}
+			characterController.height = targetCharacterHeight;
+			characterController.center = Vector3.up * characterController.height * 0.5f;
+			playerCamera.transform.localPosition = Vector3.up * targetCharacterHeight * cameraHeightRatio;
 
-		characterController.height = targetHeight;
-		characterController.center = targetCenter;
-
-		isCrouching = !isCrouching;
-
-		duringCrouchAnimation = false;
-	}
-
-	private void SetCrouchStateHeight()
-	{
-		if (isCrouching)
-		{
-			targetCharacterHeight = crouchSettings.crouchHeight;
 		}
 		else
 		{
-			targetCharacterHeight = crouchSettings.standingHeight;
+			//Time values to evaluate curve
+			crouchTimer += Time.deltaTime;
+			float normalizedTime = crouchTimer / crouchSettings.crouchTime;
+
+			float curveFactor = crouchSettings.crouchSpeedCurve.Evaluate(normalizedTime);
+
+			//User lerp to change controller height, camera position and centre using curve
+			characterController.height = Mathf.Lerp(characterController.height, targetCharacterHeight, curveFactor);
+			characterController.center = Vector3.up * characterController.height * 0.5f;
+
+			playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * targetCharacterHeight * cameraHeightRatio, curveFactor);
+
+			//When the crouch timer reaches the full duration, set the values to their definite ones and reset the timer
+			if (crouchTimer >= crouchSettings.crouchTime)
+			{
+				characterController.height = targetCharacterHeight;
+				characterController.center = Vector3.up * characterController.height * 0.5f;
+				playerCamera.transform.localPosition = Vector3.up * targetCharacterHeight * cameraHeightRatio;
+
+				crouchInProgress = false;
+				crouchTimer = 0;
+
+			}
+			else
+			{
+				crouchInProgress = true;
+			}
 		}
-	}
 
-	private void UpdateCharacterHeight()
-	{
-		/* For instance height change
-		m_Controller.height = m_TargetCharacterHeight;
-		m_Controller.center = Vector3.up * m_Controller.height * 0.5f;
-		PlayerCamera.transform.localPosition = Vector3.up * m_TargetCharacterHeight * CameraHeightRatio;
-		m_Actor.AimPoint.transform.localPosition = m_Controller.center;
-		*/
 
-		// resize the capsule and adjust camera position
-		characterController.height = Mathf.Lerp(characterController.height, targetCharacterHeight, crouchSettings.crouchSpeed * Time.deltaTime);
-		characterController.center = Vector3.up * characterController.height * 0.5f;
-		playerCamera.transform.localPosition = Vector3.Lerp(playerCamera.transform.localPosition, Vector3.up * targetCharacterHeight * CameraHeightRatio, crouchSettings.crouchSpeed * Time.deltaTime);
-		//m_Actor.AimPoint.transform.localPosition = characterController.center;
+
 	}
 
 	private void ApplyFinalMovements()
@@ -286,35 +281,20 @@ public class PlayerMovementController : MonoBehaviour
 		Vector3 capsuleTopBeforeMove = transform.position + (transform.up * (characterController.height - characterController.radius));
 		characterController.Move(characterVelocity * Time.deltaTime);
 
-		// detect obstructions to adjust velocity accordingly
 		latestImpactSpeed = Vector3.zero;
 		if (Physics.CapsuleCast(capsuleBottomBeforeMove, capsuleTopBeforeMove, characterController.radius, characterVelocity.normalized, out RaycastHit hit, characterVelocity.magnitude * Time.deltaTime, -1, QueryTriggerInteraction.Ignore))
 		{
-			// We remember the last impact speed because the fall damage logic might need it
+			//Hold the last speed before a surface impact for fall damage later
 			latestImpactSpeed = characterVelocity;
 
 			characterVelocity = Vector3.ProjectOnPlane(characterVelocity, hit.normal);
 		}
 
 
-		/*
-		lastVelocity = moveVelocity;
-		if (!characterController.isGrounded)
-		{
-			moveDirection.y -= jumpSettings.gravity * Time.deltaTime;
-		}
-
-
-		moveVelocity = moveDirection * Time.deltaTime;
-		characterController.Move(moveVelocity);
-		*/
-
-
 	}
 
 	//Raycast from character centre, change to true if successful
 	private void CheckGrounded()
-
 	{
 		float chosenGroundCheckDistance = isGrounded ? (characterController.skinWidth + groundedCheckSettings.groundCheckDistanceInAir) : groundedCheckSettings.groundCheckDistance;
 		isGrounded = false;
@@ -340,7 +320,28 @@ public class PlayerMovementController : MonoBehaviour
 
 	private void HandleCrouch()
 	{
-		isCrouching = true;
+		if (isGrounded)
+		{
+			isCrouching = !isCrouching;
+
+			crouchInProgress = true;
+
+			if (isCrouching == true)
+			{
+
+				targetCharacterHeight = crouchSettings.crouchHeight;
+			}
+			else
+			{
+				targetCharacterHeight = crouchSettings.standingHeight;
+			}
+		}
+		else
+		{
+			isCrouching = false;
+			crouchInProgress = false;
+		}
+
 	}
 
 	private void HandleCrouchRelease()
@@ -361,12 +362,9 @@ public class PlayerMovementController : MonoBehaviour
 	private void HandleJumpPressed()
 	{
 		if (isGrounded)
-		{		
-			isJumping = true;	
-
+		{
+			isJumping = true;
 		}
-
-
 	}
 
 	private void HandleJumpReleased()
