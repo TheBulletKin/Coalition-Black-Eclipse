@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,32 +13,29 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	//A macro command is a series of sub commands.
 	public MacroCommand macroCommand;
+	public MoveCommand newMoveCommand;
 
 	private void Start()
 	{
-		InputManager.Instance.OnInteractPressed += TryCommand;
-		InputManager.Instance.OnExecutePressed += ExecuteCommands;
-		InputManager.Instance.OnCommandCreatePressed += TryCommand;
+		InputManager.Instance.OnInteractPressed += CommandMove;
+		InputManager.Instance.OnExecutePressed += ExecuteMacroCommand;
+		InputManager.Instance.OnCommandCreatePressed += TryMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
+		InputManager.Instance.OnQueueCommandPressed += QueueCommand;
 
 		macroCommand = new MacroCommand();
 		macroCommand.OnMacroCompleted += OnMacroCompleted;
-	}
-
-	
+	}	
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInteractPressed -= TryCommand;
-		InputManager.Instance.OnExecutePressed -= ExecuteCommands;
-		InputManager.Instance.OnCommandCreatePressed -= TryCommand;
+		InputManager.Instance.OnInteractPressed -= CommandMove;
+		InputManager.Instance.OnExecutePressed -= ExecuteMacroCommand;
+		InputManager.Instance.OnCommandCreatePressed -= TryMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
 	}
 
-	/// <summary>
-	/// Try to place a command where the crosshair is, currently just move commands
-	/// </summary>
-	private void TryCommand()
+	private Vector3 TryGetSelectedPosition()
 	{
 		switch (cameraState)
 		{
@@ -47,7 +45,8 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 				if (Physics.Raycast(firstPersonray, out hit, interactionRange, interactableLayer))
 				{
-					CommandMove(hit.point);
+					return hit.point;
+
 				}
 				break;
 			case CameraStates.TOPDOWN:
@@ -56,12 +55,47 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 				if (Physics.Raycast(topDownRay, out topDownHit, interactionRange, interactableLayer))
 				{
-					CommandMove(topDownHit.point); 
+					return topDownHit.point;
+
 				}
 				break;
 			default:
+				return null;
 				break;
 		}
+	}
+
+	/// <summary>
+	/// Try to place a command where the crosshair is, currently just move commands
+	/// </summary>
+	private void TryMoveCommand()
+	{
+		switch (cameraState)
+		{
+			case CameraStates.FPS:
+				Ray firstPersonray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
+				RaycastHit hit;
+
+				if (Physics.Raycast(firstPersonray, out hit, interactionRange, interactableLayer))
+				{					
+					newMoveCommand = new MoveCommand(aiMovement, hit.point);
+					
+				}
+				break;
+			case CameraStates.TOPDOWN:
+				Ray topDownRay = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+				RaycastHit topDownHit;
+
+				if (Physics.Raycast(topDownRay, out topDownHit, interactionRange, interactableLayer))
+				{
+					newMoveCommand = new MoveCommand(aiMovement, topDownHit.point);
+					
+				}
+				break;
+			default:				
+				break;
+		}
+		
 
 	}
 
@@ -71,15 +105,21 @@ public class PlayerCommandIssuer : MonoBehaviour
 	/// <param name="targetPosition"></param>
 	public void CommandMove(Vector3 targetPosition)
 	{
-		ICommand moveCommand = new MoveCommand(aiMovement, targetPosition);
-		macroCommand.AddCommand(moveCommand);
+		newMoveCommand = new MoveCommand(aiMovement, targetPosition);
+		IssueCommand(newMoveCommand);
+	}
+
+	public void QueueCommand()
+	{
+		TryMoveCommand();
+		macroCommand.AddCommand(newMoveCommand);
 	}
 
 
 	/// <summary>
 	/// Ran when the user presses the 'execute' keybind
 	/// </summary>
-	public void ExecuteCommands()
+	public void ExecuteMacroCommand()
 	{
 		macroCommand.Execute();
 	}

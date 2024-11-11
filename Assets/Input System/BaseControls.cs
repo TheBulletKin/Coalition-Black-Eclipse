@@ -107,6 +107,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QueueCommand"",
+                    ""type"": ""Button"",
+                    ""id"": ""27517a4e-fb80-42d5-bbc3-60be96a8f765"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -252,6 +261,39 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""Enter Map View"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""13001819-6bd3-4814-860e-ff63c36aeb77"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QueueCommand"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""235103c3-ec62-45c9-8a92-d2b1d371feb8"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QueueCommand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""630bf634-bab7-45de-bfbc-a1c92dceebb2"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QueueCommand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -401,6 +443,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_ExecuteCommand = m_FPS.FindAction("ExecuteCommand", throwIfNotFound: true);
         m_FPS_MoveCommand = m_FPS.FindAction("MoveCommand", throwIfNotFound: true);
         m_FPS_EnterMapView = m_FPS.FindAction("Enter Map View", throwIfNotFound: true);
+        m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -483,6 +526,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_ExecuteCommand;
     private readonly InputAction m_FPS_MoveCommand;
     private readonly InputAction m_FPS_EnterMapView;
+    private readonly InputAction m_FPS_QueueCommand;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -496,6 +540,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @ExecuteCommand => m_Wrapper.m_FPS_ExecuteCommand;
         public InputAction @MoveCommand => m_Wrapper.m_FPS_MoveCommand;
         public InputAction @EnterMapView => m_Wrapper.m_FPS_EnterMapView;
+        public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -532,6 +577,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @EnterMapView.started += instance.OnEnterMapView;
             @EnterMapView.performed += instance.OnEnterMapView;
             @EnterMapView.canceled += instance.OnEnterMapView;
+            @QueueCommand.started += instance.OnQueueCommand;
+            @QueueCommand.performed += instance.OnQueueCommand;
+            @QueueCommand.canceled += instance.OnQueueCommand;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -563,6 +611,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @EnterMapView.started -= instance.OnEnterMapView;
             @EnterMapView.performed -= instance.OnEnterMapView;
             @EnterMapView.canceled -= instance.OnEnterMapView;
+            @QueueCommand.started -= instance.OnQueueCommand;
+            @QueueCommand.performed -= instance.OnQueueCommand;
+            @QueueCommand.canceled -= instance.OnQueueCommand;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -661,6 +712,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnExecuteCommand(InputAction.CallbackContext context);
         void OnMoveCommand(InputAction.CallbackContext context);
         void OnEnterMapView(InputAction.CallbackContext context);
+        void OnQueueCommand(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

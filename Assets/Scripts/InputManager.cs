@@ -57,6 +57,7 @@ public class InputManager : MonoBehaviour
 	public event Action OnMapViewEnterPressed;
 	public event Action OnMapViewExitPressed;
 	public event Action OnCommandCreatePressed;
+	public event Action OnQueueCommandPressed;
 
 	private void Awake()
 	{
@@ -133,6 +134,9 @@ public class InputManager : MonoBehaviour
 
 		//Map change key pressed
 		controls.FPS.EnterMapView.performed += OnMapViewEnterPerformed;
+
+		//Queue command key pressed
+		controls.FPS.QueueCommand.performed += OnQueueCommandPerformed;
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -157,6 +161,9 @@ public class InputManager : MonoBehaviour
 
 		//Map change key pressed
 		controls.FPS.EnterMapView.performed -= OnMapViewEnterPerformed;
+
+		//Queue command key pressed
+		controls.FPS.QueueCommand.performed -= OnQueueCommandPerformed;
 	}
 
 	
@@ -185,6 +192,11 @@ public class InputManager : MonoBehaviour
 
 		//On execute command pressed
 		controls.MapView.ExecuteCommand.performed -= OnExecutePerformed;
+	}
+
+	private void OnQueueCommandPerformed(InputAction.CallbackContext context)
+	{
+		OnQueueCommandPressed?.Invoke();
 	}
 
 	private void OnCommandCreatePerformed(InputAction.CallbackContext context)

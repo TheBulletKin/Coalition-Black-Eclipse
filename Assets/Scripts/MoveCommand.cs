@@ -51,6 +51,7 @@ public class MoveCommand : ICommand
 		Debug.Log("Finished moving to point");
 
 		//Invoke the completed event which is read by the macroCommand or command issuer
+		//Allows the next command to be executed if it's a macro command
 		OnMoveCompleted?.Invoke();
 	}
 }

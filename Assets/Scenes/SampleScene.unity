@@ -938,13 +938,13 @@ MonoBehaviour:
   isJumping: 0
   movespeedSettings:
     canSprint: 1
-    walkSpeed: 1.5
-    sprintSpeed: 2.2
-    crouchSpeed: 0.5
+    walkSpeed: 2
+    sprintSpeed: 3
+    crouchSpeed: 1
     slopeSpeed: 8
     movementInertia: 15
-    airAcceleration: 25
-    maxAirSpeed: 10
+    airAcceleration: 1
+    maxAirSpeed: 3
   jumpSettings:
     canJump: 1
     jumpForce: 4
@@ -992,8 +992,8 @@ MonoBehaviour:
     groundLayer:
       serializedVersion: 2
       m_Bits: 1
-    groundCheckDistance: 1.7
-    groundCheckDistanceInAir: 1.9
+    groundCheckDistance: 1.1
+    groundCheckDistanceInAir: 1.2
     jumpGroundingPreventionTime: 0.2
   characterVelocity: {x: 0, y: 0, z: 0}
 --- !u!114 &860817639
@@ -1546,14 +1546,14 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 410087041}
-  - {fileID: 832575519}
-  - {fileID: 1650621850}
   - {fileID: 1716685976}
   - {fileID: 315150571}
   - {fileID: 1652912183}
   - {fileID: 860817637}
   - {fileID: 1114095770}
+  - {fileID: 410087041}
+  - {fileID: 832575519}
+  - {fileID: 1650621850}
   - {fileID: 388114918}
   - {fileID: 827116812}
   - {fileID: 863712481}
