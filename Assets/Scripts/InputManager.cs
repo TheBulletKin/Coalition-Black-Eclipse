@@ -58,6 +58,7 @@ public class InputManager : MonoBehaviour
 	public event Action OnMapViewExitPressed;
 	public event Action OnCommandCreatePressed;
 	public event Action OnQueueCommandPressed;
+	public event Action<int> OnTeammateSelectPressed;
 
 	private void Awake()
 	{
@@ -137,6 +138,8 @@ public class InputManager : MonoBehaviour
 
 		//Queue command key pressed
 		controls.FPS.QueueCommand.performed += OnQueueCommandPerformed;
+
+		controls.FPS.SelectAiTeammate.performed += OnSelectAiTeammatePerformed;
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -164,6 +167,8 @@ public class InputManager : MonoBehaviour
 
 		//Queue command key pressed
 		controls.FPS.QueueCommand.performed -= OnQueueCommandPerformed;
+
+		controls.FPS.SelectAiTeammate.performed -= OnSelectAiTeammatePerformed;
 	}
 
 	
@@ -194,6 +199,27 @@ public class InputManager : MonoBehaviour
 		controls.MapView.ExecuteCommand.performed -= OnExecutePerformed;
 	}
 
+	private void OnSelectAiTeammatePerformed(InputAction.CallbackContext context)
+	{
+		switch (context.control.name.Substring(1, 1))
+		{
+			case "1":
+				OnTeammateSelectPressed?.Invoke(0);
+				break;
+			case "2":
+				OnTeammateSelectPressed?.Invoke(1);
+				break;
+			case "3":
+				OnTeammateSelectPressed?.Invoke(2);
+				break;
+			case "4":
+				OnTeammateSelectPressed?.Invoke(3);
+				break;
+			default:
+				break;
+		}
+		
+	}
 	private void OnQueueCommandPerformed(InputAction.CallbackContext context)
 	{
 		OnQueueCommandPressed?.Invoke();

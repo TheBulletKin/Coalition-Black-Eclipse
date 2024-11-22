@@ -116,6 +116,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectAiTeammate"",
+                    ""type"": ""Button"",
+                    ""id"": ""40f9a28e-f576-4d63-94ec-c6cc6c12fa3f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -294,6 +303,50 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""QueueCommand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""57de4f69-f0a8-4d08-b3c5-b1db8d20c8bf"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90823a19-a4ab-456c-ae1c-d2bed7411773"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f43a9d0a-dbe7-462a-88ba-2ff2bc7daabc"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""52a05500-96c7-413e-9caf-f685c6798fe3"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -444,6 +497,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_MoveCommand = m_FPS.FindAction("MoveCommand", throwIfNotFound: true);
         m_FPS_EnterMapView = m_FPS.FindAction("Enter Map View", throwIfNotFound: true);
         m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
+        m_FPS_SelectAiTeammate = m_FPS.FindAction("SelectAiTeammate", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -527,6 +581,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_MoveCommand;
     private readonly InputAction m_FPS_EnterMapView;
     private readonly InputAction m_FPS_QueueCommand;
+    private readonly InputAction m_FPS_SelectAiTeammate;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -541,6 +596,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @MoveCommand => m_Wrapper.m_FPS_MoveCommand;
         public InputAction @EnterMapView => m_Wrapper.m_FPS_EnterMapView;
         public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
+        public InputAction @SelectAiTeammate => m_Wrapper.m_FPS_SelectAiTeammate;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -580,6 +636,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueCommand.started += instance.OnQueueCommand;
             @QueueCommand.performed += instance.OnQueueCommand;
             @QueueCommand.canceled += instance.OnQueueCommand;
+            @SelectAiTeammate.started += instance.OnSelectAiTeammate;
+            @SelectAiTeammate.performed += instance.OnSelectAiTeammate;
+            @SelectAiTeammate.canceled += instance.OnSelectAiTeammate;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -614,6 +673,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueCommand.started -= instance.OnQueueCommand;
             @QueueCommand.performed -= instance.OnQueueCommand;
             @QueueCommand.canceled -= instance.OnQueueCommand;
+            @SelectAiTeammate.started -= instance.OnSelectAiTeammate;
+            @SelectAiTeammate.performed -= instance.OnSelectAiTeammate;
+            @SelectAiTeammate.canceled -= instance.OnSelectAiTeammate;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -713,6 +775,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnMoveCommand(InputAction.CallbackContext context);
         void OnEnterMapView(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);
+        void OnSelectAiTeammate(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

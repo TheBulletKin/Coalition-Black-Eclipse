@@ -1,11 +1,15 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerCommandIssuer : MonoBehaviour
 {
-	public AIMovement aiMovement;
+	public List<AiEntity> aiTeammates;
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
+
+	public int currentTeammateIndex;
 
 	public CameraStates cameraState;
 
@@ -19,10 +23,13 @@ public class PlayerCommandIssuer : MonoBehaviour
 		//InputManager.Instance.OnCommandCreatePressed += QueueMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed += QueueMoveCommand;
+		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
 
 		macroCommand = new MacroCommand();
 		macroCommand.OnMacroCompleted += OnMacroCompleted;
 	}
+
+	
 
 	private void OnDestroy()
 	{
@@ -31,6 +38,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		//InputManager.Instance.OnCommandCreatePressed -= QueueMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed -= QueueMoveCommand;
+		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -62,12 +70,18 @@ public class PlayerCommandIssuer : MonoBehaviour
 		return Vector3.zero;
 	}
 
+	private void ChangeCurrentTeammate(int teammateIndex)
+	{
+		currentTeammateIndex = teammateIndex;
+		Debug.Log("Teammate selected: " + teammateIndex);
+	}
+
 	/// <summary>
 	/// Try to place a command where the crosshair is, currently just move commands
 	/// </summary>
 	private ICommand CreateMoveCommand(Vector3 targetPosition)
 	{
-		ICommand newMoveCommand = new MoveCommand(aiMovement, targetPosition);
+		ICommand newMoveCommand = new MoveCommand(aiTeammates[currentTeammateIndex].GetComponent<AIMovement>(), targetPosition);
 		return newMoveCommand;
 	}
 
@@ -78,7 +92,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public void SingleMoveCommand()
 	{
 		Vector3 targetPosition = TryGetSelectedPosition();
-		ICommand newMoveCommand = new MoveCommand(aiMovement, targetPosition);
+		ICommand newMoveCommand = new MoveCommand(aiTeammates[currentTeammateIndex].GetComponent<AIMovement>(), targetPosition);
 		IssueCommand(newMoveCommand);
 	}
 
