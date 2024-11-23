@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// A overarching class for multiple commands that need to be performed in sequence
+/// A macro command used initially to execute multiple commands in a linear sequence
 /// </summary>
 public class MacroCommand : ICommand
 {
@@ -12,6 +12,8 @@ public class MacroCommand : ICommand
 	private bool canExecuteNext = true;
 
 	public event Action OnMacroCompleted;
+	public event Action<ICommand> OnCommandCompleted;
+
 	/// <summary>
 	/// Add the command to the List of commands
 	/// </summary>
@@ -40,7 +42,7 @@ public class MacroCommand : ICommand
 	/// <summary>
 	/// Executed when the last move command has completed
 	/// </summary>
-	private void CommandCompleted()
+	private void CommandCompleted(ICommand command)
 	{
 		canExecuteNext = true;
 
@@ -49,7 +51,7 @@ public class MacroCommand : ICommand
 			if (commands[commandsExecuted - 1] is MoveCommand moveCommand)
 			{
 				//Unsubscribe to avoid 'ghost calls'
-				moveCommand.OnMoveCompleted -= CommandCompleted;
+				moveCommand.OnCommandCompleted -= CommandCompleted;
 			}
 
 			//Will remove each time currently, but I may choose to keep them there so this is only temporary
@@ -75,7 +77,7 @@ public class MacroCommand : ICommand
 
 				if (currentCommand is MoveCommand moveCommand)
 				{
-					moveCommand.OnMoveCompleted += CommandCompleted;
+					moveCommand.OnCommandCompleted += CommandCompleted;
 				}
 
 

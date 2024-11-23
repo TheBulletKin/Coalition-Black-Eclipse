@@ -59,6 +59,7 @@ public class InputManager : MonoBehaviour
 	public event Action OnCommandCreatePressed;
 	public event Action OnQueueCommandPressed;
 	public event Action<int> OnTeammateSelectPressed;
+	public event Action<int> OnAiExecuteCommandPressed;
 
 	private void Awake()
 	{
@@ -139,7 +140,11 @@ public class InputManager : MonoBehaviour
 		//Queue command key pressed
 		controls.FPS.QueueCommand.performed += OnQueueCommandPerformed;
 
+		//Selecting teammates to assign commands with F1, F2 etc.
 		controls.FPS.SelectAiTeammate.performed += OnSelectAiTeammatePerformed;
+
+		//Executing commands with `,1,2,3 etc
+		controls.FPS.ExecuteCommand.performed += OnAiExecuteCommandPerformed;
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -168,7 +173,11 @@ public class InputManager : MonoBehaviour
 		//Queue command key pressed
 		controls.FPS.QueueCommand.performed -= OnQueueCommandPerformed;
 
+		//Selecting teammates to assign commands with F1, F2 etc.
 		controls.FPS.SelectAiTeammate.performed -= OnSelectAiTeammatePerformed;
+
+		//Executing commands with `,1,2,3 etc
+		controls.FPS.ExecuteCommand.performed -= OnAiExecuteCommandPerformed;
 	}
 
 	
@@ -197,6 +206,27 @@ public class InputManager : MonoBehaviour
 
 		//On execute command pressed
 		controls.MapView.ExecuteCommand.performed -= OnExecutePerformed;
+	}
+
+	private void OnAiExecuteCommandPerformed(InputAction.CallbackContext context)
+	{
+		switch (context.control.name)
+		{
+			case "backquote":
+				OnAiExecuteCommandPressed?.Invoke(-1);
+				break;
+			case "1":
+				OnAiExecuteCommandPressed?.Invoke(0);
+				break;
+			case "2":
+				OnAiExecuteCommandPressed?.Invoke(1);
+				break;
+			case "3":
+				OnAiExecuteCommandPressed?.Invoke(2);
+				break;
+			default:
+				break;
+		}
 	}
 
 	private void OnSelectAiTeammatePerformed(InputAction.CallbackContext context)

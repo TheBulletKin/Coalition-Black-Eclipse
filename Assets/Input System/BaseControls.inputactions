@@ -229,6 +229,28 @@
                 },
                 {
                     "name": "",
+                    "id": "68199d2b-3830-47d3-8e3c-3b9644b8b4ef",
+                    "path": "<Keyboard>/backquote",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExecuteCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32e6c8bb-a97c-47d0-b052-c00a39465d9b",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ExecuteCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "8cdaca25-05dd-46ea-8cac-b7b1a3cc6512",
                     "path": "<Keyboard>/t",
                     "interactions": "",

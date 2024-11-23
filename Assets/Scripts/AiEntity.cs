@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class AiEntity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    AiCommandListener commandListener;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Start()
+	{
+		commandListener = GetComponent<AiCommandListener>();
+	}
 }

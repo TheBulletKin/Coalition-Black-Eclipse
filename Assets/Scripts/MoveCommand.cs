@@ -11,7 +11,8 @@ public class MoveCommand : ICommand
 	private Vector3 targetPosition;
 	private NavMeshAgent navAgent;
 
-	public event Action OnMoveCompleted;
+	//Interface events
+	public event Action<ICommand> OnCommandCompleted;
 
 	/// <summary>
 	/// A move command object
@@ -23,21 +24,21 @@ public class MoveCommand : ICommand
 		this.aiMovement = aiMovement;
 		this.targetPosition = targetPosition;
 		this.navAgent = aiMovement.GetComponent<NavMeshAgent>();
-	}
+	}	
 
 	/// <summary>
 	/// Interface method of ICommand
 	/// </summary>
 	public void Execute()
 	{
-		aiMovement.StartCoroutine(CompleteMoveTo());
+		aiMovement.StartCoroutine(FullMoveTo());
 	}
 
 	/// <summary>
 	/// Coroutine to perform agent movement, asynchronous to allow for other tasks to perform at the same time
 	/// </summary>
 	/// <returns></returns>
-	private IEnumerator CompleteMoveTo()
+	private IEnumerator FullMoveTo()
 	{
 		//Start moving to destination
 		aiMovement.MoveTo(targetPosition);
@@ -52,6 +53,6 @@ public class MoveCommand : ICommand
 
 		//Invoke the completed event which is read by the macroCommand or command issuer
 		//Allows the next command to be executed if it's a macro command
-		OnMoveCompleted?.Invoke();
+		OnCommandCompleted?.Invoke(this);
 	}
 }

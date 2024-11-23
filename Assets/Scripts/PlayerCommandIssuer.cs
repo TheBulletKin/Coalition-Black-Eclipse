@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerCommandIssuer : MonoBehaviour
 {
-	public List<AiEntity> aiTeammates;
+	public List<AiCommandListener> aiTeammates;
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
 
@@ -24,9 +24,10 @@ public class PlayerCommandIssuer : MonoBehaviour
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed += QueueMoveCommand;
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
+		InputManager.Instance.OnAiExecuteCommandPressed += AiExecuteTasks;
 
-		macroCommand = new MacroCommand();
-		macroCommand.OnMacroCompleted += OnMacroCompleted;
+		//macroCommand = new MacroCommand();
+		//macroCommand.OnMacroCompleted += OnMacroCompleted;
 	}
 
 	
@@ -39,6 +40,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed -= QueueMoveCommand;
 		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
+		InputManager.Instance.OnAiExecuteCommandPressed -= AiExecuteTasks;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -70,6 +72,21 @@ public class PlayerCommandIssuer : MonoBehaviour
 		return Vector3.zero;
 	}
 
+	private void AiExecuteTasks(int AiIndex)
+	{
+		if (AiIndex == -1)
+		{
+			foreach (AiCommandListener entity in aiTeammates)
+			{
+				entity.RunCommand();
+			}
+		}
+		else if (AiIndex < aiTeammates.Count) 
+		{
+			aiTeammates[AiIndex].RunCommand();
+		}
+	}
+
 	private void ChangeCurrentTeammate(int teammateIndex)
 	{
 		currentTeammateIndex = teammateIndex;
@@ -93,7 +110,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	{
 		Vector3 targetPosition = TryGetSelectedPosition();
 		ICommand newMoveCommand = new MoveCommand(aiTeammates[currentTeammateIndex].GetComponent<AIMovement>(), targetPosition);
-		IssueCommand(newMoveCommand);
+		IssueImmediateCommand(newMoveCommand);
 	}
 
 	/// <summary>
@@ -104,10 +121,19 @@ public class PlayerCommandIssuer : MonoBehaviour
 		Vector3 TargetPostion = TryGetSelectedPosition();
 		if (TargetPostion != Vector3.zero)
 		{
-			macroCommand.AddCommand(CreateMoveCommand(TargetPostion));
+			//macroCommand.AddCommand(CreateMoveCommand(TargetPostion));
+			aiTeammates[currentTeammateIndex].AddCommand(CreateMoveCommand(TargetPostion));
 		}
 		
 	}
+
+	/* I want each Ai to have a list of tasks they have been assigned, done so through teammate selection
+	 * Can perform them asynchrnously or synchronously. That is, performing their tasks at the same time, or performing their own commands at their own pace.
+	 * (can decide on variants of this later on )
+	 * So start by adding tasks to the list and running them by themselves
+	 */
+
+	
 
 
 	/// <summary>
@@ -115,7 +141,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	/// </summary>
 	public void ExecuteMacroCommand()
 	{
-		macroCommand.Execute();
+		//macroCommand.Execute();
 	}
 
 	/// <summary>
@@ -131,7 +157,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	/// Used to instantly perform a command. Will be reintroduced later
 	/// </summary>
 	/// <param name="command"></param>
-	private void IssueCommand(ICommand command)
+	private void IssueImmediateCommand(ICommand command)
 	{
 		command.Execute();
 	}
