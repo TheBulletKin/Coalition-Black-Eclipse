@@ -45,8 +45,7 @@ public class LookCommand : ICommand
 	{
 		Vector3 lookDirection = (targetPosition - aiTransform.position).normalized;
 		Quaternion startRotation = aiTransform.rotation;
-		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-		
+		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);	
 		
 
 		float elapsedTime = 0f;		

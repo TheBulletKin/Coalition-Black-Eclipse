@@ -51,8 +51,7 @@ public class MoveCommand : ICommand
 			yield return null;
 		}		
 
-		//Invoke the completed event which is read by the macroCommand or command issuer
-		//Allows the next command to be executed if it's a macro command
+		//Invoke the completed event which is read by the command issuer to perform tasks on completion		 
 		OnCommandCompleted?.Invoke(this);
 	}
 
