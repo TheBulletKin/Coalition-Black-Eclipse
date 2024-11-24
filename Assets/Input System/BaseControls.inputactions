@@ -121,6 +121,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InstantLookCommand",
+                    "type": "Button",
+                    "id": "d84ce179-e926-43ce-a64f-5cff378b2ed4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "QueueLookCommand",
+                    "type": "Button",
+                    "id": "0d6a5fb1-5af6-4031-a38d-6278d0dc7b11",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -649,6 +667,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "ExecuteAllCommandsGroup",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "987927e7-5743-46f4-b9c6-a186ff5987e5",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InstantLookCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "One Modifier",
+                    "id": "3be3a094-1974-4001-9bc4-13e1469906cd",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueLookCommand",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "637efdab-ba5b-4041-abe0-85b4bada9a8c",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueLookCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "19651ed4-c8b4-4c96-bfef-517eb1c2c35b",
+                    "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueLookCommand",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }

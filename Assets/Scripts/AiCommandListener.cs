@@ -7,6 +7,7 @@ public class AiCommandListener : MonoBehaviour
 	bool canRunNextCommand = true;
 	public int groupIndex;
 	public int commandsTotal;
+	public ICommand currentExecutingCommand;
 
 
 	private void Update()
@@ -43,16 +44,24 @@ public class AiCommandListener : MonoBehaviour
 
 			command.OnCommandCompleted += CommandCompleted;
 			Debug.Log("Starting command on " + gameObject.name);
-			command.Execute();
+			command.Execute(this);
 			canRunNextCommand = false;
+			currentExecutingCommand = command;
 		}
 	}
 
 	public void RunCommand(ICommand command)
 	{
+		if (currentExecutingCommand != null)
+		{
+			currentExecutingCommand.Cancel(this);
+		}
+
 		command.OnCommandCompleted += CommandCompleted;
 		Debug.Log("Starting command on " + gameObject.name);
-		command.Execute();
+		command.Execute(this);
+		currentExecutingCommand = command;
+		
 	}
 	
 
@@ -61,6 +70,7 @@ public class AiCommandListener : MonoBehaviour
 		canRunNextCommand = true;
 		command.OnCommandCompleted -= CommandCompleted;
 		commands.Remove(command);
+		currentExecutingCommand = null;
 
 		Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
 		

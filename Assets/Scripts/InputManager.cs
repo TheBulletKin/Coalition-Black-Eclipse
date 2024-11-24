@@ -60,6 +60,8 @@ public class InputManager : MonoBehaviour
 	public event Action<int> OnTeammateSelectPressed;	
 	public event Action<int> OnAiGroupSelectedPressed;
 	public event Action OnGoCodePressed;
+	public event Action OnLookCommandInstantPressed;
+	public event Action OnLookCommandQueuePressed;
 
 	private void Awake()
 	{
@@ -144,6 +146,10 @@ public class InputManager : MonoBehaviour
 		controls.FPS.ExecuteGoCode.performed += ActivateGoCode;		
 
 		controls.FPS.SelectAiGroup.performed += SelectAiGroup;
+
+		controls.FPS.InstantLookCommand.performed += InstantLook;
+
+		controls.FPS.QueueLookCommand.performed += QueueLook;
 	}
 
 	
@@ -175,10 +181,14 @@ public class InputManager : MonoBehaviour
 		controls.FPS.SelectAiTeammate.performed -= SelectAiTeammate;
 
 		//Executing individual commands with `,1,2,3 etc
-		controls.FPS.ExecuteGoCode.performed += ActivateGoCode;
+		controls.FPS.ExecuteGoCode.performed -= ActivateGoCode;
 		
 
 		controls.FPS.SelectAiGroup.performed -= SelectAiGroup;
+
+		controls.FPS.InstantLookCommand.performed -= InstantLook;
+
+		controls.FPS.QueueLookCommand.performed -= QueueLook;
 	}
 
 	
@@ -202,6 +212,16 @@ public class InputManager : MonoBehaviour
 
 		//Create command key pressed on map
 		controls.MapView.CreateCommand.performed -= OnCommandCreatePerformed;
+	}
+
+	private void InstantLook(InputAction.CallbackContext context)
+	{
+		OnLookCommandInstantPressed?.Invoke();
+	}
+
+	private void QueueLook(InputAction.CallbackContext context)
+	{
+		OnLookCommandQueuePressed?.Invoke();
 	}
 
 	private void SelectAiGroup(InputAction.CallbackContext context)

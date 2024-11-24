@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -23,9 +24,11 @@ public class PlayerCommandIssuer : MonoBehaviour
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
 		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
 		InputManager.Instance.OnAiGroupSelectedPressed += ChangeCurrentGroup;
+		InputManager.Instance.OnLookCommandInstantPressed += InstantLook;
+		InputManager.Instance.OnLookCommandQueuePressed += QueueLook;
 	}
 
-
+	
 
 	private void OnDestroy()
 	{
@@ -105,25 +108,23 @@ public class PlayerCommandIssuer : MonoBehaviour
 		}
 	}
 
-	/* DEV NOTES FOR TONIGHT
-	 * Unsure about how I will tackle individual ai movements and syncing. For now keep it simple
-	 * Will consult design later, get something functional for now
-	 * F1. F2 To select individual teammates. ` for all teammates
-	 * Shift F1 F2 to select the whole group. Shift ` for all groups. 
-	 * First add group selection to input manager, test.
-	 * Each teammate needs a group index, assign manually for now.
-	 * Select a team member and press execute key
-	 * For now will do them individually. Figure out the rest after consolidating design
-	 * Select teammate and select group handled here through events
-	 * Changing group changes the index to the inputted value, sets groupSelection to true
-	 * When executing commands, if this is true you can look at the group indexes.
-	 * If not, just execute that teammate's commands.
-	 * Change it so that execute command press just does the current group or teammate rather than them all
-	 * Set it to 1 for the time being. These will simulate go codes later so this will be useful
-	 * Will remove the synced command steps for now. Need to figure out design first. Come back to it later to reimplement
-	 */
 
 
+	private ICommand CreateLookCommand(AiCommandListener targetAi, Vector3 targetPosition)
+	{
+		ICommand newLookCommand = new LookCommand(targetAi.GetComponent<AIMovement>(), targetPosition);
+		return newLookCommand;
+	}
+
+	private void InstantLook()
+	{
+		QueueOrPerformLookCommand(false);
+	}
+
+	private void QueueLook()
+	{
+		QueueOrPerformLookCommand(true);
+	}
 
 	/// <summary>
 	/// Try to place a command where the crosshair is, currently just move commands
@@ -142,6 +143,41 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public void InstantKeyPressed()
 	{
 		QueueOrPerformMoveCommand(false);
+	}
+
+	public void QueueOrPerformLookCommand(bool shouldQueue)
+	{
+		Vector3 targetPosition = TryGetSelectedPosition();
+
+		if (selectingGroup)
+		{
+			foreach (AiCommandListener teammate in aiTeammates)
+			{
+				if (teammate.groupIndex == currentGroupOrTeammateIndex)
+				{
+					if (shouldQueue)
+					{
+						teammate.AddCommand(CreateLookCommand(teammate, targetPosition));
+					}
+					else
+					{
+						teammate.RunCommand(CreateLookCommand(teammate, targetPosition));
+					}
+
+				}
+			}
+		}
+		else
+		{
+			if (shouldQueue)
+			{
+				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateLookCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+			}
+			else
+			{
+				aiTeammates[currentGroupOrTeammateIndex].RunCommand(CreateLookCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+			}
+		}
 	}
 	
 

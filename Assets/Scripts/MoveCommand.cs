@@ -11,6 +11,8 @@ public class MoveCommand : ICommand
 	private Vector3 targetPosition;
 	private NavMeshAgent navAgent;
 
+	public Coroutine currentCoroutine;
+
 	//Interface events
 	public event Action<ICommand> OnCommandCompleted;
 
@@ -29,9 +31,9 @@ public class MoveCommand : ICommand
 	/// <summary>
 	/// Interface method of ICommand
 	/// </summary>
-	public void Execute()
+	public void Execute(MonoBehaviour executor)
 	{
-		aiMovement.StartCoroutine(FullMoveTo());
+		currentCoroutine = executor.StartCoroutine(FullMoveTo());
 	}
 
 	/// <summary>
@@ -44,7 +46,7 @@ public class MoveCommand : ICommand
 		aiMovement.MoveTo(targetPosition);
 
 		//Check whether the destination has been reached, wait till the next frame then try again
-		while (navAgent.pathPending || navAgent.remainingDistance > 3f)
+		while (navAgent.pathPending || navAgent.remainingDistance > navAgent.stoppingDistance)
 		{
 			yield return null;
 		}		
@@ -52,5 +54,10 @@ public class MoveCommand : ICommand
 		//Invoke the completed event which is read by the macroCommand or command issuer
 		//Allows the next command to be executed if it's a macro command
 		OnCommandCompleted?.Invoke(this);
+	}
+
+	public void Cancel(MonoBehaviour executor)
+	{
+		executor.StopCoroutine(currentCoroutine);
 	}
 }
