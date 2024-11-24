@@ -44,12 +44,10 @@ public class MoveCommand : ICommand
 		aiMovement.MoveTo(targetPosition);
 
 		//Check whether the destination has been reached, wait till the next frame then try again
-		while (navAgent.pathPending || navAgent.remainingDistance > navAgent.stoppingDistance)
+		while (navAgent.pathPending || navAgent.remainingDistance > 3f)
 		{
 			yield return null;
-		}
-
-		Debug.Log("Finished moving to point");
+		}		
 
 		//Invoke the completed event which is read by the macroCommand or command issuer
 		//Allows the next command to be executed if it's a macro command

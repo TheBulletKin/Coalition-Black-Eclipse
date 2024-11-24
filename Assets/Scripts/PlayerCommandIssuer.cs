@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -11,52 +10,31 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public List<AiCommandListener> aiTeammates;
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
-
-	public int currentTeammateIndex;
+	public int currentGroupOrTeammateIndex;
+	public bool selectingGroup;
 
 	public CameraStates cameraState;
 
-		
-
 	private void Start()
 	{
-		InputManager.Instance.OnInteractPressed += SingleMoveCommand;		
-		//InputManager.Instance.OnCommandCreatePressed += QueueMoveCommand;
+		InputManager.Instance.OnInteractPressed += InstantKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
-		InputManager.Instance.OnQueueCommandPressed += QueueMoveCommand;
+		InputManager.Instance.OnQueueCommandPressed += QueueKeyPressed;
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
-		InputManager.Instance.OnAiExecuteCommandPressed += ExecuteInvidiualCommands;
-		InputManager.Instance.OnAiExecuteTasksInSyncPressed += ExecuteCommandsSynchronously;
-
-		//macroCommand = new MacroCommand();
-		//macroCommand.OnMacroCompleted += OnMacroCompleted;
-
-		//Set up the ai group, will be customisable later with more controls
-		//Go through each teammate
-		foreach (AiCommandListener teammate in aiTeammates)
-		{
-			//Add the other teammates aside from that one
-			foreach (AiCommandListener otherTeammate in aiTeammates)
-			{
-				if (otherTeammate != teammate)
-				{
-					teammate.AddToGroup(otherTeammate);
-				}
-			}
-		}
+		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
+		InputManager.Instance.OnAiGroupSelectedPressed += ChangeCurrentGroup;
 	}
 
-	
+
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInteractPressed -= SingleMoveCommand;		
-		//InputManager.Instance.OnCommandCreatePressed -= QueueMoveCommand;
+		InputManager.Instance.OnInteractPressed -= InstantKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
-		InputManager.Instance.OnQueueCommandPressed -= QueueMoveCommand;
+		InputManager.Instance.OnQueueCommandPressed -= QueueKeyPressed;
 		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
-		InputManager.Instance.OnAiExecuteCommandPressed -= ExecuteInvidiualCommands;
-		InputManager.Instance.OnAiExecuteTasksInSyncPressed -= ExecuteCommandsSynchronously;
+		InputManager.Instance.OnGoCodePressed -= ExecuteCommands;
+		InputManager.Instance.OnAiGroupSelectedPressed -= ChangeCurrentGroup;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -88,92 +66,120 @@ public class PlayerCommandIssuer : MonoBehaviour
 		return Vector3.zero;
 	}
 
-	private void ExecuteInvidiualCommands(int AiIndex)
+	private void ChangeCurrentGroup(int groupIndex)
 	{
-		if (AiIndex == -1)
-		{
-			foreach (AiCommandListener entity in aiTeammates)
-			{
-				entity.RunCommand(false);
-			}
-		}
-		else if (AiIndex < aiTeammates.Count) 
-		{
-			aiTeammates[AiIndex].RunCommand(false);
-		}
-	}
-
-	private void ExecuteCommandsSynchronously()
-	{
-		/* Need to tell each Ai when the other finishes
-		 * Set up an ai group.
-		 * For now will be really simple, will figure it out as I come up with more control options and designs
-		 * Make it so that everyone is in a group, so one listener holds the others
-		 * Hold how many AIs there are as an int. That's just .Count
-		 * Run the method on each group member
-		 */
-
-		//Each ai team member has an ai group attached to them.
-		//The RunSyncedCommand method will start running the commands on all ai in that teammate's group
-		//Don't like how this works
-		aiTeammates[0].RunSyncedCommand();
+		currentGroupOrTeammateIndex = groupIndex;
+		selectingGroup = true;
+		Debug.Log("Group selected: " + groupIndex);
 	}
 
 	private void ChangeCurrentTeammate(int teammateIndex)
 	{
-		currentTeammateIndex = teammateIndex;
+		currentGroupOrTeammateIndex = teammateIndex;
+		selectingGroup = false;
 		Debug.Log("Teammate selected: " + teammateIndex);
 	}
+
+	private void ExecuteCommands()
+	{
+		if (currentGroupOrTeammateIndex == -1)
+		{
+			foreach (AiCommandListener teammate in aiTeammates)
+			{
+				teammate.RunCommand();
+			}
+		}
+		else if (selectingGroup)
+		{
+			foreach (AiCommandListener teammate in aiTeammates)
+			{
+				if (teammate.groupIndex == currentGroupOrTeammateIndex)
+				{
+					teammate.RunCommand();
+				}
+			}
+		}
+		else
+		{
+			aiTeammates[currentGroupOrTeammateIndex].RunCommand();
+		}
+	}
+
+	/* DEV NOTES FOR TONIGHT
+	 * Unsure about how I will tackle individual ai movements and syncing. For now keep it simple
+	 * Will consult design later, get something functional for now
+	 * F1. F2 To select individual teammates. ` for all teammates
+	 * Shift F1 F2 to select the whole group. Shift ` for all groups. 
+	 * First add group selection to input manager, test.
+	 * Each teammate needs a group index, assign manually for now.
+	 * Select a team member and press execute key
+	 * For now will do them individually. Figure out the rest after consolidating design
+	 * Select teammate and select group handled here through events
+	 * Changing group changes the index to the inputted value, sets groupSelection to true
+	 * When executing commands, if this is true you can look at the group indexes.
+	 * If not, just execute that teammate's commands.
+	 * Change it so that execute command press just does the current group or teammate rather than them all
+	 * Set it to 1 for the time being. These will simulate go codes later so this will be useful
+	 * Will remove the synced command steps for now. Need to figure out design first. Come back to it later to reimplement
+	 */
+
+
 
 	/// <summary>
 	/// Try to place a command where the crosshair is, currently just move commands
 	/// </summary>
-	private ICommand CreateMoveCommand(Vector3 targetPosition)
+	private ICommand CreateMoveCommand(AiCommandListener targetAi, Vector3 targetPosition)
 	{
-		ICommand newMoveCommand = new MoveCommand(aiTeammates[currentTeammateIndex].GetComponent<AIMovement>(), targetPosition);
+		ICommand newMoveCommand = new MoveCommand(targetAi.GetComponent<AIMovement>(), targetPosition);
 		return newMoveCommand;
+	}	
+
+	public void QueueKeyPressed()
+	{
+		QueueOrPerformMoveCommand(true);
 	}
 
-	/// <summary>
-	/// Create a move command and add it to the macroCommand
-	/// </summary>
-	/// <param name="targetPosition"></param>
-	public void SingleMoveCommand()
+	public void InstantKeyPressed()
+	{
+		QueueOrPerformMoveCommand(false);
+	}
+	
+
+	public void QueueOrPerformMoveCommand(bool shouldQueue)
 	{
 		Vector3 targetPosition = TryGetSelectedPosition();
-		ICommand newMoveCommand = new MoveCommand(aiTeammates[currentTeammateIndex].GetComponent<AIMovement>(), targetPosition);
-		IssueImmediateCommand(newMoveCommand);
-	}
 
-	/// <summary>
-	/// Add a move command to the macro queue
-	/// </summary>
-	public void QueueMoveCommand()
-	{
-		Vector3 TargetPostion = TryGetSelectedPosition();
-		if (TargetPostion != Vector3.zero)
+		if (selectingGroup)
 		{
-			//macroCommand.AddCommand(CreateMoveCommand(TargetPostion));
-			aiTeammates[currentTeammateIndex].AddCommand(CreateMoveCommand(TargetPostion));
+			foreach (AiCommandListener teammate in aiTeammates)
+			{
+				if (teammate.groupIndex == currentGroupOrTeammateIndex)
+				{
+					if (shouldQueue)
+					{
+						teammate.AddCommand(CreateMoveCommand(teammate, targetPosition));
+					}
+					else
+					{
+						teammate.RunCommand(CreateMoveCommand(teammate, targetPosition));
+					}
+
+				}
+			}
 		}
-		
+		else
+		{
+			if (shouldQueue)
+			{
+				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateMoveCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+			}
+			else
+			{
+				aiTeammates[currentGroupOrTeammateIndex].RunCommand(CreateMoveCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+			}
+		}
 	}
 
-	
-
-	
-
-
-	
-
-	/// <summary>
-	/// Used to instantly perform a command. Will be reintroduced later
-	/// </summary>
-	/// <param name="command"></param>
-	private void IssueImmediateCommand(ICommand command)
-	{
-		command.Execute();
-	}
 
 	private void UpdateCameraState(CameraStates state)
 	{

@@ -57,9 +57,9 @@ public class InputManager : MonoBehaviour
 	public event Action OnMapViewExitPressed;
 	public event Action OnCommandCreatePressed;
 	public event Action OnQueueCommandPressed;
-	public event Action<int> OnTeammateSelectPressed;
-	public event Action<int> OnAiExecuteCommandPressed;
-	public event Action OnAiExecuteTasksInSyncPressed;
+	public event Action<int> OnTeammateSelectPressed;	
+	public event Action<int> OnAiGroupSelectedPressed;
+	public event Action OnGoCodePressed;
 
 	private void Awake()
 	{
@@ -138,14 +138,15 @@ public class InputManager : MonoBehaviour
 		controls.FPS.QueueCommand.performed += OnQueueCommandPerformed;
 
 		//Selecting teammates to assign commands with F1, F2 etc.
-		controls.FPS.SelectAiTeammate.performed += OnSelectAiTeammatePerformed;
+		controls.FPS.SelectAiTeammate.performed += SelectAiTeammate;
 
-		//Executing commands with `,1,2,3 etc
-		controls.FPS.ExecuteAllCommandsIndividual.performed += ExecuteIndividualAiCommands;
+		//Activting currently selected team / groups commands
+		controls.FPS.ExecuteGoCode.performed += ActivateGoCode;		
 
-		//Executing group commands with Shift + `,1,2,3 etc
-		controls.FPS.ExecuteAllCommandsSync.performed += ExecuteSyncedAiCommands;
+		controls.FPS.SelectAiGroup.performed += SelectAiGroup;
 	}
+
+	
 
 	public void UnsubscribeFPSInputMaps()
 	{
@@ -171,17 +172,17 @@ public class InputManager : MonoBehaviour
 		controls.FPS.QueueCommand.performed -= OnQueueCommandPerformed;
 
 		//Selecting teammates to assign commands with F1, F2 etc.
-		controls.FPS.SelectAiTeammate.performed -= OnSelectAiTeammatePerformed;
+		controls.FPS.SelectAiTeammate.performed -= SelectAiTeammate;
 
 		//Executing individual commands with `,1,2,3 etc
-		controls.FPS.ExecuteAllCommandsIndividual.performed -= ExecuteIndividualAiCommands;
-
-		controls.FPS.ExecuteAllCommandsSync.performed -= ExecuteSyncedAiCommands;
-
+		controls.FPS.ExecuteGoCode.performed += ActivateGoCode;
 		
+
+		controls.FPS.SelectAiGroup.performed -= SelectAiGroup;
 	}
 
 	
+
 
 	public void SubscribeTopDownInputMaps()
 	{
@@ -203,52 +204,39 @@ public class InputManager : MonoBehaviour
 		controls.MapView.CreateCommand.performed -= OnCommandCreatePerformed;
 	}
 
-
-	private void ExecuteSyncedAiCommands(InputAction.CallbackContext context)
+	private void SelectAiGroup(InputAction.CallbackContext context)
 	{
-		Debug.Log("Synced pressed");
+		
 		switch (context.control.name)
 		{
 			case "backquote":
-				OnAiExecuteTasksInSyncPressed?.Invoke();
+				
+				OnAiGroupSelectedPressed?.Invoke(-1);
 				break;
-			case "1":
-				OnAiExecuteTasksInSyncPressed?.Invoke();
+			case "f1":
+				
+				OnAiGroupSelectedPressed?.Invoke(0);
 				break;
-			case "2":
-				OnAiExecuteTasksInSyncPressed?.Invoke();
+			case "f2":
+			
+				OnAiGroupSelectedPressed?.Invoke(1);
 				break;
-			case "3":
-				OnAiExecuteTasksInSyncPressed?.Invoke();
+			case "f3":
+				
+				OnAiGroupSelectedPressed?.Invoke(2);
 				break;
 			default:
 				break;
 		}
 	}
 
-
-	private void ExecuteIndividualAiCommands(InputAction.CallbackContext context)
+	private void ActivateGoCode(InputAction.CallbackContext context)
 	{
-		switch (context.control.name)
-		{
-			case "backquote":
-				OnAiExecuteCommandPressed?.Invoke(-1);
-				break;
-			case "1":
-				OnAiExecuteCommandPressed?.Invoke(0);
-				break;
-			case "2":
-				OnAiExecuteCommandPressed?.Invoke(1);
-				break;
-			case "3":
-				OnAiExecuteCommandPressed?.Invoke(2);
-				break;
-			default:
-				break;
-		}
-	}
+		//Eventually change to tackle multiple go codes
+		OnGoCodePressed?.Invoke();
+	}	
 
-	private void OnSelectAiTeammatePerformed(InputAction.CallbackContext context)
+	private void SelectAiTeammate(InputAction.CallbackContext context)
 	{
 		switch (context.control.name.Substring(1, 1))
 		{

@@ -82,7 +82,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ExecuteAllCommandsIndividual"",
+                    ""name"": ""ExecuteGoCode"",
                     ""type"": ""Button"",
                     ""id"": ""0eece59a-5c7b-4d32-a3e1-8c1767e543e3"",
                     ""expectedControlType"": """",
@@ -91,7 +91,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ExecuteAllCommandsSync"",
+                    ""name"": ""ExecuteAllCommandsGroup"",
                     ""type"": ""Button"",
                     ""id"": ""2e1331ba-3df1-4510-939d-19a98abb653f"",
                     ""expectedControlType"": """",
@@ -130,6 +130,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""name"": ""SelectAiTeammate"",
                     ""type"": ""Button"",
                     ""id"": ""40f9a28e-f576-4d63-94ec-c6cc6c12fa3f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SelectAiGroup"",
+                    ""type"": ""Button"",
+                    ""id"": ""d3b3e711-fdef-4c50-a060-b77ad5118881"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -250,33 +259,11 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""68199d2b-3830-47d3-8e3c-3b9644b8b4ef"",
-                    ""path"": ""<Keyboard>/backquote"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsIndividual"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""82975b46-e45d-453e-94b8-6c8c304173f4"",
                     ""path"": ""<Keyboard>/1"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsIndividual"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""32e6c8bb-a97c-47d0-b052-c00a39465d9b"",
-                    ""path"": ""<Keyboard>/2"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsIndividual"",
+                    ""action"": ""ExecuteGoCode"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -380,13 +367,189 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 },
                 {
+                    ""name"": """",
+                    ""id"": ""1d0abdfe-cc3b-43f2-a9cc-c9badb6ab6e2"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""23ecb2e4-d4e2-4a24-8c6d-7d0a15cabbed"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""4f25e74b-2b0d-465f-a2bf-d9cacf6dea83"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""ce11e8b0-1f81-4db7-8be3-1987cc903149"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""d6155b68-cd9c-4c5e-9971-ff62ce5970b8"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""f1423446-8922-449a-883f-fbe165b02073"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""a149b2c9-9c58-4c16-88cb-df506b295d55"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""dbf66bf3-e9aa-49a0-99ad-deea8da98b65"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""0e65add2-b728-4639-9948-804d4440c6e8"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""e1c0597c-0c24-4391-b893-fbef44b8bd0c"",
+                    ""path"": ""<Keyboard>/f3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""a7ba112a-be4a-46d7-a91f-3173bd0eecb6"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""3547bb65-77b3-4c40-bae9-75e123df189f"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""38c03fe9-0f04-4083-acba-eb3a6d0afe0a"",
+                    ""path"": ""<Keyboard>/f4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""c8b9aa91-27cf-421d-9e4a-6850f1c97386"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""9a938b6c-19c7-4572-97d1-2f5af46b67d9"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""bdcbe6b9-4733-40f9-918a-0388d4c7bd31"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAiGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
                     ""name"": ""One Modifier"",
                     ""id"": ""ccb1d832-beba-425f-9278-573457cd3a9f"",
                     ""path"": ""OneModifier"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -397,7 +560,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -408,7 +571,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -419,7 +582,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -430,7 +593,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -441,7 +604,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -452,7 +615,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -463,7 +626,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -474,7 +637,40 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""action"": ""ExecuteAllCommandsGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""4cd9f0b1-8632-460c-917a-be8bf86776d5"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsGroup"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""096b789d-f099-40ce-9cd1-8568876bf4e5"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsGroup"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""095216b8-2908-4a81-b27a-7bce1fb718b8"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsGroup"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -623,12 +819,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_Jump = m_FPS.FindAction("Jump", throwIfNotFound: true);
         m_FPS_Crouch = m_FPS.FindAction("Crouch", throwIfNotFound: true);
         m_FPS_Interact = m_FPS.FindAction("Interact", throwIfNotFound: true);
-        m_FPS_ExecuteAllCommandsIndividual = m_FPS.FindAction("ExecuteAllCommandsIndividual", throwIfNotFound: true);
-        m_FPS_ExecuteAllCommandsSync = m_FPS.FindAction("ExecuteAllCommandsSync", throwIfNotFound: true);
+        m_FPS_ExecuteGoCode = m_FPS.FindAction("ExecuteGoCode", throwIfNotFound: true);
+        m_FPS_ExecuteAllCommandsGroup = m_FPS.FindAction("ExecuteAllCommandsGroup", throwIfNotFound: true);
         m_FPS_MoveCommand = m_FPS.FindAction("MoveCommand", throwIfNotFound: true);
         m_FPS_EnterMapView = m_FPS.FindAction("Enter Map View", throwIfNotFound: true);
         m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
         m_FPS_SelectAiTeammate = m_FPS.FindAction("SelectAiTeammate", throwIfNotFound: true);
+        m_FPS_SelectAiGroup = m_FPS.FindAction("SelectAiGroup", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -708,12 +905,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_Jump;
     private readonly InputAction m_FPS_Crouch;
     private readonly InputAction m_FPS_Interact;
-    private readonly InputAction m_FPS_ExecuteAllCommandsIndividual;
-    private readonly InputAction m_FPS_ExecuteAllCommandsSync;
+    private readonly InputAction m_FPS_ExecuteGoCode;
+    private readonly InputAction m_FPS_ExecuteAllCommandsGroup;
     private readonly InputAction m_FPS_MoveCommand;
     private readonly InputAction m_FPS_EnterMapView;
     private readonly InputAction m_FPS_QueueCommand;
     private readonly InputAction m_FPS_SelectAiTeammate;
+    private readonly InputAction m_FPS_SelectAiGroup;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -724,12 +922,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_FPS_Jump;
         public InputAction @Crouch => m_Wrapper.m_FPS_Crouch;
         public InputAction @Interact => m_Wrapper.m_FPS_Interact;
-        public InputAction @ExecuteAllCommandsIndividual => m_Wrapper.m_FPS_ExecuteAllCommandsIndividual;
-        public InputAction @ExecuteAllCommandsSync => m_Wrapper.m_FPS_ExecuteAllCommandsSync;
+        public InputAction @ExecuteGoCode => m_Wrapper.m_FPS_ExecuteGoCode;
+        public InputAction @ExecuteAllCommandsGroup => m_Wrapper.m_FPS_ExecuteAllCommandsGroup;
         public InputAction @MoveCommand => m_Wrapper.m_FPS_MoveCommand;
         public InputAction @EnterMapView => m_Wrapper.m_FPS_EnterMapView;
         public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
         public InputAction @SelectAiTeammate => m_Wrapper.m_FPS_SelectAiTeammate;
+        public InputAction @SelectAiGroup => m_Wrapper.m_FPS_SelectAiGroup;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -757,12 +956,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @ExecuteAllCommandsIndividual.started += instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsIndividual.performed += instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsIndividual.canceled += instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsSync.started += instance.OnExecuteAllCommandsSync;
-            @ExecuteAllCommandsSync.performed += instance.OnExecuteAllCommandsSync;
-            @ExecuteAllCommandsSync.canceled += instance.OnExecuteAllCommandsSync;
+            @ExecuteGoCode.started += instance.OnExecuteGoCode;
+            @ExecuteGoCode.performed += instance.OnExecuteGoCode;
+            @ExecuteGoCode.canceled += instance.OnExecuteGoCode;
+            @ExecuteAllCommandsGroup.started += instance.OnExecuteAllCommandsGroup;
+            @ExecuteAllCommandsGroup.performed += instance.OnExecuteAllCommandsGroup;
+            @ExecuteAllCommandsGroup.canceled += instance.OnExecuteAllCommandsGroup;
             @MoveCommand.started += instance.OnMoveCommand;
             @MoveCommand.performed += instance.OnMoveCommand;
             @MoveCommand.canceled += instance.OnMoveCommand;
@@ -775,6 +974,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @SelectAiTeammate.started += instance.OnSelectAiTeammate;
             @SelectAiTeammate.performed += instance.OnSelectAiTeammate;
             @SelectAiTeammate.canceled += instance.OnSelectAiTeammate;
+            @SelectAiGroup.started += instance.OnSelectAiGroup;
+            @SelectAiGroup.performed += instance.OnSelectAiGroup;
+            @SelectAiGroup.canceled += instance.OnSelectAiGroup;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -797,12 +999,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @ExecuteAllCommandsIndividual.started -= instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsIndividual.performed -= instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsIndividual.canceled -= instance.OnExecuteAllCommandsIndividual;
-            @ExecuteAllCommandsSync.started -= instance.OnExecuteAllCommandsSync;
-            @ExecuteAllCommandsSync.performed -= instance.OnExecuteAllCommandsSync;
-            @ExecuteAllCommandsSync.canceled -= instance.OnExecuteAllCommandsSync;
+            @ExecuteGoCode.started -= instance.OnExecuteGoCode;
+            @ExecuteGoCode.performed -= instance.OnExecuteGoCode;
+            @ExecuteGoCode.canceled -= instance.OnExecuteGoCode;
+            @ExecuteAllCommandsGroup.started -= instance.OnExecuteAllCommandsGroup;
+            @ExecuteAllCommandsGroup.performed -= instance.OnExecuteAllCommandsGroup;
+            @ExecuteAllCommandsGroup.canceled -= instance.OnExecuteAllCommandsGroup;
             @MoveCommand.started -= instance.OnMoveCommand;
             @MoveCommand.performed -= instance.OnMoveCommand;
             @MoveCommand.canceled -= instance.OnMoveCommand;
@@ -815,6 +1017,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @SelectAiTeammate.started -= instance.OnSelectAiTeammate;
             @SelectAiTeammate.performed -= instance.OnSelectAiTeammate;
             @SelectAiTeammate.canceled -= instance.OnSelectAiTeammate;
+            @SelectAiGroup.started -= instance.OnSelectAiGroup;
+            @SelectAiGroup.performed -= instance.OnSelectAiGroup;
+            @SelectAiGroup.canceled -= instance.OnSelectAiGroup;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -910,12 +1115,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnExecuteAllCommandsIndividual(InputAction.CallbackContext context);
-        void OnExecuteAllCommandsSync(InputAction.CallbackContext context);
+        void OnExecuteGoCode(InputAction.CallbackContext context);
+        void OnExecuteAllCommandsGroup(InputAction.CallbackContext context);
         void OnMoveCommand(InputAction.CallbackContext context);
         void OnEnterMapView(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);
         void OnSelectAiTeammate(InputAction.CallbackContext context);
+        void OnSelectAiGroup(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

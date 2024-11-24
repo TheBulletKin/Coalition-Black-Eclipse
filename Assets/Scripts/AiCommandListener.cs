@@ -5,30 +5,19 @@ public class AiCommandListener : MonoBehaviour
 {
 	private List<ICommand> commands = new List<ICommand>();
 	bool canRunNextCommand = true;
-	bool isSingleCommand;
-	bool isGroupCommand;
-	int teammatesFinishedCommands = 0;
-	[SerializeField] private List<AiCommandListener> aiGroup = new List<AiCommandListener>();
+	public int groupIndex;
+	public int commandsTotal;
 
+
+	private void Update()
+	{
+		commandsTotal = commands.Count;
+	}
 	public List<ICommand> GetCommands()
 	{
 		return commands;
-	}
-
-	public void AddToGroup(AiCommandListener teammateToAdd)
-	{
-		aiGroup.Add(teammateToAdd);
-	}
-
-	public void RunSyncedCommand()
-	{
-		teammatesFinishedCommands = 0;
-		isGroupCommand = true;
-		foreach (AiCommandListener teamMember in aiGroup)
-		{
-			teamMember.RunCommand(true);
-		}
-	}
+	}	
+	
 
 	public void AddCommand(ICommand command)
 	{
@@ -45,18 +34,26 @@ public class AiCommandListener : MonoBehaviour
 	/// Will iterate through all tasks this way.
 	/// To control whether only one or a certain number activates, will need to change the CommandComplete method or the RunCommand method to suit my needs.
 	/// </summary>
-	public void RunCommand(bool isSingleCommand)
+	public void RunCommand()
 	{
-		this.isSingleCommand = isSingleCommand;
-		if (commands.Count > 0)
+		
+		if (commands.Count > 0 && canRunNextCommand)
 		{
 			ICommand command = commands[0];
 
 			command.OnCommandCompleted += CommandCompleted;
+			Debug.Log("Starting command on " + gameObject.name);
 			command.Execute();
+			canRunNextCommand = false;
 		}
 	}
 
+	public void RunCommand(ICommand command)
+	{
+		command.OnCommandCompleted += CommandCompleted;
+		Debug.Log("Starting command on " + gameObject.name);
+		command.Execute();
+	}
 	
 
 	private void CommandCompleted(ICommand command)
@@ -65,24 +62,10 @@ public class AiCommandListener : MonoBehaviour
 		command.OnCommandCompleted -= CommandCompleted;
 		commands.Remove(command);
 
-		Debug.Log("Command completed");
+		Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
 		
-		if (isGroupCommand)
-		{
-			teammatesFinishedCommands += 1;
-			//If every teammate has finished, this will equal the ai group count + this entity
-			if (teammatesFinishedCommands == (aiGroup.Count + 1))
-			{
-				Debug.Log("All group members finished. Executing next from " + gameObject.name);
-				teammatesFinishedCommands = 0;
-				RunCommand(true);
-			}
-		} else if (isSingleCommand == false)
-		{
-			Debug.Log("Executing next task in sequence");
-			RunCommand(false);
-		}
-		
+		RunCommand();
+
 
 	}
 
