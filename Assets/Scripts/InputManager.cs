@@ -53,13 +53,13 @@ public class InputManager : MonoBehaviour
 	public event Action OnCrouchPressed;
 	public event Action OnCrouchReleased;
 	public event Action OnInteractPressed;
-	public event Action OnExecutePressed;
 	public event Action OnMapViewEnterPressed;
 	public event Action OnMapViewExitPressed;
 	public event Action OnCommandCreatePressed;
 	public event Action OnQueueCommandPressed;
 	public event Action<int> OnTeammateSelectPressed;
 	public event Action<int> OnAiExecuteCommandPressed;
+	public event Action OnAiExecuteTasksInSyncPressed;
 
 	private void Awake()
 	{
@@ -131,9 +131,6 @@ public class InputManager : MonoBehaviour
 		//Interact pressed
 		controls.FPS.Interact.performed += OnInteractPerformed;
 
-		//Execute command pressed
-		controls.FPS.ExecuteCommand.performed += OnExecutePerformed;
-
 		//Map change key pressed
 		controls.FPS.EnterMapView.performed += OnMapViewEnterPerformed;
 
@@ -144,7 +141,10 @@ public class InputManager : MonoBehaviour
 		controls.FPS.SelectAiTeammate.performed += OnSelectAiTeammatePerformed;
 
 		//Executing commands with `,1,2,3 etc
-		controls.FPS.ExecuteCommand.performed += OnAiExecuteCommandPerformed;
+		controls.FPS.ExecuteAllCommandsIndividual.performed += ExecuteIndividualAiCommands;
+
+		//Executing group commands with Shift + `,1,2,3 etc
+		controls.FPS.ExecuteAllCommandsSync.performed += ExecuteSyncedAiCommands;
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -164,9 +164,6 @@ public class InputManager : MonoBehaviour
 		//Interact pressed
 		controls.FPS.Interact.performed -= OnInteractPerformed;
 
-		//Execute command pressed
-		controls.FPS.ExecuteCommand.performed -= OnExecutePerformed;
-
 		//Map change key pressed
 		controls.FPS.EnterMapView.performed -= OnMapViewEnterPerformed;
 
@@ -176,8 +173,12 @@ public class InputManager : MonoBehaviour
 		//Selecting teammates to assign commands with F1, F2 etc.
 		controls.FPS.SelectAiTeammate.performed -= OnSelectAiTeammatePerformed;
 
-		//Executing commands with `,1,2,3 etc
-		controls.FPS.ExecuteCommand.performed -= OnAiExecuteCommandPerformed;
+		//Executing individual commands with `,1,2,3 etc
+		controls.FPS.ExecuteAllCommandsIndividual.performed -= ExecuteIndividualAiCommands;
+
+		controls.FPS.ExecuteAllCommandsSync.performed -= ExecuteSyncedAiCommands;
+
+		
 	}
 
 	
@@ -189,9 +190,6 @@ public class InputManager : MonoBehaviour
 
 		//Create command key pressed on map
 		controls.MapView.CreateCommand.performed += OnCommandCreatePerformed;
-
-		//On execute command pressed
-		controls.MapView.ExecuteCommand.performed += OnExecutePerformed;
 	}
 
 	
@@ -203,12 +201,33 @@ public class InputManager : MonoBehaviour
 
 		//Create command key pressed on map
 		controls.MapView.CreateCommand.performed -= OnCommandCreatePerformed;
-
-		//On execute command pressed
-		controls.MapView.ExecuteCommand.performed -= OnExecutePerformed;
 	}
 
-	private void OnAiExecuteCommandPerformed(InputAction.CallbackContext context)
+
+	private void ExecuteSyncedAiCommands(InputAction.CallbackContext context)
+	{
+		Debug.Log("Synced pressed");
+		switch (context.control.name)
+		{
+			case "backquote":
+				OnAiExecuteTasksInSyncPressed?.Invoke();
+				break;
+			case "1":
+				OnAiExecuteTasksInSyncPressed?.Invoke();
+				break;
+			case "2":
+				OnAiExecuteTasksInSyncPressed?.Invoke();
+				break;
+			case "3":
+				OnAiExecuteTasksInSyncPressed?.Invoke();
+				break;
+			default:
+				break;
+		}
+	}
+
+
+	private void ExecuteIndividualAiCommands(InputAction.CallbackContext context)
 	{
 		switch (context.control.name)
 		{
@@ -260,10 +279,7 @@ public class InputManager : MonoBehaviour
 		OnCommandCreatePressed?.Invoke();
 	}
 
-	private void OnExecutePerformed(InputAction.CallbackContext context)
-	{
-		OnExecutePressed?.Invoke();
-	}
+
 
 	private void OnSprintStarted(InputAction.CallbackContext context)
 	{

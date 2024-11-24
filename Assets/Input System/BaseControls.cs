@@ -82,9 +82,18 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ExecuteCommand"",
+                    ""name"": ""ExecuteAllCommandsIndividual"",
                     ""type"": ""Button"",
                     ""id"": ""0eece59a-5c7b-4d32-a3e1-8c1767e543e3"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ExecuteAllCommandsSync"",
+                    ""type"": ""Button"",
+                    ""id"": ""2e1331ba-3df1-4510-939d-19a98abb653f"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -240,23 +249,23 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""82975b46-e45d-453e-94b8-6c8c304173f4"",
-                    ""path"": ""<Keyboard>/1"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""ExecuteCommand"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""68199d2b-3830-47d3-8e3c-3b9644b8b4ef"",
                     ""path"": ""<Keyboard>/backquote"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteCommand"",
+                    ""action"": ""ExecuteAllCommandsIndividual"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""82975b46-e45d-453e-94b8-6c8c304173f4"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsIndividual"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -267,7 +276,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""ExecuteCommand"",
+                    ""action"": ""ExecuteAllCommandsIndividual"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -369,6 +378,105 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""SelectAiTeammate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""ccb1d832-beba-425f-9278-573457cd3a9f"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""a90ca145-09fd-4070-83a2-3011d1a27830"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""615c9dcf-3ff7-4718-aad4-40d0d20879d4"",
+                    ""path"": ""<Keyboard>/backquote"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""9ae1d4df-f644-4b1f-ad6e-2f848525eaf9"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""cc94a393-00af-4a66-8948-da65c27b76b1"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""f072ad12-ee18-4c53-a487-c9050dd7f081"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""One Modifier"",
+                    ""id"": ""1dea154b-b4f3-4af1-89ad-612e075475f4"",
+                    ""path"": ""OneModifier"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""modifier"",
+                    ""id"": ""988a67e5-0831-49d5-94f7-eb7ef02ff835"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""binding"",
+                    ""id"": ""f7c81a9e-96ee-4bef-a3cf-adc77bbdef6a"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ExecuteAllCommandsSync"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
                 }
             ]
         },
@@ -515,7 +623,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_Jump = m_FPS.FindAction("Jump", throwIfNotFound: true);
         m_FPS_Crouch = m_FPS.FindAction("Crouch", throwIfNotFound: true);
         m_FPS_Interact = m_FPS.FindAction("Interact", throwIfNotFound: true);
-        m_FPS_ExecuteCommand = m_FPS.FindAction("ExecuteCommand", throwIfNotFound: true);
+        m_FPS_ExecuteAllCommandsIndividual = m_FPS.FindAction("ExecuteAllCommandsIndividual", throwIfNotFound: true);
+        m_FPS_ExecuteAllCommandsSync = m_FPS.FindAction("ExecuteAllCommandsSync", throwIfNotFound: true);
         m_FPS_MoveCommand = m_FPS.FindAction("MoveCommand", throwIfNotFound: true);
         m_FPS_EnterMapView = m_FPS.FindAction("Enter Map View", throwIfNotFound: true);
         m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
@@ -599,7 +708,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_Jump;
     private readonly InputAction m_FPS_Crouch;
     private readonly InputAction m_FPS_Interact;
-    private readonly InputAction m_FPS_ExecuteCommand;
+    private readonly InputAction m_FPS_ExecuteAllCommandsIndividual;
+    private readonly InputAction m_FPS_ExecuteAllCommandsSync;
     private readonly InputAction m_FPS_MoveCommand;
     private readonly InputAction m_FPS_EnterMapView;
     private readonly InputAction m_FPS_QueueCommand;
@@ -614,7 +724,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_FPS_Jump;
         public InputAction @Crouch => m_Wrapper.m_FPS_Crouch;
         public InputAction @Interact => m_Wrapper.m_FPS_Interact;
-        public InputAction @ExecuteCommand => m_Wrapper.m_FPS_ExecuteCommand;
+        public InputAction @ExecuteAllCommandsIndividual => m_Wrapper.m_FPS_ExecuteAllCommandsIndividual;
+        public InputAction @ExecuteAllCommandsSync => m_Wrapper.m_FPS_ExecuteAllCommandsSync;
         public InputAction @MoveCommand => m_Wrapper.m_FPS_MoveCommand;
         public InputAction @EnterMapView => m_Wrapper.m_FPS_EnterMapView;
         public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
@@ -646,9 +757,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
-            @ExecuteCommand.started += instance.OnExecuteCommand;
-            @ExecuteCommand.performed += instance.OnExecuteCommand;
-            @ExecuteCommand.canceled += instance.OnExecuteCommand;
+            @ExecuteAllCommandsIndividual.started += instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsIndividual.performed += instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsIndividual.canceled += instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsSync.started += instance.OnExecuteAllCommandsSync;
+            @ExecuteAllCommandsSync.performed += instance.OnExecuteAllCommandsSync;
+            @ExecuteAllCommandsSync.canceled += instance.OnExecuteAllCommandsSync;
             @MoveCommand.started += instance.OnMoveCommand;
             @MoveCommand.performed += instance.OnMoveCommand;
             @MoveCommand.canceled += instance.OnMoveCommand;
@@ -683,9 +797,12 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
-            @ExecuteCommand.started -= instance.OnExecuteCommand;
-            @ExecuteCommand.performed -= instance.OnExecuteCommand;
-            @ExecuteCommand.canceled -= instance.OnExecuteCommand;
+            @ExecuteAllCommandsIndividual.started -= instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsIndividual.performed -= instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsIndividual.canceled -= instance.OnExecuteAllCommandsIndividual;
+            @ExecuteAllCommandsSync.started -= instance.OnExecuteAllCommandsSync;
+            @ExecuteAllCommandsSync.performed -= instance.OnExecuteAllCommandsSync;
+            @ExecuteAllCommandsSync.canceled -= instance.OnExecuteAllCommandsSync;
             @MoveCommand.started -= instance.OnMoveCommand;
             @MoveCommand.performed -= instance.OnMoveCommand;
             @MoveCommand.canceled -= instance.OnMoveCommand;
@@ -793,7 +910,8 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnExecuteCommand(InputAction.CallbackContext context);
+        void OnExecuteAllCommandsIndividual(InputAction.CallbackContext context);
+        void OnExecuteAllCommandsSync(InputAction.CallbackContext context);
         void OnMoveCommand(InputAction.CallbackContext context);
         void OnEnterMapView(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);

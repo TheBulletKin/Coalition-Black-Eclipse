@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+/// <summary>
+/// Class responsible for assigning commands to Ai teammates and telling them when to begin executing tasks and how.
+/// </summary>
 public class PlayerCommandIssuer : MonoBehaviour
 {
 	public List<AiCommandListener> aiTeammates;
@@ -13,34 +16,47 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	public CameraStates cameraState;
 
-	//A macro command is a series of sub commands.
-	public MacroCommand macroCommand;	
+		
 
 	private void Start()
 	{
-		InputManager.Instance.OnInteractPressed += SingleMoveCommand;
-		InputManager.Instance.OnExecutePressed += ExecuteMacroCommand;
+		InputManager.Instance.OnInteractPressed += SingleMoveCommand;		
 		//InputManager.Instance.OnCommandCreatePressed += QueueMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed += QueueMoveCommand;
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
-		InputManager.Instance.OnAiExecuteCommandPressed += AiExecuteTasks;
+		InputManager.Instance.OnAiExecuteCommandPressed += ExecuteInvidiualCommands;
+		InputManager.Instance.OnAiExecuteTasksInSyncPressed += ExecuteCommandsSynchronously;
 
 		//macroCommand = new MacroCommand();
 		//macroCommand.OnMacroCompleted += OnMacroCompleted;
+
+		//Set up the ai group, will be customisable later with more controls
+		//Go through each teammate
+		foreach (AiCommandListener teammate in aiTeammates)
+		{
+			//Add the other teammates aside from that one
+			foreach (AiCommandListener otherTeammate in aiTeammates)
+			{
+				if (otherTeammate != teammate)
+				{
+					teammate.AddToGroup(otherTeammate);
+				}
+			}
+		}
 	}
 
 	
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInteractPressed -= SingleMoveCommand;
-		InputManager.Instance.OnExecutePressed -= ExecuteMacroCommand;
+		InputManager.Instance.OnInteractPressed -= SingleMoveCommand;		
 		//InputManager.Instance.OnCommandCreatePressed -= QueueMoveCommand;
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed -= QueueMoveCommand;
 		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
-		InputManager.Instance.OnAiExecuteCommandPressed -= AiExecuteTasks;
+		InputManager.Instance.OnAiExecuteCommandPressed -= ExecuteInvidiualCommands;
+		InputManager.Instance.OnAiExecuteTasksInSyncPressed -= ExecuteCommandsSynchronously;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -72,19 +88,35 @@ public class PlayerCommandIssuer : MonoBehaviour
 		return Vector3.zero;
 	}
 
-	private void AiExecuteTasks(int AiIndex)
+	private void ExecuteInvidiualCommands(int AiIndex)
 	{
 		if (AiIndex == -1)
 		{
 			foreach (AiCommandListener entity in aiTeammates)
 			{
-				entity.RunCommand();
+				entity.RunCommand(false);
 			}
 		}
 		else if (AiIndex < aiTeammates.Count) 
 		{
-			aiTeammates[AiIndex].RunCommand();
+			aiTeammates[AiIndex].RunCommand(false);
 		}
+	}
+
+	private void ExecuteCommandsSynchronously()
+	{
+		/* Need to tell each Ai when the other finishes
+		 * Set up an ai group.
+		 * For now will be really simple, will figure it out as I come up with more control options and designs
+		 * Make it so that everyone is in a group, so one listener holds the others
+		 * Hold how many AIs there are as an int. That's just .Count
+		 * Run the method on each group member
+		 */
+
+		//Each ai team member has an ai group attached to them.
+		//The RunSyncedCommand method will start running the commands on all ai in that teammate's group
+		//Don't like how this works
+		aiTeammates[0].RunSyncedCommand();
 	}
 
 	private void ChangeCurrentTeammate(int teammateIndex)
@@ -127,31 +159,12 @@ public class PlayerCommandIssuer : MonoBehaviour
 		
 	}
 
-	/* I want each Ai to have a list of tasks they have been assigned, done so through teammate selection
-	 * Can perform them asynchrnously or synchronously. That is, performing their tasks at the same time, or performing their own commands at their own pace.
-	 * (can decide on variants of this later on )
-	 * So start by adding tasks to the list and running them by themselves
-	 */
+	
 
 	
 
 
-	/// <summary>
-	/// Ran when the user presses the 'execute' keybind
-	/// </summary>
-	public void ExecuteMacroCommand()
-	{
-		//macroCommand.Execute();
-	}
-
-	/// <summary>
-	/// Ran when the internal macro keybind finishes its tasks
-	/// </summary>
-	private void OnMacroCompleted()
-	{
-		macroCommand.OnMacroCompleted -= OnMacroCompleted;
-		Debug.Log("Macro command completed");
-	}
+	
 
 	/// <summary>
 	/// Used to instantly perform a command. Will be reintroduced later
