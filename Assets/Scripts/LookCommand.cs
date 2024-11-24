@@ -14,9 +14,10 @@ public class LookCommand : ICommand
 	private Transform aiTransform;
 	private Vector3 targetPosition;
 	private NavMeshAgent navAgent;
-	//Want to change this later so it isn't the command controlling this
-	
+
+	//Want to change this later so it isn't the command controlling this	
 	private float lookRotationDuration = 1f;
+	private float lookRotationSpeed = 0.01f;
 
 	public Coroutine currentCoroutine;
 
@@ -45,8 +46,10 @@ public class LookCommand : ICommand
 	{
 		Vector3 lookDirection = (targetPosition - aiTransform.position).normalized;
 		Quaternion startRotation = aiTransform.rotation;
-		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);	
-		
+		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+
+		//Scale duration based on size of angle
+		lookRotationDuration = Quaternion.Angle(startRotation, targetRotation) * lookRotationSpeed;
 
 		float elapsedTime = 0f;		
 		
