@@ -8,7 +8,7 @@ public class InputManager : MonoBehaviour
 	/* In order to access user inputs, read from this class.
 	 * Add button states here and have this as a level of abstraction, using the new input system.
 	 */
-	
+
 
 	private BaseControls controls;
 
@@ -32,7 +32,7 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	//Private
+
 	private Vector2 lookAxis;
 	private static Vector2 moveAxis;
 
@@ -46,23 +46,26 @@ public class InputManager : MonoBehaviour
 	/// </summary>
 	public Vector2 MoveAxis => moveAxis;
 
+	//Command Creation
+	public event Action<CommandType, bool> OnCommandCreatePressed;	
+	//Teammate and Group selection
+	public event Action<int> OnTeammateSelectPressed;
+	public event Action<int> OnAiGroupSelectedPressed;
+	//Go codes
+	public event Action<int> OnGoCodePressed;
+	//Movement
 	public event Action OnSprintPressed;
 	public event Action OnSprintReleased;
 	public event Action OnJumpPressed;
 	public event Action OnJumpReleased;
 	public event Action OnCrouchPressed;
 	public event Action OnCrouchReleased;
-	public event Action OnInteractPressed;
+	//Map toggles
 	public event Action OnMapViewEnterPressed;
 	public event Action OnMapViewExitPressed;
-	public event Action OnCommandCreatePressed;
-	public event Action OnQueueCommandPressed;
-	public event Action<int> OnTeammateSelectPressed;	
-	public event Action<int> OnAiGroupSelectedPressed;
-	public event Action OnGoCodePressed;
-	public event Action OnLookCommandInstantPressed;
-	public event Action OnLookCommandQueuePressed;
-	public event Action OnInstantMovePressed;
+	//Interaction
+	public event Action OnInteractPressed;	
+	
 
 	private void Awake()
 	{
@@ -81,8 +84,7 @@ public class InputManager : MonoBehaviour
 	{
 		controls.FPS.Enable();
 		SubscribeFPSInputMaps();
-
-	}	
+	}
 
 	private void OnDestroy()
 	{
@@ -118,140 +120,136 @@ public class InputManager : MonoBehaviour
 	}
 
 	public void SubscribeFPSInputMaps()
-	{
-		//Sprint started and cancelled
-		controls.FPS.Sprint.started += OnSprintStarted;
-		controls.FPS.Sprint.canceled += OnSprintCanceled;
+	{	
 
-		//Jump started and cancelled
-		controls.FPS.Jump.started += OnJumpStarted;
-		controls.FPS.Jump.canceled += OnJumpCanceled;
+		//Command Creation
+		controls.FPS.InstantCommand.performed += InstantCommandPerformed;
+		controls.FPS.QueueCommand.performed += QueueCommandPerformed;
 
-		//Crouch started and cancelled
-		controls.FPS.Crouch.started += OnCrouchStarted;
-		controls.FPS.Crouch.canceled += OnCrouchCanceled;
+		//Teammate and Group selection
+		controls.FPS.SelectAiTeammate.performed += SelectAiTeammatePerformed;
+		controls.FPS.SelectAiGroup.performed += SelectAiGroupPerformed;
+		//Go codes
+		controls.FPS.ExecuteGoCode.performed += ActivateGoCodePerformed;
+		//Movement
+		controls.FPS.Sprint.started += SprintStarted;
+		controls.FPS.Sprint.canceled += SprintCancelled;
+		controls.FPS.Jump.started += JumpStarted;
+		controls.FPS.Jump.canceled += JumpCancelled;
+		controls.FPS.Crouch.started += CrouchStarted;
+		controls.FPS.Crouch.canceled += CrouchCancelled;
 
-		//Interact pressed
-		controls.FPS.Interact.performed += OnInteractPerformed;
+		//Map toggles
+		controls.FPS.EnterMapView.performed += EnterMapViewPerformed;
 
-		//Map change key pressed
-		controls.FPS.EnterMapView.performed += OnMapViewEnterPerformed;
+		//Interaction
+		controls.FPS.Interact.performed += InteractPerformed;
 
-		//Queue command key pressed
-		controls.FPS.QueueCommand.performed += OnQueueCommandPerformed;
-
-		//Selecting teammates to assign commands with F1, F2 etc.
-		controls.FPS.SelectAiTeammate.performed += SelectAiTeammate;
-
-		//Activting currently selected team / groups commands
-		controls.FPS.ExecuteGoCode.performed += ActivateGoCode;		
-
-		controls.FPS.SelectAiGroup.performed += SelectAiGroup;
-
-		controls.FPS.InstantLookCommand.performed += InstantLook;
-
-		controls.FPS.QueueLookCommand.performed += QueueLook;
-
-		controls.FPS.InstantMoveCommand.performed += InstantMove;
 	}
-
-	
 
 	public void UnsubscribeFPSInputMaps()
 	{
-		//Sprint started and cancelled
-		controls.FPS.Sprint.started -= OnSprintStarted;
-		controls.FPS.Sprint.canceled -= OnSprintCanceled;
+		//Command Creation
+		controls.FPS.InstantCommand.performed -= InstantCommandPerformed;
+		controls.FPS.QueueCommand.performed -= QueueCommandPerformed;
 
-		//Jump started and cancelled
-		controls.FPS.Jump.started -= OnJumpStarted;
-		controls.FPS.Jump.canceled -= OnJumpCanceled;
+		//Teammate and Group selection
+		controls.FPS.SelectAiTeammate.performed -= SelectAiTeammatePerformed;
+		controls.FPS.SelectAiGroup.performed -= SelectAiGroupPerformed;
+		//Go codes
+		controls.FPS.ExecuteGoCode.performed -= ActivateGoCodePerformed;
+		//Movement
+		controls.FPS.Sprint.started -= SprintStarted;
+		controls.FPS.Sprint.canceled -= SprintCancelled;
+		controls.FPS.Jump.started -= JumpStarted;
+		controls.FPS.Jump.canceled -= JumpCancelled;
+		controls.FPS.Crouch.started -= CrouchStarted;
+		controls.FPS.Crouch.canceled -= CrouchCancelled;
 
-		//Crouch started and cancelled
-		controls.FPS.Crouch.started -= OnCrouchStarted;
-		controls.FPS.Crouch.canceled -= OnCrouchCanceled;
+		//Map toggles
+		controls.FPS.EnterMapView.performed -= EnterMapViewPerformed;
 
-		//Interact pressed
-		controls.FPS.Interact.performed -= OnInteractPerformed;
-
-		//Map change key pressed
-		controls.FPS.EnterMapView.performed -= OnMapViewEnterPerformed;
-
-		//Queue command key pressed
-		controls.FPS.QueueCommand.performed -= OnQueueCommandPerformed;
-
-		//Selecting teammates to assign commands with F1, F2 etc.
-		controls.FPS.SelectAiTeammate.performed -= SelectAiTeammate;
-
-		//Executing individual commands with `,1,2,3 etc
-		controls.FPS.ExecuteGoCode.performed -= ActivateGoCode;
-		
-
-		controls.FPS.SelectAiGroup.performed -= SelectAiGroup;
-
-		controls.FPS.InstantLookCommand.performed -= InstantLook;
-
-		controls.FPS.QueueLookCommand.performed -= QueueLook;
-
-		controls.FPS.InstantMoveCommand.performed -= InstantMove;
+		//Interaction
+		controls.FPS.Interact.performed -= InteractPerformed;
 	}
-
-	
-
 
 	public void SubscribeTopDownInputMaps()
 	{
 		//Map change key pressed
-		controls.MapView.ExitMap.performed += OnMapViewExitPerformed;
+		controls.MapView.ExitMap.performed += OnMapViewExitPerformed;		
+		
+		//Command Creation
+		controls.MapView.InstantCommand.performed += InstantCommandPerformed;
+		controls.MapView.QueueCommand.performed += QueueCommandPerformed;
 
-		//Create command key pressed on map
-		controls.MapView.CreateCommand.performed += OnCommandCreatePerformed;
+		//Teammate and Group selection
+		controls.MapView.SelectAiTeammate.performed += SelectAiTeammatePerformed;
+		controls.MapView.SelectAiGroup.performed += SelectAiGroupPerformed;
+		//Go codes
+		controls.MapView.ExecuteGoCode.performed += ActivateGoCodePerformed;
+		
 	}
 
-	
 
 	public void UnsubscribeTopDownInputMaps()
 	{
 		//Map change key pressed
 		controls.MapView.ExitMap.performed -= OnMapViewExitPerformed;
 
-		//Create command key pressed on map
-		controls.MapView.CreateCommand.performed -= OnCommandCreatePerformed;
+		//Command Creation
+		controls.MapView.InstantCommand.performed -= InstantCommandPerformed;
+		controls.MapView.QueueCommand.performed -= QueueCommandPerformed;
+
+		//Teammate and Group selection
+		controls.MapView.SelectAiTeammate.performed -= SelectAiTeammatePerformed;
+		controls.MapView.SelectAiGroup.performed -= SelectAiGroupPerformed;
+		//Go codes
+		controls.MapView.ExecuteGoCode.performed -= ActivateGoCodePerformed;
 	}
 
-	private void InstantMove(InputAction.CallbackContext context)
+	//----- Command creation
+	private void InstantCommandPerformed(InputAction.CallbackContext context)
 	{
-		OnInstantMovePressed?.Invoke();
-	}
-	private void InstantLook(InputAction.CallbackContext context)
-	{
-		OnLookCommandInstantPressed?.Invoke();
+		OnCommandCreatePressed?.Invoke(ParseCommandType(context), false);		
 	}
 
-	private void QueueLook(InputAction.CallbackContext context)
+	private void QueueCommandPerformed(InputAction.CallbackContext context)
 	{
-		OnLookCommandQueuePressed?.Invoke();
+		OnCommandCreatePressed?.Invoke(ParseCommandType(context), true);		
 	}
 
-	private void SelectAiGroup(InputAction.CallbackContext context)
+	private CommandType ParseCommandType(InputAction.CallbackContext context)
 	{
-		
+		switch (context.control.name)
+		{
+			case "b":
+				return CommandType.MOVE;		
+			case "v":
+				return CommandType.LOOK;				
+			default:
+				return CommandType.NONE;				
+		}
+	}
+
+	//---- Teammate & Group selection
+	private void SelectAiGroupPerformed(InputAction.CallbackContext context)
+	{
 		switch (context.control.name)
 		{
 			case "backquote":
-				
+
 				OnAiGroupSelectedPressed?.Invoke(-1);
 				break;
 			case "f1":
-				
+
 				OnAiGroupSelectedPressed?.Invoke(0);
 				break;
 			case "f2":
-			
+
 				OnAiGroupSelectedPressed?.Invoke(1);
 				break;
 			case "f3":
-				
+
 				OnAiGroupSelectedPressed?.Invoke(2);
 				break;
 			default:
@@ -259,13 +257,7 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
-	private void ActivateGoCode(InputAction.CallbackContext context)
-	{
-		//Eventually change to tackle multiple go codes
-		OnGoCodePressed?.Invoke();
-	}	
-
-	private void SelectAiTeammate(InputAction.CallbackContext context)
+	private void SelectAiTeammatePerformed(InputAction.CallbackContext context)
 	{
 		switch (context.control.name.Substring(1, 1))
 		{
@@ -284,31 +276,56 @@ public class InputManager : MonoBehaviour
 			default:
 				break;
 		}
-		
+
 	}
-	private void OnQueueCommandPerformed(InputAction.CallbackContext context)
+
+	//---- Go Codes
+	private void ActivateGoCodePerformed(InputAction.CallbackContext context)
 	{
-		OnQueueCommandPressed?.Invoke();
+
+		switch (context.control.name)
+		{
+			case "1":
+				OnGoCodePressed?.Invoke(1);
+				break;			
+			default:
+				break;
+		}
 	}
 
-	private void OnCommandCreatePerformed(InputAction.CallbackContext context)
-	{
-		OnCommandCreatePressed?.Invoke();
-	}
 
-
-
-	private void OnSprintStarted(InputAction.CallbackContext context)
+	//---- Movement
+	private void SprintStarted(InputAction.CallbackContext context)
 	{
 		OnSprintPressed?.Invoke();
 	}
 
-	private void OnSprintCanceled(InputAction.CallbackContext context)
+	private void SprintCancelled(InputAction.CallbackContext context)
 	{
 		OnSprintReleased?.Invoke();
 	}
+	private void JumpStarted(InputAction.CallbackContext context)
+	{
+		OnJumpPressed?.Invoke();
+	}
 
-	private void OnMapViewEnterPerformed(InputAction.CallbackContext context)
+	private void JumpCancelled(InputAction.CallbackContext context)
+	{
+		OnJumpReleased?.Invoke();
+	}
+
+	private void CrouchStarted(InputAction.CallbackContext context)
+	{
+		OnCrouchPressed?.Invoke();
+	}
+
+	private void CrouchCancelled(InputAction.CallbackContext context)
+	{
+		OnCrouchReleased?.Invoke();
+	}
+
+	//---- Map Toggles
+	private void EnterMapViewPerformed(InputAction.CallbackContext context)
 	{
 		OnMapViewEnterPressed?.Invoke();
 	}
@@ -318,27 +335,9 @@ public class InputManager : MonoBehaviour
 		OnMapViewExitPressed?.Invoke();
 	}
 
-	private void OnJumpStarted(InputAction.CallbackContext context)
-	{
-		OnJumpPressed?.Invoke();
-	}
 
-	private void OnJumpCanceled(InputAction.CallbackContext context)
-	{
-		OnJumpReleased?.Invoke();
-	}
-
-	private void OnCrouchStarted(InputAction.CallbackContext context)
-	{
-		OnCrouchPressed?.Invoke();
-	}
-
-	private void OnCrouchCanceled(InputAction.CallbackContext context)
-	{
-		OnCrouchReleased?.Invoke();
-	}
-
-	private void OnInteractPerformed(InputAction.CallbackContext context)
+	//---- Interaction
+	private void InteractPerformed(InputAction.CallbackContext context)
 	{
 		OnInteractPressed?.Invoke();
 	}

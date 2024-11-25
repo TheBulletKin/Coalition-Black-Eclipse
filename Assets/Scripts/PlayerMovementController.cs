@@ -270,9 +270,6 @@ public class PlayerMovementController : MonoBehaviour
 				crouchInProgress = true;
 			}
 		}
-
-
-
 	}
 
 	private void ApplyFinalMovements()

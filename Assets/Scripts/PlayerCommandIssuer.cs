@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -18,26 +17,32 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	private void Start()
 	{
-		InputManager.Instance.OnInstantMovePressed += InstantMoveKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
-		InputManager.Instance.OnQueueCommandPressed += QueueKeyPressed;
+
+		//Command Creation
+		InputManager.Instance.OnCommandCreatePressed += CreateCommandPressed;
+
+		//Teammate and Group selection
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
-		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
 		InputManager.Instance.OnAiGroupSelectedPressed += ChangeCurrentGroup;
-		InputManager.Instance.OnLookCommandInstantPressed += InstantLook;
-		InputManager.Instance.OnLookCommandQueuePressed += QueueLook;
+		//Go codes
+		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
+
 	}
 
-	
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInstantMovePressed -= InstantMoveKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
-		InputManager.Instance.OnQueueCommandPressed -= QueueKeyPressed;
+
+		//Command Creation
+		InputManager.Instance.OnCommandCreatePressed -= CreateCommandPressed;
+
+		//Teammate and Group selection
 		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
-		InputManager.Instance.OnGoCodePressed -= ExecuteCommands;
 		InputManager.Instance.OnAiGroupSelectedPressed -= ChangeCurrentGroup;
+		//Go codes
+		InputManager.Instance.OnGoCodePressed -= ExecuteCommands;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -83,8 +88,9 @@ public class PlayerCommandIssuer : MonoBehaviour
 		Debug.Log("Teammate selected: " + teammateIndex);
 	}
 
-	private void ExecuteCommands()
+	private void ExecuteCommands(int goCode)
 	{
+		//goCode unused for the moment
 		if (currentGroupOrTeammateIndex == -1)
 		{
 			foreach (AiCommandListener teammate in aiTeammates)
@@ -110,45 +116,10 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 
 
-	private ICommand CreateLookCommand(AiCommandListener targetAi, Vector3 targetPosition)
-	{
-		ICommand newLookCommand = new LookCommand(targetAi.GetComponent<AIMovement>(), targetPosition);
-		return newLookCommand;
-	}
+	//---- Command Creation	
 
-	private void InstantLook()
+	public void CreateCommandPressed(CommandType commandType, bool shouldQueue)
 	{
-		QueueOrPerformLookCommand(false);
-	}
-
-	private void QueueLook()
-	{
-		QueueOrPerformLookCommand(true);
-	}
-
-	/// <summary>
-	/// Try to place a command where the crosshair is, currently just move commands
-	/// </summary>
-	private ICommand CreateMoveCommand(AiCommandListener targetAi, Vector3 targetPosition)
-	{
-		ICommand newMoveCommand = new MoveCommand(targetAi.GetComponent<AIMovement>(), targetPosition);
-		return newMoveCommand;
-	}	
-
-	public void QueueKeyPressed()
-	{
-		QueueOrPerformMoveCommand(true);
-	}
-
-	public void InstantMoveKeyPressed()
-	{
-		QueueOrPerformMoveCommand(false);
-	}
-
-	public void QueueOrPerformLookCommand(bool shouldQueue)
-	{
-		Vector3 targetPosition = TryGetSelectedPosition();
-
 		if (selectingGroup)
 		{
 			foreach (AiCommandListener teammate in aiTeammates)
@@ -157,11 +128,11 @@ public class PlayerCommandIssuer : MonoBehaviour
 				{
 					if (shouldQueue)
 					{
-						teammate.AddCommand(CreateLookCommand(teammate, targetPosition));
+						teammate.AddCommand(CreateCommandFromType(teammate, commandType));
 					}
 					else
 					{
-						teammate.RunCommand(CreateLookCommand(teammate, targetPosition));
+						teammate.RunCommand(CreateCommandFromType(teammate, commandType));
 					}
 
 				}
@@ -171,48 +142,33 @@ public class PlayerCommandIssuer : MonoBehaviour
 		{
 			if (shouldQueue)
 			{
-				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateLookCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType));
 			}
 			else
 			{
-				aiTeammates[currentGroupOrTeammateIndex].RunCommand(CreateLookCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
+				aiTeammates[currentGroupOrTeammateIndex].RunCommand(CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType));
 			}
 		}
 	}
-	
 
-	public void QueueOrPerformMoveCommand(bool shouldQueue)
+	private ICommand CreateCommandFromType(AiCommandListener entity, CommandType commandType)
 	{
-		Vector3 targetPosition = TryGetSelectedPosition();
-
-		if (selectingGroup)
+		ICommand newCommand = null;
+		Vector3 targetPosition = Vector3.zero;
+		switch (commandType)
 		{
-			foreach (AiCommandListener teammate in aiTeammates)
-			{
-				if (teammate.groupIndex == currentGroupOrTeammateIndex)
-				{
-					if (shouldQueue)
-					{
-						teammate.AddCommand(CreateMoveCommand(teammate, targetPosition));
-					}
-					else
-					{
-						teammate.RunCommand(CreateMoveCommand(teammate, targetPosition));
-					}
-
-				}
-			}
-		}
-		else
-		{
-			if (shouldQueue)
-			{
-				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateMoveCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
-			}
-			else
-			{
-				aiTeammates[currentGroupOrTeammateIndex].RunCommand(CreateMoveCommand(aiTeammates[currentGroupOrTeammateIndex], targetPosition));
-			}
+			case CommandType.MOVE:
+				targetPosition = TryGetSelectedPosition();
+				newCommand = new MoveCommand(entity.GetComponent<AIMovement>(), targetPosition);
+				return newCommand;
+			case CommandType.LOOK:
+				targetPosition = TryGetSelectedPosition();
+				newCommand = new LookCommand(entity.GetComponent<AIMovement>(), targetPosition);
+				return newCommand;
+			case CommandType.NONE:
+				return null;
+			default:
+				return null;
 		}
 	}
 
