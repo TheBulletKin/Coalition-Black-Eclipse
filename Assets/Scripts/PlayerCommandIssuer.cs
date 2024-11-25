@@ -18,7 +18,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	private void Start()
 	{
-		InputManager.Instance.OnInteractPressed += InstantKeyPressed;		
+		InputManager.Instance.OnInstantMovePressed += InstantMoveKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed += QueueKeyPressed;
 		InputManager.Instance.OnTeammateSelectPressed += ChangeCurrentTeammate;
@@ -32,7 +32,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInteractPressed -= InstantKeyPressed;		
+		InputManager.Instance.OnInstantMovePressed -= InstantMoveKeyPressed;		
 		CameraStateSwitcher.OnCameraStateChanged -= UpdateCameraState;
 		InputManager.Instance.OnQueueCommandPressed -= QueueKeyPressed;
 		InputManager.Instance.OnTeammateSelectPressed -= ChangeCurrentTeammate;
@@ -140,7 +140,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		QueueOrPerformMoveCommand(true);
 	}
 
-	public void InstantKeyPressed()
+	public void InstantMoveKeyPressed()
 	{
 		QueueOrPerformMoveCommand(false);
 	}

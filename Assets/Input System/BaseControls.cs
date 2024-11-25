@@ -161,6 +161,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""InstantMoveCommand"",
+                    ""type"": ""Button"",
+                    ""id"": ""8b5977f0-c951-439f-ad74-798e6e00bb7e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -332,7 +341,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": ""binding"",
                     ""id"": ""630bf634-bab7-45de-bfbc-a1c92dceebb2"",
-                    ""path"": ""<Keyboard>/f"",
+                    ""path"": ""<Keyboard>/b"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -735,6 +744,17 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""QueueLookCommand"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b6f9f353-5610-4444-8e85-3d8bda2557da"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""InstantMoveCommand"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -890,6 +910,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_SelectAiGroup = m_FPS.FindAction("SelectAiGroup", throwIfNotFound: true);
         m_FPS_InstantLookCommand = m_FPS.FindAction("InstantLookCommand", throwIfNotFound: true);
         m_FPS_QueueLookCommand = m_FPS.FindAction("QueueLookCommand", throwIfNotFound: true);
+        m_FPS_InstantMoveCommand = m_FPS.FindAction("InstantMoveCommand", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -978,6 +999,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_SelectAiGroup;
     private readonly InputAction m_FPS_InstantLookCommand;
     private readonly InputAction m_FPS_QueueLookCommand;
+    private readonly InputAction m_FPS_InstantMoveCommand;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -997,6 +1019,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @SelectAiGroup => m_Wrapper.m_FPS_SelectAiGroup;
         public InputAction @InstantLookCommand => m_Wrapper.m_FPS_InstantLookCommand;
         public InputAction @QueueLookCommand => m_Wrapper.m_FPS_QueueLookCommand;
+        public InputAction @InstantMoveCommand => m_Wrapper.m_FPS_InstantMoveCommand;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1051,6 +1074,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueLookCommand.started += instance.OnQueueLookCommand;
             @QueueLookCommand.performed += instance.OnQueueLookCommand;
             @QueueLookCommand.canceled += instance.OnQueueLookCommand;
+            @InstantMoveCommand.started += instance.OnInstantMoveCommand;
+            @InstantMoveCommand.performed += instance.OnInstantMoveCommand;
+            @InstantMoveCommand.canceled += instance.OnInstantMoveCommand;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -1100,6 +1126,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueLookCommand.started -= instance.OnQueueLookCommand;
             @QueueLookCommand.performed -= instance.OnQueueLookCommand;
             @QueueLookCommand.canceled -= instance.OnQueueLookCommand;
+            @InstantMoveCommand.started -= instance.OnInstantMoveCommand;
+            @InstantMoveCommand.performed -= instance.OnInstantMoveCommand;
+            @InstantMoveCommand.canceled -= instance.OnInstantMoveCommand;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -1204,6 +1233,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnSelectAiGroup(InputAction.CallbackContext context);
         void OnInstantLookCommand(InputAction.CallbackContext context);
         void OnQueueLookCommand(InputAction.CallbackContext context);
+        void OnInstantMoveCommand(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

@@ -139,6 +139,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "InstantMoveCommand",
+                    "type": "Button",
+                    "id": "8b5977f0-c951-439f-ad74-798e6e00bb7e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -310,7 +319,7 @@
                 {
                     "name": "binding",
                     "id": "630bf634-bab7-45de-bfbc-a1c92dceebb2",
-                    "path": "<Keyboard>/f",
+                    "path": "<Keyboard>/b",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -713,6 +722,17 @@
                     "action": "QueueLookCommand",
                     "isComposite": false,
                     "isPartOfComposite": true
+                },
+                {
+                    "name": "",
+                    "id": "b6f9f353-5610-4444-8e85-3d8bda2557da",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InstantMoveCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
                 }
             ]
         },

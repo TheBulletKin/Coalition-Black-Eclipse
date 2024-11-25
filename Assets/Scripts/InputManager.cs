@@ -62,6 +62,7 @@ public class InputManager : MonoBehaviour
 	public event Action OnGoCodePressed;
 	public event Action OnLookCommandInstantPressed;
 	public event Action OnLookCommandQueuePressed;
+	public event Action OnInstantMovePressed;
 
 	private void Awake()
 	{
@@ -150,6 +151,8 @@ public class InputManager : MonoBehaviour
 		controls.FPS.InstantLookCommand.performed += InstantLook;
 
 		controls.FPS.QueueLookCommand.performed += QueueLook;
+
+		controls.FPS.InstantMoveCommand.performed += InstantMove;
 	}
 
 	
@@ -189,6 +192,8 @@ public class InputManager : MonoBehaviour
 		controls.FPS.InstantLookCommand.performed -= InstantLook;
 
 		controls.FPS.QueueLookCommand.performed -= QueueLook;
+
+		controls.FPS.InstantMoveCommand.performed -= InstantMove;
 	}
 
 	
@@ -214,6 +219,10 @@ public class InputManager : MonoBehaviour
 		controls.MapView.CreateCommand.performed -= OnCommandCreatePerformed;
 	}
 
+	private void InstantMove(InputAction.CallbackContext context)
+	{
+		OnInstantMovePressed?.Invoke();
+	}
 	private void InstantLook(InputAction.CallbackContext context)
 	{
 		OnLookCommandInstantPressed?.Invoke();

@@ -10,7 +10,7 @@ public class PlayerInteraction : MonoBehaviour
 	private void Start()
 	{
 	
-		//InputManager.Instance.OnInteractPressed += TryInteract;
+		InputManager.Instance.OnInteractPressed += TryInteract;
 	}
 
 	private void Update()
@@ -20,7 +20,7 @@ public class PlayerInteraction : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		//InputManager.Instance.OnInteractPressed -= TryInteract;
+		InputManager.Instance.OnInteractPressed -= TryInteract;
 	}
 
 	private void TryInteract()
