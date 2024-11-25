@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviour
 
 	private void OnEnable()
 	{
-		controls.FPS.Enable();
+		controls.Enable();
 		SubscribeFPSInputMaps();
 	}
 
@@ -259,18 +259,21 @@ public class InputManager : MonoBehaviour
 
 	private void SelectAiTeammatePerformed(InputAction.CallbackContext context)
 	{
-		switch (context.control.name.Substring(1, 1))
+		switch (context.control.name)
 		{
-			case "1":
+			case "backquote":
+				OnTeammateSelectPressed?.Invoke(-1);
+				break;
+			case "f1":
 				OnTeammateSelectPressed?.Invoke(0);
 				break;
-			case "2":
+			case "f2":
 				OnTeammateSelectPressed?.Invoke(1);
 				break;
-			case "3":
+			case "f3":
 				OnTeammateSelectPressed?.Invoke(2);
 				break;
-			case "4":
+			case "f4":
 				OnTeammateSelectPressed?.Invoke(3);
 				break;
 			default:

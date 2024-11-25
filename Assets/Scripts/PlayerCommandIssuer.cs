@@ -91,6 +91,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	private void ExecuteCommands(int goCode)
 	{
 		//goCode unused for the moment
+		//Currently just executes commands for current teammate or all teammates in group
 		if (currentGroupOrTeammateIndex == -1)
 		{
 			foreach (AiCommandListener teammate in aiTeammates)

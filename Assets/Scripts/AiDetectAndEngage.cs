@@ -21,7 +21,12 @@ public class AiDetectAndEngage : MonoBehaviour
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
 
-	[SerializeField] private List<EnemyEntityHealth> enemiesSeen;
+	[SerializeField] private List<EnemyEntityHealth> enemiesSeen;	
+
+	private void Start()
+	{
+		
+	}
 
 	private void Update()
 	{
@@ -190,6 +195,7 @@ public class AiDetectAndEngage : MonoBehaviour
 
 	void OnDrawGizmosSelected()
 	{
+
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireSphere(transform.position, detectionRange);
 
@@ -198,7 +204,10 @@ public class AiDetectAndEngage : MonoBehaviour
 		Quaternion leftRayRotation = Quaternion.AngleAxis(-detectionAngle / 2, Vector3.up);
 		Quaternion rightRayRotation = Quaternion.AngleAxis(detectionAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
-		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
+		Gizmos.DrawRay(transform.position, rightRayRotation * forward);	
+
+
+		
 	}
 
 	private void OnEnemyDeath(EnemyEntityHealth deadEntity)
