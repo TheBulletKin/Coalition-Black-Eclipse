@@ -29,10 +29,7 @@ public class CameraStateSwitcher : MonoBehaviour
 		movementController.canMove = false;
 		cameraController.canLookAround = false;
 
-		InputManager.Instance.OnMapViewEnterPressed -= SwitchToMap;
-		InputManager.Instance.OnMapViewExitPressed += SwitchToPlayer;
-		InputManager.Instance.DisableFPSMaps();
-		InputManager.Instance.EnableMapViewMaps();
+		
 		
 		//Change position
 		Camera.main.transform.position = topDownCameraPos.transform.position;
@@ -46,31 +43,46 @@ public class CameraStateSwitcher : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
+		camera.orthographic = true;
+		camera.orthographicSize = 23f;
+
 		OnCameraStateChanged?.Invoke(CameraStates.TOPDOWN);
+
+		InputManager.Instance.OnMapViewEnterPressed -= SwitchToMap;
+		InputManager.Instance.OnMapViewExitPressed += SwitchToPlayer;
+		InputManager.Instance.DisableFPSMaps();
+		InputManager.Instance.EnableMapViewMaps();
 	}
 
 	private void SwitchToPlayer()
 	{
 		//Change position
-		Camera.main.transform.position = playerCameraPos.transform.position;
+		Camera camera = Camera.main;
+		camera.transform.position = playerCameraPos.transform.position;
 
 		//Return to previous rotation
-		Camera.main.transform.rotation = prevCameraAngle;
+		camera.transform.rotation = prevCameraAngle;
 
-		InputManager.Instance.OnMapViewEnterPressed += SwitchToMap;
-		InputManager.Instance.OnMapViewExitPressed -= SwitchToPlayer;
-		InputManager.Instance.EnableFPSMaps();
-		InputManager.Instance.DisableMapViewMaps();
+		
 
 		//Lock cursor again
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
+
+		camera.orthographic = false;
+		
+
 
 		//Toggle movement
 		movementController.canMove = true;
 		cameraController.canLookAround = true;
 
 		OnCameraStateChanged?.Invoke(CameraStates.FPS);
+
+		InputManager.Instance.OnMapViewEnterPressed += SwitchToMap;
+		InputManager.Instance.OnMapViewExitPressed -= SwitchToPlayer;
+		InputManager.Instance.EnableFPSMaps();
+		InputManager.Instance.DisableMapViewMaps();
 	}
 
 	private void OnDestroy()

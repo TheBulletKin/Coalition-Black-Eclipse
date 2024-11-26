@@ -88,7 +88,6 @@ public class InputManager : MonoBehaviour
 
 	private void OnDestroy()
 	{
-
 		UnsubscribeFPSInputMaps();
 		UnsubscribeTopDownInputMaps();
 
@@ -97,8 +96,9 @@ public class InputManager : MonoBehaviour
 
 	public void DisableFPSMaps()
 	{
-		controls.FPS.Disable();
 		UnsubscribeFPSInputMaps();
+		controls.FPS.Disable();
+		
 	}
 
 	public void DisableMapViewMaps()

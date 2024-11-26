@@ -7,7 +7,7 @@ public class ObjectiveTracker : MonoBehaviour
 {
    public static ObjectiveTracker Instance { get; private set; }
 
-	[SerializeField] private Objective objective;
+	[SerializeField] private List<Objective> objectives;
 	[SerializeField] private bool objectiveComplete;
 
 	private void Awake()
@@ -23,10 +23,27 @@ public class ObjectiveTracker : MonoBehaviour
 		}
 	}
 
+	private void Start()
+	{
+		Objective[] objectivesFound = FindObjectsByType<Objective>(FindObjectsSortMode.None);
+		foreach (Objective objective in objectivesFound)
+		{
+			objectives.Add(objective);
+		}
+	}
+
 	public void CompleteObjective(Objective objective)
 	{
-		objectiveComplete = true;
-		GameManager.Instance.FinishGame(EndReason.OBJECTIVE_COMPLETE);
+		objectives.Remove(objective);
+	}
+
+	private void CheckObjectivesComplete()
+	{
+		if (objectives.Count <= 0)
+		{
+			objectiveComplete = true;
+			GameManager.Instance.FinishGame(EndReason.OBJECTIVE_COMPLETE);
+		}
 	}
 
 	public void CompleteExtraction()

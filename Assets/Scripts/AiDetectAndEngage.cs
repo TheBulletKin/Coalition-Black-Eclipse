@@ -44,26 +44,35 @@ public class AiDetectAndEngage : MonoBehaviour
 			detectionScanTimer -= Time.deltaTime;
 		}
 
-		if (fireTimer <= 0F)
+		if (enemiesSeen.Count >= 1)
 		{
-			//Able to fire
-			EnemyEntityHealth entityToTarget = GetClosestEnemySeen();
-			if (entityToTarget != null)
+			if (fireTimer <= 0F)
 			{
-				EngageTarget(entityToTarget.transform);
+				//Able to fire
+				EnemyEntityHealth entityToTarget = GetClosestEnemySeen();
+				if (entityToTarget != null)
+				{
+					EngageTarget(entityToTarget.transform);
+				}
+
+
+				fireTimer = fireCooldown;
 			}
-
-
-			fireTimer = fireCooldown;
+			else
+			{
+				//Waiting to fire
+				fireTimer -= Time.deltaTime;
+			}
 		}
 		else
 		{
-			//Waiting to fire
-			fireTimer -= Time.deltaTime;
+			fireTimer = fireCooldown;
 		}
+		
 
 
 	}
+
 
 	private EnemyEntityHealth GetClosestEnemySeen()
 	{
