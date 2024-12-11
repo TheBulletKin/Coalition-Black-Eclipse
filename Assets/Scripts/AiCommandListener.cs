@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class AiCommandListener : MonoBehaviour
 {
@@ -8,13 +9,27 @@ public class AiCommandListener : MonoBehaviour
 	public int groupIndex;
 	public int commandsTotal;
 	public ICommand currentExecutingCommand;
-	public Color waypointColour;	
+	public Color waypointColour;
+	public LineRenderer waypointPath;
+	[SerializeField]
+	private float pathUpdateSpeed = 0.25f;
+	private float pathUpdateTimer = 0.0f;
+	private NavMeshTriangulation triangulation;
 
 	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
 
+	private void Awake()
+	{
+		triangulation = NavMesh.CalculateTriangulation();
+
+	}
+
 	private void Start()
 	{
-		
+		Color waypointColourWithAlpha = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 1.0f);
+		waypointPath.startColor = waypointColourWithAlpha;
+		waypointPath.endColor = waypointColourWithAlpha;
+
 	}
 	private void Update()
 	{
@@ -23,8 +38,8 @@ public class AiCommandListener : MonoBehaviour
 	public List<ICommand> GetCommands()
 	{
 		return commands;
-	}	
-	
+	}
+
 
 	public void AddCommand(ICommand command)
 	{
@@ -43,7 +58,7 @@ public class AiCommandListener : MonoBehaviour
 	/// </summary>
 	public void RunCommand()
 	{
-		
+
 		if (commands.Count > 0 && canRunNextCommand)
 		{
 			ICommand command = commands[0];
@@ -67,22 +82,28 @@ public class AiCommandListener : MonoBehaviour
 		Debug.Log("Starting command on " + gameObject.name);
 		command.Execute(this);
 		currentExecutingCommand = command;
-		
+
 	}
-	
+
 
 	private void CommandCompleted(ICommand command)
 	{
 		canRunNextCommand = true;
 		command.OnCommandCompleted -= CommandCompleted;
-		
-		Destroy(commandToWaypoint[command]);
-		commandToWaypoint.Remove(command);
+
+		if (commandToWaypoint.ContainsKey(command))
+		{
+			Destroy(commandToWaypoint[command]);
+			commandToWaypoint.Remove(command);
+		}
+
 
 		currentExecutingCommand = null;
 		commands.Remove(command);
 		Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
-		
+
+		DrawWaypointPaths();
+
 		RunCommand();
 
 
@@ -95,6 +116,7 @@ public class AiCommandListener : MonoBehaviour
 			if (!commandToWaypoint.ContainsKey(command))
 			{
 				commandToWaypoint.Add(command, marker);
+				DrawWaypointPaths();
 				break;
 			}
 		}
@@ -103,6 +125,66 @@ public class AiCommandListener : MonoBehaviour
 	public Color GetTeammateColor()
 	{
 		return waypointColour;
+	}
+
+	private void DrawWaypointPaths()
+	{
+		NavMeshPath path = new NavMeshPath();
+
+		Vector3 startPosition = gameObject.transform.position;
+
+		//For now it will recalculate the whole path. Make it more efficient later		
+		waypointPath.positionCount = 0;
+		int currentPositionIndex = 0;
+
+		bool drawFromPlayer = true;
+
+		foreach (ICommand command in commands)
+		{
+
+			if (drawFromPlayer)
+			{
+
+
+				DrawPaths(startPosition, ref path, commandToWaypoint[command].transform.position, ref currentPositionIndex);
+
+				startPosition = commandToWaypoint[command].transform.position;
+				drawFromPlayer = false;
+
+
+			}
+			else
+			{
+				DrawPaths(startPosition, ref path, commandToWaypoint[command].transform.position, ref currentPositionIndex);
+				startPosition = commandToWaypoint[command].transform.position;
+			}
+
+
+
+
+
+		}
+
+
+	}
+
+	private void DrawPaths(Vector3 startPosition, ref NavMeshPath path, Vector3 targetPosition, ref int currentPositionIndex)
+	{
+		if (NavMesh.CalculatePath(startPosition, targetPosition, NavMesh.AllAreas, path))
+		{
+			int pathLength = path.corners.Length;
+			waypointPath.positionCount += pathLength;
+
+			for (int i = 0; i < path.corners.Length; i++)
+			{
+				waypointPath.SetPosition(currentPositionIndex++, path.corners[i] + Vector3.up * 0.2f);
+			}
+
+		}
+		else
+		{
+			Debug.LogError(gameObject.name + " was unable to calculate path for line renderer");
+		}
 	}
 
 
