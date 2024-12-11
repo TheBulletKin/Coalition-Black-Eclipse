@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine;
@@ -8,13 +9,15 @@ using UnityEngine.InputSystem;
 /// </summary>
 public class PlayerCommandIssuer : MonoBehaviour
 {
-	public List<AiCommandListener> aiTeammates;
+	[SerializeField] private List<AiCommandListener> aiTeammates;
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
 	public int currentGroupOrTeammateIndex;
 	public bool selectingGroup;
 	public GameObject moveMarker;
 	public GameObject lookMarker;
+
+	public Action<int, bool> OnTeammateOrGroupChanged;
 
 
 
@@ -84,6 +87,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	{
 		currentGroupOrTeammateIndex = groupIndex;
 		selectingGroup = true;
+		OnTeammateOrGroupChanged?.Invoke(groupIndex, true);
 		Debug.Log("Group selected: " + groupIndex);
 	}
 
@@ -91,6 +95,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 	{
 		currentGroupOrTeammateIndex = teammateIndex;
 		selectingGroup = false;
+		OnTeammateOrGroupChanged?.Invoke(teammateIndex, false);
 		Debug.Log("Teammate selected: " + teammateIndex);
 	}
 
@@ -225,6 +230,13 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 
 	}
+
+	public List<AiCommandListener> GetTeammates()
+	{
+		return aiTeammates;
+	}
+
+	
 
 
 	private void UpdateCameraState(CameraStates state)

@@ -9,7 +9,7 @@ public class AiCommandListener : MonoBehaviour
 	public int groupIndex;
 	public int commandsTotal;
 	public ICommand currentExecutingCommand;
-	public Color waypointColour;
+	public Color teammateColour;
 	public LineRenderer moveWaypointLine;
 	public List<LineRenderer> lookWaypointLines;
 	[SerializeField]
@@ -31,9 +31,9 @@ public class AiCommandListener : MonoBehaviour
 
 	private void Start()
 	{
-		waypointColour = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 1.0f);
-		moveWaypointLine.startColor = waypointColour;
-		moveWaypointLine.endColor = waypointColour;
+		teammateColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 1.0f);
+		moveWaypointLine.startColor = teammateColour;
+		moveWaypointLine.endColor = teammateColour;
 
 	}
 	private void Update()
@@ -152,7 +152,7 @@ public class AiCommandListener : MonoBehaviour
 					newLineRenderer.material = moveWaypointLine.material;
 
 					//Setting it manually, will need some kind of config to make this easier and editable in the inspector
-					Color newWaypointColour = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 0.5f);
+					Color newWaypointColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 0.5f);
 					newLineRenderer.startColor = newWaypointColour;
 					newLineRenderer.endColor = newWaypointColour;
 
@@ -175,7 +175,7 @@ public class AiCommandListener : MonoBehaviour
 
 	public Color GetTeammateColor()
 	{
-		return waypointColour;
+		return teammateColour;
 	}
 
 	private void DrawWaypointPaths()
