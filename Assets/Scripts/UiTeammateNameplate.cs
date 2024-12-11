@@ -9,4 +9,16 @@ public class UiTeammateNameplate : MonoBehaviour
 	public TextMeshProUGUI teamIndexText;
 	public Color teammateColour { set; private get; }
 	public Image background;
+
+	public void ToggleAsActiveTeammate(bool state)
+	{
+		if (state == true)
+		{
+			background.color = Color.yellow;
+		}
+		else
+		{
+			background.color = teammateColour;
+		}
+	}
 }

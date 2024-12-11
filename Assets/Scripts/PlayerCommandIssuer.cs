@@ -140,8 +140,9 @@ public class PlayerCommandIssuer : MonoBehaviour
 				{
 					if (shouldQueue)
 					{
-						teammate.AddCommand(CreateCommandFromType(teammate, commandType));
-						CreateCommandWaypoint(teammate, commandType);
+						ICommand newCommand = CreateCommandFromType(teammate, commandType);
+						teammate.AddCommand(newCommand);
+						CreateCommandWaypoint(newCommand, teammate, commandType);
 					}
 					else
 					{
@@ -155,8 +156,11 @@ public class PlayerCommandIssuer : MonoBehaviour
 		{
 			if (shouldQueue)
 			{
-				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType));
-				CreateCommandWaypoint(aiTeammates[currentGroupOrTeammateIndex], commandType);
+				ICommand newCommand = CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType);
+				
+				aiTeammates[currentGroupOrTeammateIndex].AddCommand(newCommand);				
+
+				CreateCommandWaypoint(newCommand, aiTeammates[currentGroupOrTeammateIndex], commandType);
 			}
 			else
 			{
@@ -165,6 +169,12 @@ public class PlayerCommandIssuer : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="entity">The ai the command is being assigned to</param>
+	/// <param name="commandType">Defines what command class to create</param>
+	/// <returns>Command class relating to commandType</returns>
 	private ICommand CreateCommandFromType(AiCommandListener entity, CommandType commandType)
 	{
 		ICommand newCommand = null;
@@ -186,7 +196,13 @@ public class PlayerCommandIssuer : MonoBehaviour
 		}
 	}
 
-	private void CreateCommandWaypoint(AiCommandListener teammate, CommandType commandType)
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="command">Command that the waypoint represents</param>
+	/// <param name="teammate">The ai the waypoint is being created for</param>
+	/// <param name="commandType">Determines which waypoint to instantiate</param>
+	private void CreateCommandWaypoint(ICommand command, AiCommandListener teammate, CommandType commandType)
 	{
 		Vector3 targetPosition = TryGetSelectedPosition();
 		targetPosition = new Vector3(targetPosition.x, targetPosition.y + 0.2f, targetPosition.z);
@@ -209,19 +225,18 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 		if (newWaypoint != null)
 		{
+			//Change the colour to match the teammate's colour
 			Renderer renderer = newWaypoint.GetComponent<Renderer>();
 			if (renderer != null)
 			{
 				MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
 
-
 				propertyBlock.SetColor("_BaseColor", teammate.GetTeammateColor());
-
 
 				renderer.SetPropertyBlock(propertyBlock);
 			}
 
-			teammate.AddWaypointMarker(newWaypoint);
+			teammate.AddWaypointMarker(command, newWaypoint);
 		}
 		else
 		{
@@ -235,9 +250,6 @@ public class PlayerCommandIssuer : MonoBehaviour
 	{
 		return aiTeammates;
 	}
-
-	
-
 
 	private void UpdateCameraState(CameraStates state)
 	{

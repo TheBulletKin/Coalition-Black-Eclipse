@@ -5,13 +5,14 @@ using UnityEngine;
 
 public class TeammateUiManager : MonoBehaviour
 {
-	public PlayerCommandIssuer player;
-	public Dictionary<AiCommandListener, UiTeammateCard> teammateToUiCard = new Dictionary<AiCommandListener, UiTeammateCard>();
-	public Dictionary<AiCommandListener, UiTeammateNameplate> teammateToUiTemplate = new Dictionary<AiCommandListener, UiTeammateNameplate>();
-	public GameObject teammateUiCardPrefab;
-	public GameObject teammateUiTemplatePrefab;
-	public RectTransform nameplatePanel;
-	public float nameplateHeightOffset = 2f;
+	[SerializeField] private PlayerCommandIssuer player;
+	private Dictionary<AiCommandListener, UiTeammateCard> teammateToUiCard = new Dictionary<AiCommandListener, UiTeammateCard>();
+	private Dictionary<AiCommandListener, UiTeammateNameplate> teammateToUiNameplate = new Dictionary<AiCommandListener, UiTeammateNameplate>();
+	[SerializeField] private GameObject teammateUiCardPrefab;
+	[SerializeField] private GameObject teammateUiTemplatePrefab;
+	[SerializeField] private RectTransform nameplatePanel;
+	[SerializeField] private RectTransform cardsContainer;
+	[SerializeField] private float nameplateHeightOffset = 2f;
 
 	private void Start()
 	{
@@ -20,19 +21,21 @@ public class TeammateUiManager : MonoBehaviour
 		{
 			foreach (AiCommandListener ai in aiTeammates)
 			{
-				GameObject newTeammateCardObject = Instantiate(teammateUiCardPrefab, gameObject.transform.position, gameObject.transform.rotation, gameObject.transform);
+				//Create the ui card game objects for all teammates present on player
+				GameObject newTeammateCardObject = Instantiate(teammateUiCardPrefab, cardsContainer.transform.position, cardsContainer.transform.rotation, cardsContainer);
 				UiTeammateCard teammateCard = newTeammateCardObject.GetComponent<UiTeammateCard>();
 				teammateCard.teammateColour = ai.teammateColour;
 				teammateCard.background.color = ai.teammateColour;
-				teammateCard.teamIndexText.text = aiTeammates.IndexOf(ai).ToString();
+				teammateCard.teamIndexText.text = (aiTeammates.IndexOf(ai) + 1).ToString();
 				teammateToUiCard.Add(ai, teammateCard);
 
+				//Create the ui nameplates that follow teammates
 				GameObject newTeammateNameplateObject = Instantiate(teammateUiTemplatePrefab, gameObject.transform.position, gameObject.transform.rotation, nameplatePanel);
 				UiTeammateNameplate teammateNameplate = newTeammateNameplateObject.GetComponent<UiTeammateNameplate>();
 				teammateNameplate.teammateColour = ai.teammateColour;
 				teammateNameplate.background.color = ai.teammateColour;
-				teammateNameplate.teamIndexText.text = aiTeammates.IndexOf(ai).ToString();
-				teammateToUiTemplate.Add(ai, teammateNameplate);
+				teammateNameplate.teamIndexText.text = (aiTeammates.IndexOf(ai) + 1).ToString();
+				teammateToUiNameplate.Add(ai, teammateNameplate);
 			}
 
 			player.OnTeammateOrGroupChanged += SwitchActiveCard;
@@ -44,38 +47,46 @@ public class TeammateUiManager : MonoBehaviour
 
 	}
 
+	/// <summary>
+	/// Disables all cards and enables the ui elements for teammates matching the index passed in
+	/// </summary>
+	/// <param name="teammateOrGroupIndex"></param>
+	/// <param name="isGroup"></param>
 	public void SwitchActiveCard(int teammateOrGroupIndex, bool isGroup)
 	{
 		foreach (KeyValuePair<AiCommandListener, UiTeammateCard> pair in teammateToUiCard)
 		{
+			//Disable all teammate cards and nameplates
 			pair.Value.ToggleAsActiveTeammate(false);
+			teammateToUiNameplate[pair.Key].ToggleAsActiveTeammate(false);
 
+			//If a group was selected
 			if (isGroup && pair.Key.groupIndex == teammateOrGroupIndex)
 			{
 				UiTeammateCard activeCard = pair.Value;
 				activeCard.ToggleAsActiveTeammate(true);
+
+				teammateToUiNameplate[pair.Key].ToggleAsActiveTeammate(true);
 			}
-		}
+			//If it's just an individual selected
+			else if (!isGroup && teammateOrGroupIndex == player.GetTeammates().IndexOf(pair.Key))
+			{
+				UiTeammateCard activeCard = pair.Value;
+				activeCard.ToggleAsActiveTeammate(true);
 
-		if (!isGroup)
-		{
-			UiTeammateCard activeCard = teammateToUiCard[player.GetTeammates()[teammateOrGroupIndex]];
-			activeCard.ToggleAsActiveTeammate(true);
-		}
-
-
-
+				teammateToUiNameplate[pair.Key].ToggleAsActiveTeammate(true);
+			}
+		}		
 	}
 
 	private void Update()
 	{
-
-		foreach (KeyValuePair<AiCommandListener, UiTeammateNameplate> pair in teammateToUiTemplate)
+		foreach (KeyValuePair<AiCommandListener, UiTeammateNameplate> pair in teammateToUiNameplate)
 		{
+			//For every ai unit in world space, convert to screen space and position the UI element on the player's Ui
 			Vector3 screenPosition = Camera.main.WorldToScreenPoint(pair.Key.transform.position + Vector3.up * nameplateHeightOffset);
 			screenPosition.x = Mathf.Clamp(screenPosition.x, 0, Screen.width);
 			screenPosition.y = Mathf.Clamp(screenPosition.y, 0, Screen.height);
-
 			
 			if (screenPosition.z < 0)
 			{
@@ -85,9 +96,7 @@ public class TeammateUiManager : MonoBehaviour
 			{
 				pair.Value.gameObject.SetActive(true);				
 				pair.Value.transform.position = screenPosition;
-			}
+			}			
 		}
-		
-
 	}
 }

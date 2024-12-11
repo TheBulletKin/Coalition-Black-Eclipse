@@ -7,26 +7,23 @@ public class AiCommandListener : MonoBehaviour
 	private List<ICommand> commands = new List<ICommand>();
 	bool canRunNextCommand = true;
 	public int groupIndex;
-	public int commandsTotal;
-	public ICommand currentExecutingCommand;
+	private int commandsTotal;
+	private ICommand currentExecutingCommand;
 	public Color teammateColour;
-	public LineRenderer moveWaypointLine;
-	public List<LineRenderer> lookWaypointLines;
-	[SerializeField]
-	private float pathUpdateSpeed = 0.25f;
-	[SerializeField]
+	[SerializeField] private LineRenderer moveWaypointLine;
+	[SerializeField] private List<LineRenderer> lookWaypointLines;
+	[SerializeField] private float pathUpdateSpeed = 0.25f;
 	private float pathUpdateTimer = 0.0f;
 	private NavMeshTriangulation triangulation;
 	[SerializeField] private GameObject lineRendererHolder;
-	public GameObject lineRendererPrefab;
-
+	[SerializeField] private GameObject lineRendererPrefab;
 
 	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
 	private Dictionary<ICommand, LineRenderer> commandToLineRenderer = new Dictionary<ICommand, LineRenderer>();
+	
 	private void Awake()
 	{
 		triangulation = NavMesh.CalculateTriangulation();
-
 	}
 
 	private void Start()
@@ -34,7 +31,6 @@ public class AiCommandListener : MonoBehaviour
 		teammateColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 1.0f);
 		moveWaypointLine.startColor = teammateColour;
 		moveWaypointLine.endColor = teammateColour;
-
 	}
 	private void Update()
 	{
@@ -49,11 +45,11 @@ public class AiCommandListener : MonoBehaviour
 			pathUpdateTimer += Time.deltaTime;
 		}
 	}
+
 	public List<ICommand> GetCommands()
 	{
 		return commands;
 	}
-
 
 	public void AddCommand(ICommand command)
 	{
@@ -72,7 +68,6 @@ public class AiCommandListener : MonoBehaviour
 	/// </summary>
 	public void RunCommand()
 	{
-
 		if (commands.Count > 0 && canRunNextCommand)
 		{
 			ICommand command = commands[0];
@@ -99,7 +94,10 @@ public class AiCommandListener : MonoBehaviour
 		command.Execute(this);
 	}
 
-
+	/// <summary>
+	/// Callback method that runs when the command finishes execution, called by the command itself
+	/// </summary>
+	/// <param name="command"></param>
 	private void CommandCompleted(ICommand command)
 	{
 		canRunNextCommand = true;
@@ -125,52 +123,35 @@ public class AiCommandListener : MonoBehaviour
 		DrawWaypointPaths();
 
 		RunCommand();
-
-
 	}
 
-	public void AddWaypointMarker(GameObject marker)
+	public void AddWaypointMarker(ICommand command, GameObject marker)
 	{
-		foreach (ICommand command in commands)
+		//Look commands require a line renderer separate to the others, so I create a new one here
+		if (command is LookCommand && !commandToLineRenderer.ContainsKey(command))
 		{
+			Quaternion newRotation = Quaternion.Euler(new Vector3(gameObject.transform.rotation.x + 90f, gameObject.transform.rotation.y, gameObject.transform.rotation.z));
+			GameObject newLineRendererObject = Instantiate(lineRendererPrefab, gameObject.transform.position, newRotation);
 
+			LineRenderer newLineRenderer = newLineRendererObject.AddComponent<LineRenderer>();
 
+			newLineRenderer.startWidth = moveWaypointLine.startWidth;
+			newLineRenderer.endWidth = moveWaypointLine.endWidth;
 
-			if (!commandToWaypoint.ContainsKey(command))
-			{
+			newLineRenderer.material = moveWaypointLine.material;
 
-				if (command is LookCommand && !commandToLineRenderer.ContainsKey(command))
-				{
-					Quaternion newRotation = Quaternion.Euler(new Vector3(gameObject.transform.rotation.x + 90f, gameObject.transform.rotation.y, gameObject.transform.rotation.z));
-					GameObject newLineRendererObject = Instantiate(lineRendererPrefab, gameObject.transform.position, newRotation);
+			//Setting it manually, will need some kind of config to make this easier and editable in the inspector
+			Color newWaypointColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 0.5f);
+			newLineRenderer.startColor = newWaypointColour;
+			newLineRenderer.endColor = newWaypointColour;
 
-					LineRenderer newLineRenderer = newLineRendererObject.AddComponent<LineRenderer>();
+			newLineRenderer.alignment = moveWaypointLine.alignment;
 
-					newLineRenderer.startWidth = moveWaypointLine.startWidth;
-					newLineRenderer.endWidth = moveWaypointLine.endWidth;
-
-					newLineRenderer.material = moveWaypointLine.material;
-
-					//Setting it manually, will need some kind of config to make this easier and editable in the inspector
-					Color newWaypointColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 0.5f);
-					newLineRenderer.startColor = newWaypointColour;
-					newLineRenderer.endColor = newWaypointColour;
-
-					newLineRenderer.alignment = moveWaypointLine.alignment;
-
-
-					commandToLineRenderer.Add(command, newLineRenderer);
-				}
-				commandToWaypoint.Add(command, marker);
-
-				DrawWaypointPaths();
-				break;
-			}
-
-
-
-
+			commandToLineRenderer.Add(command, newLineRenderer);
 		}
+		commandToWaypoint.Add(command, marker);
+
+		DrawWaypointPaths();
 	}
 
 	public Color GetTeammateColor()
@@ -178,6 +159,9 @@ public class AiCommandListener : MonoBehaviour
 		return teammateColour;
 	}
 
+	/// <summary>
+	/// Clear and redraw all waypoint paths from start to finish
+	/// </summary>
 	private void DrawWaypointPaths()
 	{
 		NavMeshPath path = new NavMeshPath();
@@ -190,15 +174,12 @@ public class AiCommandListener : MonoBehaviour
 
 		bool firstLineDraw = true;
 
-
 		foreach (ICommand command in commands)
 		{
-
 			if (firstLineDraw)
 			{
 				startPosition = gameObject.transform.position;
 			}
-
 
 			if (command is MoveCommand)
 			{
@@ -215,15 +196,7 @@ public class AiCommandListener : MonoBehaviour
 				lookLineRenderer.SetPosition(1, commandToWaypoint[command].transform.position + Vector3.up * 0.2f);
 
 			}
-
-
-
-
-
-
 		}
-
-
 	}
 
 	private void DrawPaths(Vector3 startPosition, ref NavMeshPath path, Vector3 targetPosition, ref int currentPositionIndex)
@@ -237,7 +210,6 @@ public class AiCommandListener : MonoBehaviour
 			{
 				moveWaypointLine.SetPosition(currentPositionIndex++, path.corners[i] + Vector3.up * 0.2f);
 			}
-
 		}
 		else
 		{
