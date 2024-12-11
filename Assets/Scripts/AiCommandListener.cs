@@ -14,10 +14,12 @@ public class AiCommandListener : MonoBehaviour
 	public List<LineRenderer> lookWaypointLines;
 	[SerializeField]
 	private float pathUpdateSpeed = 0.25f;
+	[SerializeField]
 	private float pathUpdateTimer = 0.0f;
 	private NavMeshTriangulation triangulation;
 	[SerializeField] private GameObject lineRendererHolder;
 	public GameObject lineRendererPrefab;
+
 
 	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
 	private Dictionary<ICommand, LineRenderer> commandToLineRenderer = new Dictionary<ICommand, LineRenderer>();
@@ -37,6 +39,15 @@ public class AiCommandListener : MonoBehaviour
 	private void Update()
 	{
 		commandsTotal = commands.Count;
+
+		if (pathUpdateTimer >= pathUpdateSpeed)
+		{
+			DrawWaypointPaths();
+			pathUpdateTimer = 0.0f;
+		} else
+		{
+			pathUpdateTimer += Time.deltaTime;
+		}
 	}
 	public List<ICommand> GetCommands()
 	{
@@ -68,9 +79,9 @@ public class AiCommandListener : MonoBehaviour
 
 			command.OnCommandCompleted += CommandCompleted;
 			Debug.Log("Starting command on " + gameObject.name);
-			command.Execute(this);
 			canRunNextCommand = false;
 			currentExecutingCommand = command;
+			command.Execute(this);
 		}
 	}
 
@@ -83,9 +94,9 @@ public class AiCommandListener : MonoBehaviour
 
 		command.OnCommandCompleted += CommandCompleted;
 		Debug.Log("Starting command on " + gameObject.name);
-		command.Execute(this);
-		currentExecutingCommand = command;
 
+		currentExecutingCommand = command;
+		command.Execute(this);
 	}
 
 

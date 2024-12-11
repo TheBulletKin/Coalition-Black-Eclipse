@@ -314,6 +314,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a699d701eb6544459e1994e9d973353, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotationAndLookConfig:
+    lookRotationSpeed: 180
+  lookTarget: {x: 0, y: 0, z: 0}
+  isPieingTarget: 0
+  lookRotationDuration: 1
 --- !u!114 &8230875769949104345
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,7 +348,7 @@ MonoBehaviour:
   waypointColour: {r: 0.19815768, g: 0.4472573, b: 0.6886792, a: 0}
   moveWaypointLine: {fileID: 3953967171312708828}
   lookWaypointLines: []
-  pathUpdateSpeed: 0.25
+  pathUpdateSpeed: 0.1
   lineRendererHolder: {fileID: 228728430789779112}
   lineRendererPrefab: {fileID: 4919917507299410338, guid: fc31cd9640e2e3e4799c7164247a662b,
     type: 3}

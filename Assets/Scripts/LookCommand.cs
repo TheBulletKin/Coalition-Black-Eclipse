@@ -15,6 +15,8 @@ public class LookCommand : ICommand
 	private Vector3 targetPosition;
 	private NavMeshAgent navAgent;
 
+	
+
 	//Want to change this later so it isn't the command controlling this	
 	private float lookRotationDuration = 1f;
 	private float lookRotationSpeed = 0.01f;
@@ -33,47 +35,30 @@ public class LookCommand : ICommand
 		this.aiTransform = aiEntity.transform;
 		this.targetPosition = targetPosition;
 		this.navAgent = aiEntity.GetComponent<NavMeshAgent>();
+		this.aiEntity = aiEntity;
 		
 
 	}
 
 	public void Execute(MonoBehaviour executor)
-	{
-		currentCoroutine = executor.StartCoroutine(FullLookAt());
-	}
+	{	
 	
-	public IEnumerator FullLookAt()
-	{
-		Vector3 lookDirection = (targetPosition - aiTransform.position).normalized;
-		Quaternion startRotation = aiTransform.rotation;
-		Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
-
-		//Scale duration based on size of angle
-		lookRotationDuration = Quaternion.Angle(startRotation, targetRotation) * lookRotationSpeed;
-
-		float elapsedTime = 0f;		
 		
-		while (elapsedTime < lookRotationDuration)
-		{
-
-			float progress = elapsedTime / lookRotationDuration;
-
-
-			aiTransform.rotation = Quaternion.Slerp(startRotation, targetRotation, progress);
-			aiTransform.rotation = Quaternion.Euler(0, aiTransform.rotation.eulerAngles.y, 0);
-
-			elapsedTime += Time.deltaTime;
-
-			yield return null;
-		}
-
-		aiTransform.rotation = Quaternion.Euler(0, targetRotation.eulerAngles.y, 0);
+		aiEntity.SetLooking(targetPosition);
 		OnCommandCompleted?.Invoke(this);
 
 	}
 
+	
+
+	
+
+	
+
 	public void Cancel(MonoBehaviour executor)
 	{
+		aiEntity.SetLooking(false);
+		navAgent.updateRotation = true;
 		executor.StopCoroutine(currentCoroutine);
 	}
 
