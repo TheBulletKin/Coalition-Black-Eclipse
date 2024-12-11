@@ -10,14 +10,17 @@ public class AiCommandListener : MonoBehaviour
 	public int commandsTotal;
 	public ICommand currentExecutingCommand;
 	public Color waypointColour;
-	public LineRenderer waypointPath;
+	public LineRenderer moveWaypointLine;
+	public List<LineRenderer> lookWaypointLines;
 	[SerializeField]
 	private float pathUpdateSpeed = 0.25f;
 	private float pathUpdateTimer = 0.0f;
 	private NavMeshTriangulation triangulation;
+	[SerializeField] private GameObject lineRendererHolder;
+	public GameObject lineRendererPrefab;
 
 	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
-
+	private Dictionary<ICommand, LineRenderer> commandToLineRenderer = new Dictionary<ICommand, LineRenderer>();
 	private void Awake()
 	{
 		triangulation = NavMesh.CalculateTriangulation();
@@ -26,9 +29,9 @@ public class AiCommandListener : MonoBehaviour
 
 	private void Start()
 	{
-		Color waypointColourWithAlpha = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 1.0f);
-		waypointPath.startColor = waypointColourWithAlpha;
-		waypointPath.endColor = waypointColourWithAlpha;
+		waypointColour = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 1.0f);
+		moveWaypointLine.startColor = waypointColour;
+		moveWaypointLine.endColor = waypointColour;
 
 	}
 	private void Update()
@@ -97,6 +100,12 @@ public class AiCommandListener : MonoBehaviour
 			commandToWaypoint.Remove(command);
 		}
 
+		if (commandToLineRenderer.ContainsKey(command))
+		{
+			Destroy(commandToLineRenderer[command].gameObject);
+			commandToLineRenderer.Remove(command);
+		}
+
 
 		currentExecutingCommand = null;
 		commands.Remove(command);
@@ -113,12 +122,43 @@ public class AiCommandListener : MonoBehaviour
 	{
 		foreach (ICommand command in commands)
 		{
+
+
+
 			if (!commandToWaypoint.ContainsKey(command))
 			{
+
+				if (command is LookCommand && !commandToLineRenderer.ContainsKey(command))
+				{
+					Quaternion newRotation = Quaternion.Euler(new Vector3(gameObject.transform.rotation.x + 90f, gameObject.transform.rotation.y, gameObject.transform.rotation.z));
+					GameObject newLineRendererObject = Instantiate(lineRendererPrefab, gameObject.transform.position, newRotation);
+
+					LineRenderer newLineRenderer = newLineRendererObject.AddComponent<LineRenderer>();
+
+					newLineRenderer.startWidth = moveWaypointLine.startWidth;
+					newLineRenderer.endWidth = moveWaypointLine.endWidth;
+
+					newLineRenderer.material = moveWaypointLine.material;
+
+					//Setting it manually, will need some kind of config to make this easier and editable in the inspector
+					Color newWaypointColour = new Color(waypointColour.r, waypointColour.g, waypointColour.b, 0.5f);
+					newLineRenderer.startColor = newWaypointColour;
+					newLineRenderer.endColor = newWaypointColour;
+
+					newLineRenderer.alignment = moveWaypointLine.alignment;
+
+
+					commandToLineRenderer.Add(command, newLineRenderer);
+				}
 				commandToWaypoint.Add(command, marker);
+
 				DrawWaypointPaths();
 				break;
 			}
+
+
+
+
 		}
 	}
 
@@ -131,33 +171,40 @@ public class AiCommandListener : MonoBehaviour
 	{
 		NavMeshPath path = new NavMeshPath();
 
-		Vector3 startPosition = gameObject.transform.position;
+		Vector3 startPosition = Vector3.zero;
 
 		//For now it will recalculate the whole path. Make it more efficient later		
-		waypointPath.positionCount = 0;
+		moveWaypointLine.positionCount = 0;
 		int currentPositionIndex = 0;
 
-		bool drawFromPlayer = true;
+		bool firstLineDraw = true;
+
 
 		foreach (ICommand command in commands)
 		{
 
-			if (drawFromPlayer)
+			if (firstLineDraw)
 			{
+				startPosition = gameObject.transform.position;
+			}
 
 
+			if (command is MoveCommand)
+			{
 				DrawPaths(startPosition, ref path, commandToWaypoint[command].transform.position, ref currentPositionIndex);
 
 				startPosition = commandToWaypoint[command].transform.position;
-				drawFromPlayer = false;
-
+				firstLineDraw = false;
 
 			}
-			else
+			else if (command is LookCommand)
 			{
-				DrawPaths(startPosition, ref path, commandToWaypoint[command].transform.position, ref currentPositionIndex);
-				startPosition = commandToWaypoint[command].transform.position;
+				LineRenderer lookLineRenderer = commandToLineRenderer[command];
+				lookLineRenderer.SetPosition(0, startPosition + Vector3.up * 0.2f);
+				lookLineRenderer.SetPosition(1, commandToWaypoint[command].transform.position + Vector3.up * 0.2f);
+
 			}
+
 
 
 
@@ -173,11 +220,11 @@ public class AiCommandListener : MonoBehaviour
 		if (NavMesh.CalculatePath(startPosition, targetPosition, NavMesh.AllAreas, path))
 		{
 			int pathLength = path.corners.Length;
-			waypointPath.positionCount += pathLength;
+			moveWaypointLine.positionCount += pathLength;
 
 			for (int i = 0; i < path.corners.Length; i++)
 			{
-				waypointPath.SetPosition(currentPositionIndex++, path.corners[i] + Vector3.up * 0.2f);
+				moveWaypointLine.SetPosition(currentPositionIndex++, path.corners[i] + Vector3.up * 0.2f);
 			}
 
 		}

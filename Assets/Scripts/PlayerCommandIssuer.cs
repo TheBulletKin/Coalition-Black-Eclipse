@@ -13,9 +13,10 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public LayerMask interactableLayer;
 	public int currentGroupOrTeammateIndex;
 	public bool selectingGroup;
-	public GameObject waypointMarker;
-	
-	
+	public GameObject moveMarker;
+	public GameObject lookMarker;
+
+
 
 	public CameraStates cameraState;
 
@@ -31,7 +32,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		InputManager.Instance.OnAiGroupSelectedPressed += ChangeCurrentGroup;
 		//Go codes
 		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
-		
+
 
 	}
 
@@ -135,7 +136,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 					if (shouldQueue)
 					{
 						teammate.AddCommand(CreateCommandFromType(teammate, commandType));
-						CreateCommandWaypoint(teammate);
+						CreateCommandWaypoint(teammate, commandType);
 					}
 					else
 					{
@@ -150,7 +151,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 			if (shouldQueue)
 			{
 				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType));
-				CreateCommandWaypoint(aiTeammates[currentGroupOrTeammateIndex]);
+				CreateCommandWaypoint(aiTeammates[currentGroupOrTeammateIndex], commandType);
 			}
 			else
 			{
@@ -180,26 +181,49 @@ public class PlayerCommandIssuer : MonoBehaviour
 		}
 	}
 
-	private void CreateCommandWaypoint(AiCommandListener teammate)
+	private void CreateCommandWaypoint(AiCommandListener teammate, CommandType commandType)
 	{
 		Vector3 targetPosition = TryGetSelectedPosition();
 		targetPosition = new Vector3(targetPosition.x, targetPosition.y + 0.2f, targetPosition.z);
 
-		GameObject newWaypoint = Instantiate(waypointMarker, targetPosition, Quaternion.identity);
+		GameObject newWaypoint = null;
 
-		Renderer renderer = newWaypoint.GetComponent<Renderer>();
-		if (renderer != null)
+		switch (commandType)
 		{
-			MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
-
-			
-			propertyBlock.SetColor("_BaseColor", teammate.GetTeammateColor());
-
-			
-			renderer.SetPropertyBlock(propertyBlock);
+			case CommandType.MOVE:
+				newWaypoint = Instantiate(moveMarker, targetPosition, Quaternion.identity);
+				break;
+			case CommandType.LOOK:
+				newWaypoint = Instantiate(lookMarker, targetPosition, Quaternion.identity);
+				break;
+			case CommandType.NONE:
+				break;
+			default:
+				break;
 		}
 
-		teammate.AddWaypointMarker(newWaypoint);		
+		if (newWaypoint != null)
+		{
+			Renderer renderer = newWaypoint.GetComponent<Renderer>();
+			if (renderer != null)
+			{
+				MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
+
+				propertyBlock.SetColor("_BaseColor", teammate.GetTeammateColor());
+
+
+				renderer.SetPropertyBlock(propertyBlock);
+			}
+
+			teammate.AddWaypointMarker(newWaypoint);
+		}
+		else
+		{
+			Debug.LogError("Player could not create marker gameObject");
+		}
+
+
 	}
 
 

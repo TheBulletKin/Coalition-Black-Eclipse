@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 664214556944269200}
   - component: {fileID: 3953967171312708828}
   m_Layer: 0
-  m_Name: LineRenderer
+  m_Name: MoveLineRenderer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -341,8 +341,12 @@ MonoBehaviour:
   groupIndex: 1
   commandsTotal: 0
   waypointColour: {r: 0.19815768, g: 0.4472573, b: 0.6886792, a: 0}
-  waypointPath: {fileID: 3953967171312708828}
+  moveWaypointLine: {fileID: 3953967171312708828}
+  lookWaypointLines: []
   pathUpdateSpeed: 0.25
+  lineRendererHolder: {fileID: 228728430789779112}
+  lineRendererPrefab: {fileID: 4919917507299410338, guid: fc31cd9640e2e3e4799c7164247a662b,
+    type: 3}
 --- !u!114 &7714910408018181676
 MonoBehaviour:
   m_ObjectHideFlags: 0
