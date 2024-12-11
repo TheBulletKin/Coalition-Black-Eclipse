@@ -8,8 +8,14 @@ public class AiCommandListener : MonoBehaviour
 	public int groupIndex;
 	public int commandsTotal;
 	public ICommand currentExecutingCommand;
+	public Color waypointColour;	
 
+	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
 
+	private void Start()
+	{
+		
+	}
 	private void Update()
 	{
 		commandsTotal = commands.Count;
@@ -69,14 +75,34 @@ public class AiCommandListener : MonoBehaviour
 	{
 		canRunNextCommand = true;
 		command.OnCommandCompleted -= CommandCompleted;
-		commands.Remove(command);
-		currentExecutingCommand = null;
+		
+		Destroy(commandToWaypoint[command]);
+		commandToWaypoint.Remove(command);
 
+		currentExecutingCommand = null;
+		commands.Remove(command);
 		Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
 		
 		RunCommand();
 
 
+	}
+
+	public void AddWaypointMarker(GameObject marker)
+	{
+		foreach (ICommand command in commands)
+		{
+			if (!commandToWaypoint.ContainsKey(command))
+			{
+				commandToWaypoint.Add(command, marker);
+				break;
+			}
+		}
+	}
+
+	public Color GetTeammateColor()
+	{
+		return waypointColour;
 	}
 
 

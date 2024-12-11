@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,6 +13,9 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public LayerMask interactableLayer;
 	public int currentGroupOrTeammateIndex;
 	public bool selectingGroup;
+	public GameObject waypointMarker;
+	
+	
 
 	public CameraStates cameraState;
 
@@ -27,6 +31,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		InputManager.Instance.OnAiGroupSelectedPressed += ChangeCurrentGroup;
 		//Go codes
 		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
+		
 
 	}
 
@@ -130,6 +135,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 					if (shouldQueue)
 					{
 						teammate.AddCommand(CreateCommandFromType(teammate, commandType));
+						CreateCommandWaypoint(teammate);
 					}
 					else
 					{
@@ -144,6 +150,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 			if (shouldQueue)
 			{
 				aiTeammates[currentGroupOrTeammateIndex].AddCommand(CreateCommandFromType(aiTeammates[currentGroupOrTeammateIndex], commandType));
+				CreateCommandWaypoint(aiTeammates[currentGroupOrTeammateIndex]);
 			}
 			else
 			{
@@ -171,6 +178,28 @@ public class PlayerCommandIssuer : MonoBehaviour
 			default:
 				return null;
 		}
+	}
+
+	private void CreateCommandWaypoint(AiCommandListener teammate)
+	{
+		Vector3 targetPosition = TryGetSelectedPosition();
+		targetPosition = new Vector3(targetPosition.x, targetPosition.y + 0.2f, targetPosition.z);
+
+		GameObject newWaypoint = Instantiate(waypointMarker, targetPosition, Quaternion.identity);
+
+		Renderer renderer = newWaypoint.GetComponent<Renderer>();
+		if (renderer != null)
+		{
+			MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
+			
+			propertyBlock.SetColor("_BaseColor", teammate.GetTeammateColor());
+
+			
+			renderer.SetPropertyBlock(propertyBlock);
+		}
+
+		teammate.AddWaypointMarker(newWaypoint);		
 	}
 
 
