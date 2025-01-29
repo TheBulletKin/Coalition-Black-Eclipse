@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyEntityHealth : MonoBehaviour, IDamagable
+public class Health : MonoBehaviour, IDamagable
 {
 	[SerializeField] private int maxHealth = 100;
 	[SerializeField] private int currentHealth;
 
-	public event Action<EnemyEntityHealth> OnEnemyDeath;
+	public event Action<Health> OnEnemyDeath;
 
 	private void Start()
 	{

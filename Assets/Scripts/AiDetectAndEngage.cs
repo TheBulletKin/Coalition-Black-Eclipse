@@ -21,7 +21,7 @@ public class AiDetectAndEngage : MonoBehaviour
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
 
-	[SerializeField] private List<EnemyEntityHealth> enemiesSeen;	
+	[SerializeField] private List<Health> enemiesSeen;	
 
 	private void Start()
 	{
@@ -49,7 +49,7 @@ public class AiDetectAndEngage : MonoBehaviour
 			if (fireTimer <= 0F)
 			{
 				//Able to fire
-				EnemyEntityHealth entityToTarget = GetClosestEnemySeen();
+				Health entityToTarget = GetClosestEnemySeen();
 				if (entityToTarget != null)
 				{
 					EngageTarget(entityToTarget.transform);
@@ -74,11 +74,11 @@ public class AiDetectAndEngage : MonoBehaviour
 	}
 
 
-	private EnemyEntityHealth GetClosestEnemySeen()
+	private Health GetClosestEnemySeen()
 	{
 		Vector3 targetVector;
 		float closestDistance;
-		EnemyEntityHealth closestEnemy;
+		Health closestEnemy;
 		if (enemiesSeen.Count >= 1)
 		{
 			closestEnemy = enemiesSeen[0];
@@ -128,7 +128,7 @@ public class AiDetectAndEngage : MonoBehaviour
 
 		foreach (Collider collider in enemiesInRange)
 		{
-			EnemyEntityHealth entityHealthComponent = collider.GetComponent<EnemyEntityHealth>();
+			Health entityHealthComponent = collider.GetComponent<Health>();
 
 			if (entityHealthComponent != null)
 			{
@@ -219,7 +219,7 @@ public class AiDetectAndEngage : MonoBehaviour
 		
 	}
 
-	private void OnEnemyDeath(EnemyEntityHealth deadEntity)
+	private void OnEnemyDeath(Health deadEntity)
 	{
 		enemiesSeen.Remove(deadEntity);
 		Debug.Log("Removed entity from list");

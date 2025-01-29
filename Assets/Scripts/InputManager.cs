@@ -64,7 +64,8 @@ public class InputManager : MonoBehaviour
 	public event Action OnMapViewEnterPressed;
 	public event Action OnMapViewExitPressed;
 	//Interaction
-	public event Action OnInteractPressed;	
+	public event Action OnInteractPressed;
+	public event Action OnFirePressed;
 	
 
 	private void Awake()
@@ -145,6 +146,9 @@ public class InputManager : MonoBehaviour
 		//Interaction
 		controls.FPS.Interact.performed += InteractPerformed;
 
+		//Firing
+		controls.FPS.Fire.performed += FirePerformed;
+
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -171,6 +175,9 @@ public class InputManager : MonoBehaviour
 
 		//Interaction
 		controls.FPS.Interact.performed -= InteractPerformed;
+
+		//Firing
+		controls.FPS.Fire.performed -= FirePerformed;
 	}
 
 	public void SubscribeTopDownInputMaps()
@@ -345,6 +352,11 @@ public class InputManager : MonoBehaviour
 		OnInteractPressed?.Invoke();
 	}
 
+	//---- Firing
+	private void FirePerformed(InputAction.CallbackContext context)
+	{
+		OnFirePressed?.Invoke();
+	}
 
 	void Update()
 	{
