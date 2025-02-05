@@ -4,6 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewWeapon", menuName = "Weapons/WeaponConfig")]
 public class WeaponConfig : ScriptableObject
 {
+    public WeaponType weaponType;
     public string weaponName;
     public int weaponDamage;
     public float weaponRange;

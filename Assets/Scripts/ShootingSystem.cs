@@ -9,14 +9,15 @@ public class ShootingSystem : MonoBehaviour
 
 	[SerializeField] LayerMask hittableLayers;
 
-	[SerializeField] WeaponConfig weaponConfig;
-	[SerializeField] private int currentAmmo;
-	[SerializeField] private int reserveAmmo;
+	[SerializeField] public WeaponConfig weaponConfig;
+	[SerializeField] public int currentAmmo;
+	[SerializeField] public int reserveAmmo;
 	private float fireTimer = 0;
 	private bool isReloading = false;
 	private bool isFireRecovery = false;
 
 	public event Action<int, int> WeaponFired;
+	
 
 	void Start()
 	{
@@ -74,7 +75,7 @@ public class ShootingSystem : MonoBehaviour
 		{
 			return;
 		}
-		else
+		else if (currentAmmo != weaponConfig.maxAmmo)
 		{
 			isReloading = true;
 		}
@@ -93,17 +94,24 @@ public class ShootingSystem : MonoBehaviour
 			
 			if (reserveAmmo >= weaponConfig.maxAmmo)
 			{
+				reserveAmmo -= weaponConfig.maxAmmo - currentAmmo;
 				currentAmmo = weaponConfig.maxAmmo;
-				reserveAmmo -= weaponConfig.maxAmmo;
+				UpdateAmmo(currentAmmo, reserveAmmo);
 			}
 			else
 			{
 				
 				currentAmmo = reserveAmmo;
 				reserveAmmo = 0;
+				UpdateAmmo(currentAmmo, reserveAmmo);
 			}
 		}
 		isReloading = false;
+		
+	}
+
+	public void UpdateAmmo(int currentAmmo, int reserveAmmo)
+	{
 		WeaponFired.Invoke(currentAmmo, reserveAmmo);
 	}
 }
