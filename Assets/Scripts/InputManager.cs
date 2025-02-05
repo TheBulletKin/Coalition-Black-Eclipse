@@ -150,6 +150,9 @@ public class InputManager : MonoBehaviour
 		//Firing
 		controls.FPS.Fire.performed += FirePerformed;
 
+		//Reload
+		controls.FPS.Reload.performed += ReloadPerformed;
+
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -179,6 +182,9 @@ public class InputManager : MonoBehaviour
 
 		//Firing
 		controls.FPS.Fire.performed -= FirePerformed;
+
+		//Reload
+		controls.FPS.Reload.performed -= ReloadPerformed;
 	}
 
 	public void SubscribeTopDownInputMaps()
