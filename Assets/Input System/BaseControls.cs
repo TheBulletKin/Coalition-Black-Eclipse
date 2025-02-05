@@ -143,6 +143,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""3050750a-8bae-4ee2-8964-b4a1ebd8ce4f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -594,6 +603,17 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8192ff1c-a5b5-410f-824a-37034c96b514"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1073,6 +1093,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_InstantCommand = m_FPS.FindAction("InstantCommand", throwIfNotFound: true);
         m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
         m_FPS_Fire = m_FPS.FindAction("Fire", throwIfNotFound: true);
+        m_FPS_Reload = m_FPS.FindAction("Reload", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -1162,6 +1183,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_InstantCommand;
     private readonly InputAction m_FPS_QueueCommand;
     private readonly InputAction m_FPS_Fire;
+    private readonly InputAction m_FPS_Reload;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -1179,6 +1201,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @InstantCommand => m_Wrapper.m_FPS_InstantCommand;
         public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
         public InputAction @Fire => m_Wrapper.m_FPS_Fire;
+        public InputAction @Reload => m_Wrapper.m_FPS_Reload;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1227,6 +1250,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -1270,6 +1296,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -1396,6 +1425,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnInstantCommand(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

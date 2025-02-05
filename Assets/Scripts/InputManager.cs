@@ -66,6 +66,7 @@ public class InputManager : MonoBehaviour
 	//Interaction
 	public event Action OnInteractPressed;
 	public event Action OnFirePressed;
+	public event Action OnReloadPressed;
 	
 
 	private void Awake()
@@ -357,6 +358,13 @@ public class InputManager : MonoBehaviour
 	{
 		OnFirePressed?.Invoke();
 	}
+
+	//---- Reloading
+	private void ReloadPerformed(InputAction.CallbackContext context)
+	{
+		OnReloadPressed?.Invoke();
+	}
+
 
 	void Update()
 	{
