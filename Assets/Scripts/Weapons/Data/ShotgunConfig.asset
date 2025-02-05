@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349e7af975fb76945a3f2ae9e90db3ac, type: 3}
   m_Name: ShotgunConfig
   m_EditorClassIdentifier: 
-  weaponName: 
-  weaponDamage: 0
+  weaponType: 1
+  weaponName: Shotgun
+  weaponDamage: 40
   weaponRange: 0
   maxAmmo: 0
-  fireRate: 0
+  fireRate: 58
   isAutomatic: 0

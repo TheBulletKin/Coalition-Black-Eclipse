@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 349e7af975fb76945a3f2ae9e90db3ac, type: 3}
   m_Name: ThrowingKnifeConfig
   m_EditorClassIdentifier: 
-  weaponName: 
-  weaponDamage: 0
+  weaponType: 4
+  weaponName: ThrowingKnife
+  weaponDamage: 40
   weaponRange: 0
   maxAmmo: 1
-  fireRate: 0
+  fireRate: 80
   isAutomatic: 0
