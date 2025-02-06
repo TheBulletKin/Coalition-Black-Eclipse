@@ -26,6 +26,8 @@ public class ShootingSystem : MonoBehaviour
 
 		InputManager.Instance.OnFirePressed += Fire;
 		InputManager.Instance.OnReloadPressed += Reload;
+
+		
 	}
 
 	// Update is called once per frame

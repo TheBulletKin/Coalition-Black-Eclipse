@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponType: 3
   weaponName: Sniper
   weaponDamage: 40
-  weaponRange: 0
+  weaponRange: 20
   maxAmmo: 4
   fireRate: 58
   isAutomatic: 0

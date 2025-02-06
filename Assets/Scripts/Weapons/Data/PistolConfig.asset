@@ -17,5 +17,5 @@ MonoBehaviour:
   weaponDamage: 40
   weaponRange: 20
   maxAmmo: 12
-  fireRate: 200
+  fireRate: 300
   isAutomatic: 0
