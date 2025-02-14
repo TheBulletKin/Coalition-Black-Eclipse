@@ -87,6 +87,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "SelectAbility",
+                    "type": "Button",
+                    "id": "3b296281-1ee3-48f1-b9fd-80bd8dfcbca2",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "SelectAiGroup",
                     "type": "Button",
                     "id": "d3b3e711-fdef-4c50-a060-b77ad5118881",
@@ -126,6 +135,15 @@
                     "name": "Reload",
                     "type": "Button",
                     "id": "3050750a-8bae-4ee2-8964-b4a1ebd8ce4f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseItem",
+                    "type": "Button",
+                    "id": "f35539ce-dfc1-4c00-96ee-5e65c9ff1ffc",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -317,6 +335,50 @@
                     "processors": "",
                     "groups": "",
                     "action": "SelectAiTeammate",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "94fa14ff-7ee0-4139-9383-f5e9b3d57780",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1cca92ac-300b-4029-9417-97612a45d0be",
+                    "path": "<Keyboard>/3",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "146251cf-88e4-4908-b268-9c54dd1fd9c2",
+                    "path": "<Keyboard>/4",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d66fd7b3-1325-4a97-b56a-47a8e5016fd0",
+                    "path": "<Keyboard>/5",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SelectAbility",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -592,6 +654,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3cdc77c9-d098-403b-bd8f-ab0bed4ad9f1",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseItem",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

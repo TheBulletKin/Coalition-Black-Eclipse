@@ -4,5 +4,6 @@ using UnityEngine;
 
 public abstract class CharacterAbility : ScriptableObject
 {
-    public abstract void Use(GameObject owner, GameObject target);
+    public abstract void Use(AbilitySystem owner, GameObject target = null);
+	public abstract void Init();
 }

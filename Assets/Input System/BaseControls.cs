@@ -109,6 +109,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""SelectAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""3b296281-1ee3-48f1-b9fd-80bd8dfcbca2"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""SelectAiGroup"",
                     ""type"": ""Button"",
                     ""id"": ""d3b3e711-fdef-4c50-a060-b77ad5118881"",
@@ -148,6 +157,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""name"": ""Reload"",
                     ""type"": ""Button"",
                     ""id"": ""3050750a-8bae-4ee2-8964-b4a1ebd8ce4f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItem"",
+                    ""type"": ""Button"",
+                    ""id"": ""f35539ce-dfc1-4c00-96ee-5e65c9ff1ffc"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -339,6 +357,50 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""SelectAiTeammate"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""94fa14ff-7ee0-4139-9383-f5e9b3d57780"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1cca92ac-300b-4029-9417-97612a45d0be"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""146251cf-88e4-4908-b268-9c54dd1fd9c2"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d66fd7b3-1325-4a97-b56a-47a8e5016fd0"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -614,6 +676,17 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3cdc77c9-d098-403b-bd8f-ab0bed4ad9f1"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItem"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1089,11 +1162,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_EnterMapView = m_FPS.FindAction("Enter Map View", throwIfNotFound: true);
         m_FPS_ExecuteGoCode = m_FPS.FindAction("ExecuteGoCode", throwIfNotFound: true);
         m_FPS_SelectAiTeammate = m_FPS.FindAction("SelectAiTeammate", throwIfNotFound: true);
+        m_FPS_SelectAbility = m_FPS.FindAction("SelectAbility", throwIfNotFound: true);
         m_FPS_SelectAiGroup = m_FPS.FindAction("SelectAiGroup", throwIfNotFound: true);
         m_FPS_InstantCommand = m_FPS.FindAction("InstantCommand", throwIfNotFound: true);
         m_FPS_QueueCommand = m_FPS.FindAction("QueueCommand", throwIfNotFound: true);
         m_FPS_Fire = m_FPS.FindAction("Fire", throwIfNotFound: true);
         m_FPS_Reload = m_FPS.FindAction("Reload", throwIfNotFound: true);
+        m_FPS_UseItem = m_FPS.FindAction("UseItem", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -1179,11 +1254,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_EnterMapView;
     private readonly InputAction m_FPS_ExecuteGoCode;
     private readonly InputAction m_FPS_SelectAiTeammate;
+    private readonly InputAction m_FPS_SelectAbility;
     private readonly InputAction m_FPS_SelectAiGroup;
     private readonly InputAction m_FPS_InstantCommand;
     private readonly InputAction m_FPS_QueueCommand;
     private readonly InputAction m_FPS_Fire;
     private readonly InputAction m_FPS_Reload;
+    private readonly InputAction m_FPS_UseItem;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -1197,11 +1274,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @EnterMapView => m_Wrapper.m_FPS_EnterMapView;
         public InputAction @ExecuteGoCode => m_Wrapper.m_FPS_ExecuteGoCode;
         public InputAction @SelectAiTeammate => m_Wrapper.m_FPS_SelectAiTeammate;
+        public InputAction @SelectAbility => m_Wrapper.m_FPS_SelectAbility;
         public InputAction @SelectAiGroup => m_Wrapper.m_FPS_SelectAiGroup;
         public InputAction @InstantCommand => m_Wrapper.m_FPS_InstantCommand;
         public InputAction @QueueCommand => m_Wrapper.m_FPS_QueueCommand;
         public InputAction @Fire => m_Wrapper.m_FPS_Fire;
         public InputAction @Reload => m_Wrapper.m_FPS_Reload;
+        public InputAction @UseItem => m_Wrapper.m_FPS_UseItem;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1238,6 +1317,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @SelectAiTeammate.started += instance.OnSelectAiTeammate;
             @SelectAiTeammate.performed += instance.OnSelectAiTeammate;
             @SelectAiTeammate.canceled += instance.OnSelectAiTeammate;
+            @SelectAbility.started += instance.OnSelectAbility;
+            @SelectAbility.performed += instance.OnSelectAbility;
+            @SelectAbility.canceled += instance.OnSelectAbility;
             @SelectAiGroup.started += instance.OnSelectAiGroup;
             @SelectAiGroup.performed += instance.OnSelectAiGroup;
             @SelectAiGroup.canceled += instance.OnSelectAiGroup;
@@ -1253,6 +1335,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @UseItem.started += instance.OnUseItem;
+            @UseItem.performed += instance.OnUseItem;
+            @UseItem.canceled += instance.OnUseItem;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -1284,6 +1369,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @SelectAiTeammate.started -= instance.OnSelectAiTeammate;
             @SelectAiTeammate.performed -= instance.OnSelectAiTeammate;
             @SelectAiTeammate.canceled -= instance.OnSelectAiTeammate;
+            @SelectAbility.started -= instance.OnSelectAbility;
+            @SelectAbility.performed -= instance.OnSelectAbility;
+            @SelectAbility.canceled -= instance.OnSelectAbility;
             @SelectAiGroup.started -= instance.OnSelectAiGroup;
             @SelectAiGroup.performed -= instance.OnSelectAiGroup;
             @SelectAiGroup.canceled -= instance.OnSelectAiGroup;
@@ -1299,6 +1387,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @UseItem.started -= instance.OnUseItem;
+            @UseItem.performed -= instance.OnUseItem;
+            @UseItem.canceled -= instance.OnUseItem;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -1421,11 +1512,13 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnEnterMapView(InputAction.CallbackContext context);
         void OnExecuteGoCode(InputAction.CallbackContext context);
         void OnSelectAiTeammate(InputAction.CallbackContext context);
+        void OnSelectAbility(InputAction.CallbackContext context);
         void OnSelectAiGroup(InputAction.CallbackContext context);
         void OnInstantCommand(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnUseItem(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {

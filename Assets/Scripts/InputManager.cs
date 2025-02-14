@@ -67,7 +67,9 @@ public class InputManager : MonoBehaviour
 	public event Action OnInteractPressed;
 	public event Action OnFirePressed;
 	public event Action OnReloadPressed;
-	
+	public event Action OnUseItemPressed;
+	public event Action<int> OnAbilityChangePressed;
+
 
 	private void Awake()
 	{
@@ -153,6 +155,12 @@ public class InputManager : MonoBehaviour
 		//Reload
 		controls.FPS.Reload.performed += ReloadPerformed;
 
+		//Use Item
+		controls.FPS.UseItem.performed += UseItemPerformed;
+
+		//Change ability
+		controls.FPS.SelectAbility.performed += AbilitySelectPerformed;
+
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -185,6 +193,12 @@ public class InputManager : MonoBehaviour
 
 		//Reload
 		controls.FPS.Reload.performed -= ReloadPerformed;
+
+		//Use Item
+		controls.FPS.UseItem.performed -= UseItemPerformed;
+
+		//Change ability
+		controls.FPS.SelectAbility.performed -= AbilitySelectPerformed;
 	}
 
 	public void SubscribeTopDownInputMaps()
@@ -310,6 +324,12 @@ public class InputManager : MonoBehaviour
 		}
 	}
 
+	//---- Ability Select
+	private void AbilitySelectPerformed(InputAction.CallbackContext context)
+	{
+		OnAbilityChangePressed?.Invoke(int.Parse(context.control.name));
+	}
+
 
 	//---- Movement
 	private void SprintStarted(InputAction.CallbackContext context)
@@ -369,6 +389,12 @@ public class InputManager : MonoBehaviour
 	private void ReloadPerformed(InputAction.CallbackContext context)
 	{
 		OnReloadPressed?.Invoke();
+	}
+
+	//---- Use Item
+	private void UseItemPerformed(InputAction.CallbackContext context)
+	{
+		OnUseItemPressed?.Invoke();
 	}
 
 
