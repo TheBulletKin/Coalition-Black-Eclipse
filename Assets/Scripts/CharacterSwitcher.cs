@@ -12,6 +12,7 @@ public class CharacterSwitcher : MonoBehaviour
 	public Camera playerCamera;
 	public CameraController camController;
 	public PlayerUiImanager uiManager;
+	public CameraStateSwitcher cameraStateSwitcher;
 
 
 	void Start()
@@ -60,6 +61,7 @@ public class CharacterSwitcher : MonoBehaviour
 		MoveCamera(teammate.gameObject, teammate.cameraPos);
 		teammate.characterModel.SetActive(false);
 		uiManager.changePlayerTarget(teammate);
+		cameraStateSwitcher.SwitchTarget(teammate);
 			
 		
 		teammate.TakeControl();

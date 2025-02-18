@@ -5,11 +5,11 @@ using UnityEngine;
 
 public class CameraStateSwitcher : MonoBehaviour
 {
-    public GameObject playerCameraPos;
+    public Transform playerCameraPos;
 	public Vector3 currentPos;
 	public Vector3 targetPos;
 	public Quaternion prevCameraAngle;
-    public GameObject topDownCameraPos;
+    public Transform topDownCameraPos;
 	public Camera camera;
 
 	public PlayerMovementController movementController;
@@ -58,7 +58,7 @@ public class CameraStateSwitcher : MonoBehaviour
 	{
 		//Change position
 		Camera camera = Camera.main;
-		camera.transform.position = playerCameraPos.transform.position;
+		camera.transform.position = playerCameraPos.position;
 
 		//Return to previous rotation
 		camera.transform.rotation = prevCameraAngle;
@@ -89,5 +89,12 @@ public class CameraStateSwitcher : MonoBehaviour
 	{
 		InputManager.Instance.OnMapViewExitPressed -= SwitchToPlayer;
 		InputManager.Instance.OnMapViewEnterPressed -= SwitchToMap;
+	}
+
+	public void SwitchTarget(ControllableEntity newPlayer)
+	{
+		movementController = newPlayer.GetComponent<PlayerMovementController>();
+		topDownCameraPos = newPlayer.GetComponentInChildren<CameraPos>().gameObject.transform;
+		playerCameraPos = newPlayer.cameraPos;
 	}
 }
