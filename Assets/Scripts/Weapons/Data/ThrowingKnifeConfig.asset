@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 4
   weaponName: ThrowingKnife
-  weaponDamage: 40
+  weaponDamage: 55
   weaponRange: 35
   maxAmmo: 1
   fireRate: 80

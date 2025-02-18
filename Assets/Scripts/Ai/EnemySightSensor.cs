@@ -40,7 +40,7 @@ public class EnemySightSensor : MonoBehaviour
 
 			if (hit.collider.tag == "Teammate")
 			{
-				EntityVisibility vis = hit.collider.gameObject.GetComponent<EntityVisibility>();
+				EntityVisibility vis = hit.collider.gameObject.GetComponentInParent<EntityVisibility>();
 				if (vis.GetVisibilityMod() > 0)
 				{
 					currentTarget = target;
