@@ -51,6 +51,7 @@ public class InputManager : MonoBehaviour
 	//Teammate and Group selection
 	public event Action<int> OnTeammateSelectPressed;
 	public event Action<int> OnAiGroupSelectedPressed;
+	public event Action<int> OnAiSwitchPressed;
 	//Go codes
 	public event Action<int> OnGoCodePressed;
 	//Movement
@@ -133,6 +134,7 @@ public class InputManager : MonoBehaviour
 		//Teammate and Group selection
 		controls.FPS.SelectAiTeammate.performed += SelectAiTeammatePerformed;
 		controls.FPS.SelectAiGroup.performed += SelectAiGroupPerformed;
+		controls.FPS.SwitchToTeammate.performed += ChangeAiTeammatePerformed;
 		//Go codes
 		controls.FPS.ExecuteGoCode.performed += ActivateGoCodePerformed;
 		//Movement
@@ -172,6 +174,7 @@ public class InputManager : MonoBehaviour
 		//Teammate and Group selection
 		controls.FPS.SelectAiTeammate.performed -= SelectAiTeammatePerformed;
 		controls.FPS.SelectAiGroup.performed -= SelectAiGroupPerformed;
+		controls.FPS.SwitchToTeammate.performed -= ChangeAiTeammatePerformed;
 		//Go codes
 		controls.FPS.ExecuteGoCode.performed -= ActivateGoCodePerformed;
 		//Movement
@@ -303,6 +306,28 @@ public class InputManager : MonoBehaviour
 				break;
 			case "f4":
 				OnTeammateSelectPressed?.Invoke(3);
+				break;
+			default:
+				break;
+		}
+
+	}
+
+	private void ChangeAiTeammatePerformed(InputAction.CallbackContext context)
+	{
+		switch (context.control.name)
+		{
+			case "1":
+				OnAiSwitchPressed?.Invoke(1);
+				break;
+			case "2":
+				OnAiSwitchPressed?.Invoke(2);
+				break;
+			case "3":
+				OnAiSwitchPressed?.Invoke(3);
+				break;
+			case "4":
+				OnAiSwitchPressed?.Invoke(4);
 				break;
 			default:
 				break;
