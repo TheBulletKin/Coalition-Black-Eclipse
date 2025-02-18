@@ -18,9 +18,9 @@ public class TeleportAnchor : CharacterAbility
 		teleportPosition = Vector3.zero;
 		anchorActive = false;
 	}
-	public override void Use(AbilitySystem owner, GameObject target)
+	public override void Use(AbilitySystem owner, GameObject target = null, Vector3 targetPos = default)
 	{
-		if (target == null && gadgetCount > 0)
+		if (gadgetCount > 0)
 		{
 
 			GameObject projectile = Instantiate(anchorProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -38,7 +38,7 @@ public class TeleportAnchor : CharacterAbility
 			}
 			gadgetCount--;
 		}
-		else if (target == null && anchorActive == true)
+		else if (anchorActive == true)
 		{
 			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
 			cont.enabled = false;  

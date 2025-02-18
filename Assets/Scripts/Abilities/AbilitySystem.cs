@@ -9,6 +9,8 @@ public class AbilitySystem : MonoBehaviour
     public int currentAbilityIndex;
 	private Camera playerCamera;
 	public LayerMask hittableLayers;
+	private GameObject targettedObject;
+	private Vector3 targetPos;
 
 	private void Start()
 	{
@@ -25,20 +27,23 @@ public class AbilitySystem : MonoBehaviour
 
 	private void UseItem()
 	{
-		abilities[currentAbilityIndex].Use(this, GetUseTarget());
+		GetUseTarget();
+		abilities[currentAbilityIndex].Use(this, targettedObject, targetPos);
 	}
 
-	private GameObject GetUseTarget()
+	private void GetUseTarget()
 	{
 		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
 
 		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
 		{			
-			return hit.collider.gameObject;
+			targettedObject = hit.collider.gameObject;
+			targetPos = hit.point;
 		}
 		else
 		{
-			return null;
+			targettedObject = null;
+			targetPos = default;
 		}
 	}
 
