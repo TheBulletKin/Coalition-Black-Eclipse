@@ -10,7 +10,7 @@ public class GrapplePullAbility : CharacterAbility
 
 	}
 
-	public override void Use(AbilitySystem owner, GameObject target, Vector3 targetPos = default)
+	public override void Use(AbilitySystem owner, GameObject target, RaycastHit targetPos = default)
 	{
 		if (target != null)
 		{

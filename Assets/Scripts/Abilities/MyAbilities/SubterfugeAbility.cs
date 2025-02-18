@@ -13,7 +13,7 @@ public class SubterfugeAbility : CharacterAbility
 
 	}
 
-	public override void Use(AbilitySystem owner, GameObject target = null, Vector3 targetPos = default)
+	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
 	{
 
 		EntityVisibility entityVis = owner.gameObject.GetComponent<EntityVisibility>();

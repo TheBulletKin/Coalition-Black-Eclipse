@@ -12,8 +12,8 @@ public class DecoyAbility : CharacterAbility
 	}
 
 
-	public override void Use(AbilitySystem owner, GameObject target = null, Vector3 targetPos = default)
+	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
 	{
-		Instantiate(decoyPrefab, targetPos, Quaternion.identity);
+		Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
 	}
 }

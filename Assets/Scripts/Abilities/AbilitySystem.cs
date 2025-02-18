@@ -10,7 +10,7 @@ public class AbilitySystem : MonoBehaviour
 	private Camera playerCamera;
 	public LayerMask hittableLayers;
 	private GameObject targettedObject;
-	private Vector3 targetPos;
+	private RaycastHit targetPos;
 
 	private void Start()
 	{
@@ -38,7 +38,7 @@ public class AbilitySystem : MonoBehaviour
 		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
 		{			
 			targettedObject = hit.collider.gameObject;
-			targetPos = hit.point;
+			targetPos = hit;
 		}
 		else
 		{
