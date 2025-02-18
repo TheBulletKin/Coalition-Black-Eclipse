@@ -11,12 +11,14 @@ public class CharacterSwitcher : MonoBehaviour
 	[SerializeField] private List<ControllableEntity> teammates;
 	public Camera playerCamera;
 	public CameraController camController;
+	public PlayerUiImanager uiManager;
 
 
 	void Start()
 	{
 		InputManager.Instance.OnAiSwitchPressed += FindCharacter;
 		playerCamera = Camera.main;
+		
 
 		FindCharacter(1);
 
@@ -49,13 +51,18 @@ public class CharacterSwitcher : MonoBehaviour
 			if (teammate.teammateID != entity.teammateID)
 			{
 				entity.LoseControl();
+				entity.characterModel.SetActive(true);
 				Debug.Log(entity.gameObject.name + " lost control");
 			}
 		}
-		teammate.TakeControl();
+		
 		Debug.Log(teammate.gameObject.name + " gained control");
 		MoveCamera(teammate.gameObject, teammate.cameraPos);
-
+		teammate.characterModel.SetActive(false);
+		uiManager.changePlayerTarget(teammate);
+			
+		
+		teammate.TakeControl();
 	}
 
 	private void MoveCamera(GameObject newOwner,Transform cameraPos)

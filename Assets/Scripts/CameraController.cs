@@ -31,8 +31,8 @@ public class CameraController : MonoBehaviour
 
 	private void Start()
 	{
-		//Will be used later for camera motion effects
-		playerTr = player.transform;
+		
+		
 		playerStartLocalRotation = Vector3.zero;
 		cameraStartLocalPosition = transform.localPosition;
 

@@ -8,7 +8,7 @@ public class ControllableEntity : MonoBehaviour
 	public bool isControlledByPlayer = false;
 	public int teammateID;
 	
-	GameObject characterModel;
+	public GameObject characterModel;
 	public Transform cameraPos;
 
 	IToggleable[] toggleableComponents;
@@ -21,6 +21,10 @@ public class ControllableEntity : MonoBehaviour
 
 	public void TakeControl()
 	{
+		if (toggleableComponents == null)
+		{
+			toggleableComponents = GetComponents<IToggleable>();
+		}
 		foreach (IToggleable item in toggleableComponents)
 		{
 			item.EnableControl();
@@ -30,6 +34,10 @@ public class ControllableEntity : MonoBehaviour
 
 	public void LoseControl()
 	{
+		if (toggleableComponents == null)
+		{
+			toggleableComponents = GetComponents<IToggleable>();
+		}
 		foreach (IToggleable item in toggleableComponents)
 		{
 			item.DisableControl();

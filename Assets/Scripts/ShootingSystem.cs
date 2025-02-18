@@ -25,7 +25,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		mainCam = Camera.main;
 		currentAmmo = weaponConfig.maxAmmo;
 		inPlayerControl = false;
-		
+		UpdateAmmo(currentAmmo, reserveAmmo);
 	}
 
 	// Update is called once per frame
@@ -66,7 +66,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Reload();
 		}
 
-		WeaponFired.Invoke(currentAmmo, reserveAmmo);
+		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 	}
 
 	private void Reload()
@@ -112,20 +112,23 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	public void UpdateAmmo(int currentAmmo, int reserveAmmo)
 	{
-		WeaponFired.Invoke(currentAmmo, reserveAmmo);
+		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 	}
 
 	public void DisableControl()
 	{
 		inPlayerControl = false;
-		InputManager.Instance.OnFirePressed += Fire;
-		InputManager.Instance.OnReloadPressed += Reload;
+		InputManager.Instance.OnFirePressed -= Fire;
+		InputManager.Instance.OnReloadPressed -= Reload;
 	}
 
 	public void EnableControl()
 	{
 		inPlayerControl = true;
-		InputManager.Instance.OnFirePressed -= Fire;
-		InputManager.Instance.OnReloadPressed -= Reload;
+		InputManager.Instance.OnFirePressed += Fire;
+		InputManager.Instance.OnReloadPressed += Reload;
+
+		
+		UpdateAmmo(currentAmmo, reserveAmmo);
 	}
 }

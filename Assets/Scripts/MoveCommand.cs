@@ -26,7 +26,7 @@ public class MoveCommand : ICommand
 		this.aiMovement = aiMovement;
 		this.targetPosition = targetPosition;
 		this.navAgent = aiMovement.GetComponent<NavMeshAgent>();
-	}	
+	}
 
 	/// <summary>
 	/// Interface method of ICommand
@@ -46,10 +46,14 @@ public class MoveCommand : ICommand
 		aiMovement.MoveTo(targetPosition);
 
 		//Check whether the destination has been reached, wait till the next frame then try again
-		while (navAgent.pathPending || navAgent.remainingDistance > navAgent.stoppingDistance)
+
+
+		while (navAgent.enabled == true && (navAgent.pathPending || navAgent.remainingDistance > navAgent.stoppingDistance))
 		{
+
 			yield return null;
-		}		
+
+		}
 
 		//Invoke the completed event which is read by the command issuer to perform tasks on completion		 
 		OnCommandCompleted?.Invoke(this);

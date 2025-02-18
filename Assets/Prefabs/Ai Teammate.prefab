@@ -316,6 +316,7 @@ Transform:
   - {fileID: 7544800557243342397}
   - {fileID: 664214556944269200}
   - {fileID: 8232328874099428430}
+  - {fileID: 2291896771215967323}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &8297751687359297920
@@ -354,6 +355,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isControlledByPlayer: 0
   teammateID: 1
+  characterModel: {fileID: 8520932290879977908}
   cameraPos: {fileID: 8232328874099428430}
   agent: {fileID: 8297751687359297920}
 --- !u!114 &2497608753782231407
@@ -608,6 +610,37 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.94, z: 0}
+--- !u!1 &5031286154127115312
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2291896771215967323}
+  m_Layer: 0
+  m_Name: TopDownCameraPos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2291896771215967323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5031286154127115312}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 38.56, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8524576815190887093}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8520932290879977908
 GameObject:
   m_ObjectHideFlags: 0
