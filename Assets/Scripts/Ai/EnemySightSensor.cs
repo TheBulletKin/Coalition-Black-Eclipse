@@ -33,7 +33,7 @@ public class EnemySightSensor : MonoBehaviour
 			if (angle > 60)
 				return false;
 
-			if (!Physics.Raycast(ray, out var hit, 100, ~_ignoreMask))
+			if (!Physics.Raycast(ray, out var hit, 70, ~_ignoreMask))
 			{
 				return false;
 			}

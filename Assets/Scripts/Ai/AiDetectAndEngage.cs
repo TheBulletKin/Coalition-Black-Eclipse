@@ -72,25 +72,42 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		if (enemiesSeen.Count >= 1)
 		{
 			closestEnemy = enemiesSeen[0];
-			targetVector = closestEnemy.transform.position - transform.position;
-			closestDistance = targetVector.magnitude;
+			if (closestEnemy == null)
+			{
+				enemiesSeen.Remove(closestEnemy);
+			}
+			else
+			{
+				targetVector = closestEnemy.transform.position - transform.position;
+				closestDistance = targetVector.magnitude;
+
+				for (int i = 1; i < enemiesSeen.Count; i++)
+				{
+					if (enemiesSeen[i] == null)
+					{
+						enemiesSeen.RemoveAt(i);
+					}
+					else
+					{
+						targetVector = enemiesSeen[i].transform.position - transform.position;
+						if (targetVector.magnitude < closestDistance)
+						{
+							closestEnemy = enemiesSeen[i];
+							closestDistance = targetVector.magnitude;
+						}
+					}
+				}
+
+			}
 		}
 		else
 		{
 			closestEnemy = null;
-			closestDistance = shootingSystem.weaponConfig.weaponRange + 1f;	
+			closestDistance = shootingSystem.weaponConfig.weaponRange + 1f;
 		}
 
 
-		for (int i = 1; i < enemiesSeen.Count; i++)
-		{
-			targetVector = enemiesSeen[i].transform.position - transform.position;
-			if (targetVector.magnitude < closestDistance)
-			{
-				closestEnemy = enemiesSeen[i];
-				closestDistance = targetVector.magnitude;
-			}
-		}
+
 
 		return closestEnemy;
 
@@ -105,12 +122,20 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		//First clear enemies that aren't in range
 		for (int i = enemiesSeen.Count - 1; i >= 0; i--)
 		{
-			Vector3 targetVector = enemiesSeen[i].transform.position - transform.position;
-			if (targetVector.magnitude > (shootingSystem.weaponConfig.weaponRange))
+			if (enemiesSeen[i] == null)
 			{
-				enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
 				enemiesSeen.RemoveAt(i);
 			}
+			else
+			{
+				Vector3 targetVector = enemiesSeen[i].transform.position - transform.position;
+				if (targetVector.magnitude > (shootingSystem.weaponConfig.weaponRange))
+				{
+					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen.RemoveAt(i);
+				}
+			}
+
 		}
 
 		//Get all colliders actually in range
@@ -149,8 +174,15 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 			if (angle >= detectionAngle)
 			{
-				enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
-				enemiesSeen.RemoveAt(i);
+				if (enemiesSeen[i] == null)
+				{
+					enemiesSeen.RemoveAt(i);
+				}
+				else
+				{
+					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen.RemoveAt(i);
+				}
 			}
 		}
 	}
@@ -162,12 +194,19 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	{
 		for (int i = enemiesSeen.Count - 1; i >= 0; i--)
 		{
-			Vector3 vectorToTarget = enemiesSeen[i].transform.position - transform.position;
-			Ray ray = new Ray(transform.position, vectorToTarget.normalized);
-			if (Physics.Raycast(ray, out RaycastHit hit, vectorToTarget.magnitude, obstructionLayers))
+			if (enemiesSeen[i] == null)
 			{
-				enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
 				enemiesSeen.RemoveAt(i);
+			}
+			else
+			{
+				Vector3 vectorToTarget = enemiesSeen[i].transform.position - transform.position;
+				Ray ray = new Ray(transform.position, vectorToTarget.normalized);
+				if (Physics.Raycast(ray, out RaycastHit hit, vectorToTarget.magnitude, obstructionLayers))
+				{
+					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen.RemoveAt(i);
+				}
 			}
 		}
 	}
