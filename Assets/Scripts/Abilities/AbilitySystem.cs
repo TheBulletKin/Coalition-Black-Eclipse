@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
-public class AbilitySystem : MonoBehaviour
+public class AbilitySystem : MonoBehaviour, IToggleable
 {
-    public List<CharacterAbility> abilities;
-    public int currentAbilityIndex;
+	public List<CharacterAbility> abilities;
+	public int currentAbilityIndex;
 	private Camera playerCamera;
 	public LayerMask hittableLayers;
 	private GameObject targettedObject;
 	private RaycastHit targetPos;
+	public bool isPlayerControlled = false;
 
 	private void Start()
 	{
@@ -18,6 +19,7 @@ public class AbilitySystem : MonoBehaviour
 		InputManager.Instance.OnAbilityChangePressed += SetActiveAbility;
 
 		playerCamera = Camera.main;
+		isPlayerControlled = false;
 
 		foreach (CharacterAbility ability in abilities)
 		{
@@ -27,8 +29,12 @@ public class AbilitySystem : MonoBehaviour
 
 	private void UseItem()
 	{
-		GetUseTarget();
-		abilities[currentAbilityIndex].Use(this, targettedObject, targetPos);
+		if (isPlayerControlled)
+		{
+			GetUseTarget();
+			abilities[currentAbilityIndex].Use(this, targettedObject, targetPos);
+		}
+
 	}
 
 	private void GetUseTarget()
@@ -36,7 +42,7 @@ public class AbilitySystem : MonoBehaviour
 		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
 
 		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
-		{			
+		{
 			targettedObject = hit.collider.gameObject;
 			targetPos = hit;
 		}
@@ -60,5 +66,15 @@ public class AbilitySystem : MonoBehaviour
 	public Vector3 GetCastposition()
 	{
 		return playerCamera.transform.position;
+	}
+
+	public void DisableControl()
+	{
+		isPlayerControlled = false;
+	}
+
+	public void EnableControl()
+	{
+		isPlayerControlled = true;
 	}
 }
