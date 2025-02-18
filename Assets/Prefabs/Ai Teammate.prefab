@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 5587466839971737750}
   m_Layer: 0
   m_Name: Ai Teammate
-  m_TagString: Untagged
+  m_TagString: Teammate
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -419,6 +419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd710e8ab5807e4185f0f7e9794df44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shootingSystem: {fileID: 5671389215264514013}
   detectionRange: 23.25
   detectionAngle: 45
   engagementMaxRange: 0
@@ -553,6 +554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1aeb9030e30e2f54e811629fce401a43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cameraPos: {fileID: 8232328874099428430}
   hittableLayers:
     serializedVersion: 2
     m_Bits: 64
@@ -584,6 +586,7 @@ MonoBehaviour:
   hittableLayers:
     serializedVersion: 2
     m_Bits: 65
+  isPlayerControlled: 0
 --- !u!143 &5587466839971737750
 CharacterController:
   m_ObjectHideFlags: 0

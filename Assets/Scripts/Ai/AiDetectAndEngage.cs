@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AiDetectAndEngage : MonoBehaviour, IToggleable
 {
-
+	public ShootingSystem shootingSystem;
 	[SerializeField] private float detectionRange = 10f;
 	[SerializeField] private float detectionAngle = 45f;
 	[SerializeField] private float engagementMaxRange;
@@ -21,11 +21,11 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
 
-	[SerializeField] private List<Health> enemiesSeen;	
+	[SerializeField] private List<Health> enemiesSeen;
 
 	private void Start()
 	{
-		
+
 	}
 
 	private void Update()
@@ -46,29 +46,19 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		if (enemiesSeen.Count >= 1)
 		{
-			if (fireTimer <= 0F)
-			{
-				//Able to fire
-				Health entityToTarget = GetClosestEnemySeen();
-				if (entityToTarget != null)
-				{
-					EngageTarget(entityToTarget.transform);
-				}
 
 
-				fireTimer = fireCooldown;
-			}
-			else
+			Health entityToTarget = GetClosestEnemySeen();
+			if (entityToTarget != null)
 			{
-				//Waiting to fire
-				fireTimer -= Time.deltaTime;
+				EngageTarget(entityToTarget.transform);
 			}
 		}
 		else
 		{
 			fireTimer = fireCooldown;
 		}
-		
+
 
 
 	}
@@ -88,7 +78,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		else
 		{
 			closestEnemy = null;
-			closestDistance = detectionRange + 1f;
+			closestDistance = shootingSystem.weaponConfig.weaponRange + 1f;	
 		}
 
 
@@ -116,7 +106,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		for (int i = enemiesSeen.Count - 1; i >= 0; i--)
 		{
 			Vector3 targetVector = enemiesSeen[i].transform.position - transform.position;
-			if (targetVector.magnitude > (detectionRange))
+			if (targetVector.magnitude > (shootingSystem.weaponConfig.weaponRange))
 			{
 				enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
 				enemiesSeen.RemoveAt(i);
@@ -124,7 +114,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		}
 
 		//Get all colliders actually in range
-		Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, detectionRange, enemyLayer);
+		Collider[] enemiesInRange = Physics.OverlapSphere(transform.position, shootingSystem.weaponConfig.weaponRange, enemyLayer);
 
 		foreach (Collider collider in enemiesInRange)
 		{
@@ -188,35 +178,25 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	/// <param name="targetTransform"></param>
 	private void EngageTarget(Transform targetTransform)
 	{
-		Vector3 vectorToTarget = targetTransform.position - transform.position;
-		Ray fireRay = new Ray(transform.position, vectorToTarget.normalized);
 
-		if (Physics.Raycast(fireRay, out RaycastHit hit, vectorToTarget.magnitude, enemyLayer))
-		{
-			IDamagable damagableTarget = hit.collider.GetComponent<IDamagable>();
+		shootingSystem.Fire(targetTransform);
 
-			if (damagableTarget != null)
-			{
-				damagableTarget.TakeDamage(weaponDamage);
-			}
-		}
 	}
 
 	void OnDrawGizmosSelected()
 	{
 
-		Gizmos.color = Color.yellow;
-		Gizmos.DrawWireSphere(transform.position, detectionRange);
+		//Gizmos.color = Color.yellow;
+		//Gizmos.DrawWireSphere(transform.position, detectionRange);
+		Gizmos.color = Color.blue;
+		Gizmos.DrawWireSphere(transform.position, shootingSystem.weaponConfig.weaponRange);
 
 		Gizmos.color = Color.red;
-		Vector3 forward = transform.forward * detectionRange;
+		Vector3 forward = transform.forward * shootingSystem.weaponConfig.weaponRange;
 		Quaternion leftRayRotation = Quaternion.AngleAxis(-detectionAngle / 2, Vector3.up);
 		Quaternion rightRayRotation = Quaternion.AngleAxis(detectionAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
-		Gizmos.DrawRay(transform.position, rightRayRotation * forward);	
-
-
-		
+		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
 	}
 
 	private void OnEnemyDeath(Health deadEntity)

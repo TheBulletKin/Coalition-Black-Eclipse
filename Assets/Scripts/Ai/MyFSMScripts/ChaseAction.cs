@@ -12,6 +12,6 @@ public class ChaseAction : FSMAction
 		var navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
 		var enemySightSensor = stateMachine.GetComponent<EnemySightSensor>();
 
-		navMeshAgent.SetDestination(enemySightSensor.Player.position);
+		navMeshAgent.SetDestination(enemySightSensor.currentTarget.position);
 	}
 }

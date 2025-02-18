@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponType: 4
   weaponName: ThrowingKnife
   weaponDamage: 40
-  weaponRange: 20
+  weaponRange: 35
   maxAmmo: 1
   fireRate: 80
   isAutomatic: 0

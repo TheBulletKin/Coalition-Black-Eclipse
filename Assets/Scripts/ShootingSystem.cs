@@ -6,6 +6,7 @@ using UnityEngine;
 public class ShootingSystem : MonoBehaviour, IToggleable
 {
 	Camera mainCam;
+	public Transform cameraPos;
 
 	[SerializeField] LayerMask hittableLayers;
 
@@ -18,7 +19,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private bool inPlayerControl = false;
 
 	public event Action<int, int> WeaponFired;
-	
+
 
 	void Start()
 	{
@@ -43,9 +44,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	}
 
-	private void Fire()
+	//Used when the player fires at something
+	public void Fire()
 	{
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
+
 
 		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
@@ -58,8 +61,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			}
 		}
 
+
+
+
 		isFireRecovery = true;
-		
+
 		currentAmmo--;
 		if (currentAmmo <= 0)
 		{
@@ -67,6 +73,45 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+	}
+
+	//Used when AI need to fire at something
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="targetTransform"></param>
+	/// <returns>True if hit an enemy</returns>
+	public void Fire(Transform targetTransform)
+	{
+		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
+
+
+		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
+
+		if (Physics.Raycast(cameraPos.transform.position, targetTransform.position - cameraPos.position, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
+		{
+			IDamagable damageable = hit.collider.GetComponent<IDamagable>();
+			if (damageable != null)
+			{
+				damageable.TakeDamage(weaponConfig.weaponDamage);
+			}
+			
+		}
+
+
+
+
+		isFireRecovery = true;
+
+		currentAmmo--;
+		if (currentAmmo <= 0)
+		{
+			Reload();
+		}
+
+		
+
+		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 	}
 
 	private void Reload()
@@ -79,7 +124,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		{
 			isReloading = true;
 		}
-				
+
 
 		StartCoroutine(ReloadRoutine());
 
@@ -91,7 +136,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 		if (reserveAmmo > 0)
 		{
-			
+
 			if (reserveAmmo >= weaponConfig.maxAmmo)
 			{
 				reserveAmmo -= weaponConfig.maxAmmo - currentAmmo;
@@ -100,14 +145,14 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			}
 			else
 			{
-				
+
 				currentAmmo = reserveAmmo;
 				reserveAmmo = 0;
 				UpdateAmmo(currentAmmo, reserveAmmo);
 			}
 		}
 		isReloading = false;
-		
+
 	}
 
 	public void UpdateAmmo(int currentAmmo, int reserveAmmo)
@@ -128,7 +173,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		InputManager.Instance.OnFirePressed += Fire;
 		InputManager.Instance.OnReloadPressed += Reload;
 
-		
+
 		UpdateAmmo(currentAmmo, reserveAmmo);
 	}
 }

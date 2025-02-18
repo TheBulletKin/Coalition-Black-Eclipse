@@ -15,7 +15,7 @@ MonoBehaviour:
   weaponType: 0
   weaponName: Revolver
   weaponDamage: 40
-  weaponRange: 20
+  weaponRange: 30
   maxAmmo: 6
   fireRate: 73
   isAutomatic: 0
