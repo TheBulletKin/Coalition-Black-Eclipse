@@ -7,12 +7,15 @@ public class AbilitySystem : MonoBehaviour
 {
     public List<CharacterAbility> abilities;
     public int currentAbilityIndex;
-	public Camera playerCamera;
+	private Camera playerCamera;
+	public LayerMask hittableLayers;
 
 	private void Start()
 	{
 		InputManager.Instance.OnUseItemPressed += UseItem;
 		InputManager.Instance.OnAbilityChangePressed += SetActiveAbility;
+
+		playerCamera = Camera.main;
 
 		foreach (CharacterAbility ability in abilities)
 		{
@@ -22,7 +25,21 @@ public class AbilitySystem : MonoBehaviour
 
 	private void UseItem()
 	{
-		abilities[currentAbilityIndex].Use(this);
+		abilities[currentAbilityIndex].Use(this, GetUseTarget());
+	}
+
+	private GameObject GetUseTarget()
+	{
+		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+
+		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
+		{			
+			return hit.collider.gameObject;
+		}
+		else
+		{
+			return null;
+		}
 	}
 
 	private void SetActiveAbility(int abilityIndex)
