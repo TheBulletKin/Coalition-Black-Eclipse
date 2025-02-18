@@ -89,7 +89,10 @@ public class CameraController : MonoBehaviour
 
 	}
 
+	public void TransferOwnership(GameObject newOwner)
+	{
+		playerTr = newOwner.transform;
+	}
 
-
-
+	
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ShootingSystem : MonoBehaviour
+public class ShootingSystem : MonoBehaviour, IToggleable
 {
 	Camera mainCam;
 
@@ -15,6 +15,7 @@ public class ShootingSystem : MonoBehaviour
 	private float fireTimer = 0;
 	private bool isReloading = false;
 	private bool isFireRecovery = false;
+	private bool inPlayerControl = false;
 
 	public event Action<int, int> WeaponFired;
 	
@@ -23,10 +24,7 @@ public class ShootingSystem : MonoBehaviour
 	{
 		mainCam = Camera.main;
 		currentAmmo = weaponConfig.maxAmmo;
-
-		InputManager.Instance.OnFirePressed += Fire;
-		InputManager.Instance.OnReloadPressed += Reload;
-
+		inPlayerControl = false;
 		
 	}
 
@@ -115,5 +113,19 @@ public class ShootingSystem : MonoBehaviour
 	public void UpdateAmmo(int currentAmmo, int reserveAmmo)
 	{
 		WeaponFired.Invoke(currentAmmo, reserveAmmo);
+	}
+
+	public void DisableControl()
+	{
+		inPlayerControl = false;
+		InputManager.Instance.OnFirePressed += Fire;
+		InputManager.Instance.OnReloadPressed += Reload;
+	}
+
+	public void EnableControl()
+	{
+		inPlayerControl = true;
+		InputManager.Instance.OnFirePressed -= Fire;
+		InputManager.Instance.OnReloadPressed -= Reload;
 	}
 }

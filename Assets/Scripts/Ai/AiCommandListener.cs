@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AiCommandListener : MonoBehaviour
+public class AiCommandListener : MonoBehaviour, IToggleable
 {
 	private List<ICommand> commands = new List<ICommand>();
 	bool canRunNextCommand = true;
@@ -217,5 +217,13 @@ public class AiCommandListener : MonoBehaviour
 		}
 	}
 
+	public void DisableControl()
+	{
+		enabled = true;
+	}
 
+	public void EnableControl()
+	{
+		enabled = false;
+	}
 }

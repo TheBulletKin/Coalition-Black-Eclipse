@@ -2,24 +2,28 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class CharacterSwitcher : MonoBehaviour
 {
-    
-	[SerializeField] private List<ControllableEntity> teammates;
 
-	
+	[SerializeField] private List<ControllableEntity> teammates;
+	public Camera playerCamera;
+	public CameraController camController;
+
 
 	void Start()
 	{
-		InputManager.Instance.OnAiSwitchPressed += SwitchToCharacter;
+		InputManager.Instance.OnAiSwitchPressed += FindCharacter;
+		playerCamera = Camera.main;
 
-		SwitchToCharacter(1);
+		FindCharacter(1);
 
 	}
 
-	public void SwitchToCharacter(int teammateId)
+	//Checks to make sure that character exists before switching
+	public void FindCharacter(int teammateId)
 	{
 		foreach (ControllableEntity teammate in teammates)
 		{
@@ -31,8 +35,33 @@ public class CharacterSwitcher : MonoBehaviour
 				 * Disable target's model
 				 * 
 				 */
-				Debug.Log("Switched to " + teammateId);
+
+				SwitchToCharacter(teammate);
 			}
 		}
+	}
+
+	private void SwitchToCharacter(ControllableEntity teammate)
+	{
+
+		foreach (ControllableEntity entity in teammates)
+		{
+			if (teammate.teammateID != entity.teammateID)
+			{
+				entity.LoseControl();
+				Debug.Log(entity.gameObject.name + " lost control");
+			}
+		}
+		teammate.TakeControl();
+		Debug.Log(teammate.gameObject.name + " gained control");
+		MoveCamera(teammate.gameObject, teammate.cameraPos);
+
+	}
+
+	private void MoveCamera(GameObject newOwner,Transform cameraPos)
+	{
+		playerCamera.transform.parent = cameraPos.parent;
+		playerCamera.transform.localPosition = cameraPos.localPosition;
+		camController.TransferOwnership(newOwner);
 	}
 }

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AiDetectAndEngage : MonoBehaviour
+public class AiDetectAndEngage : MonoBehaviour, IToggleable
 {
 
 	[SerializeField] private float detectionRange = 10f;
@@ -225,5 +225,13 @@ public class AiDetectAndEngage : MonoBehaviour
 		Debug.Log("Removed entity from list");
 	}
 
+	public void DisableControl()
+	{
+		enabled = true;
+	}
 
+	public void EnableControl()
+	{
+		enabled = false;
+	}
 }

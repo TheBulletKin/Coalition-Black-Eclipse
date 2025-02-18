@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class PlayerMovementController : MonoBehaviour
+public class PlayerMovementController : MonoBehaviour, IToggleable
 {
 	public bool canMove = true;
 	//Properties - To avoid multiple if statements later. May change if need be.
@@ -91,8 +91,7 @@ public class PlayerMovementController : MonoBehaviour
 
 
 	[Header("Additional Values")]
-	private Camera playerCamera;
-	private CameraController cameraController;
+	private Camera playerCamera;	
 	private CharacterController characterController;
 
 	//Movement values
@@ -112,20 +111,15 @@ public class PlayerMovementController : MonoBehaviour
 
 	private void Awake()
 	{
-		characterController = GetComponent<CharacterController>();
-		cameraController = GetComponentInChildren<CameraController>();
+		characterController = GetComponent<CharacterController>();		
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
-		playerCamera = GetComponentInChildren<Camera>();
+		playerCamera = Camera.main;
 	}
 
 	private void Start()
 	{
-		InputManager.Instance.OnCrouchPressed += HandleCrouch;
-		InputManager.Instance.OnSprintPressed += HandleSprint;
-		InputManager.Instance.OnSprintReleased += HandleSprintReleased;
-		InputManager.Instance.OnJumpPressed += HandleJumpPressed;
-		InputManager.Instance.OnJumpReleased += HandleJumpReleased;
+		
 
 		//UpdateCharacterHeight(true);
 	}
@@ -369,5 +363,25 @@ public class PlayerMovementController : MonoBehaviour
 		isJumping = false;
 	}
 
+	public void DisableControl()
+	{
+		InputManager.Instance.OnCrouchPressed -= HandleCrouch;
+		InputManager.Instance.OnSprintPressed -= HandleSprint;
+		InputManager.Instance.OnSprintReleased -= HandleSprintReleased;
+		InputManager.Instance.OnJumpPressed -= HandleJumpPressed;
+		InputManager.Instance.OnJumpReleased -= HandleJumpReleased;
 
+		enabled = false;
+	}
+
+	public void EnableControl()
+	{
+		InputManager.Instance.OnCrouchPressed += HandleCrouch;
+		InputManager.Instance.OnSprintPressed += HandleSprint;
+		InputManager.Instance.OnSprintReleased += HandleSprintReleased;
+		InputManager.Instance.OnJumpPressed += HandleJumpPressed;
+		InputManager.Instance.OnJumpReleased += HandleJumpReleased;
+
+		enabled = true;
+	}
 }
