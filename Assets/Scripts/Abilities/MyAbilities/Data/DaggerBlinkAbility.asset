@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21b9bbdc54b6d57448e5e2ff82396ba6, type: 3}
+  m_Name: DaggerBlinkAbility
+  m_EditorClassIdentifier: 
+  daggerPrefab: {fileID: 331984391212392924, guid: 4bbc79599b0817c439a8bed91584d6ff,
+    type: 3}
+  daggerProjectile: {fileID: 331984391212392924, guid: a256d3c332770664da8b1467f1504550,
+    type: 3}
+  travelDuration: 1.5
+  arcHeight: 5
+  launchForce: 30
+  gadgetCount: 1
+  daggerActive: 1
+  teleportPosition: {x: -4.3688025, y: 4.6325645, z: -65}
