@@ -37,7 +37,16 @@ public class EnemySightSensor : MonoBehaviour
 
 		if (hit.collider.tag == "Player")
 		{
-			return true;
+			EntityVisibility vis = hit.collider.gameObject.GetComponent<EntityVisibility>();
+			if (vis.GetVisibilityMod() > 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+			
 		}
 
 		return false;

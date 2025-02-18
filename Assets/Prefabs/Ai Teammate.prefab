@@ -255,6 +255,7 @@ GameObject:
   - component: {fileID: 8230875769949104345}
   - component: {fileID: 3612278674307090578}
   - component: {fileID: 7714910408018181676}
+  - component: {fileID: 9133000728209936275}
   m_Layer: 0
   m_Name: Ai Teammate
   m_TagString: Untagged
@@ -343,9 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f270f98e1306146a90598bc46e64f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groupIndex: 1
-  commandsTotal: 0
-  waypointColour: {r: 0.19815768, g: 0.4472573, b: 0.6886792, a: 0}
+  groupIndex: 0
+  teammateColour: {r: 0.7169812, g: 0.3077608, b: 0.3077608, a: 1}
   moveWaypointLine: {fileID: 3953967171312708828}
   lookWaypointLines: []
   pathUpdateSpeed: 0.1
@@ -380,6 +380,19 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   enemiesSeen: []
+--- !u!114 &9133000728209936275
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2342537618159628209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: adb19c879c3ccd140adec9847a1e18c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibilityModifier: 1
 --- !u!1 &8520932290879977908
 GameObject:
   m_ObjectHideFlags: 0

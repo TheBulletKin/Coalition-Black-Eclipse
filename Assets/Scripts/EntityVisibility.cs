@@ -6,13 +6,18 @@ public class EntityVisibility : MonoBehaviour
 {
     [SerializeField] private float visibilityModifier;
 
-    public float GetVisibilityMod()
+	private void Start()
+	{
+        visibilityModifier = 1.0f;
+	}
+
+	public float GetVisibilityMod()
     {
         return visibilityModifier;
     }
 
-    public void ChangeVisibilityModifier()
+    public void ChangeVisibilityModifier(float newVis)
     {
-
+        visibilityModifier = newVis;
     }
 }
