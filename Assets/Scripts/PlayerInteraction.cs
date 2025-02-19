@@ -21,7 +21,11 @@ public class PlayerInteraction : MonoBehaviour, IToggleable
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnInteractPressed -= TryInteract;
+		if (InputManager.Instance)
+		{
+			InputManager.Instance.OnInteractPressed -= TryInteract;
+		}
+
 	}
 
 	private void TryInteract()

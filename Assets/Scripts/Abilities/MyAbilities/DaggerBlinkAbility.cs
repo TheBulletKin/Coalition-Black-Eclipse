@@ -26,7 +26,7 @@ public class DaggerBlinkAbility : CharacterAbility
 	{
 		if (gadgetCount > 0)
 		{
-
+			//Currently gets the components it needs through getComponent on the newly created projectile
 			GameObject projectile = Instantiate(daggerProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
 
 			Rigidbody rb = projectile.GetComponent<Rigidbody>();

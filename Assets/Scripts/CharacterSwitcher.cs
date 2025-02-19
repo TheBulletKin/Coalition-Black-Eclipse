@@ -46,7 +46,7 @@ public class CharacterSwitcher : MonoBehaviour
 
 	private void SwitchToCharacter(ControllableEntity teammate)
 	{
-
+		//First, disable player control on all entities
 		foreach (ControllableEntity entity in teammates)
 		{
 			if (teammate.teammateID != entity.teammateID)
@@ -58,11 +58,18 @@ public class CharacterSwitcher : MonoBehaviour
 		}
 		
 		Debug.Log(teammate.gameObject.name + " gained control");
+
+		//Move the player camera and change parent
 		MoveCamera(teammate.gameObject, teammate.cameraPos);
+
+		//Disable the player model on the selected character
 		teammate.characterModel.SetActive(false);
+
+		//Change ammo UI to match selected player
 		uiManager.changePlayerTarget(teammate);
-		cameraStateSwitcher.SwitchTarget(teammate);
-			
+
+		//Change the target for map / player view switching
+		cameraStateSwitcher.SwitchTarget(teammate);			
 		
 		teammate.TakeControl();
 	}
