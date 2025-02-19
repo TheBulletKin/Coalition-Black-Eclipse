@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInteraction : MonoBehaviour
+public class PlayerInteraction : MonoBehaviour, IToggleable
 {
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
 	public GameObject holdPoint;
 
+
 	private void Start()
 	{
-	
-		InputManager.Instance.OnInteractPressed += TryInteract;
+
 	}
 
 	private void Update()
@@ -26,6 +26,7 @@ public class PlayerInteraction : MonoBehaviour
 
 	private void TryInteract()
 	{
+
 		Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 		RaycastHit hit;
 
@@ -37,5 +38,19 @@ public class PlayerInteraction : MonoBehaviour
 				interactable.Interact(gameObject);
 			}
 		}
+
+
+	}
+
+	public void DisableControl()
+	{
+		InputManager.Instance.OnInteractPressed -= TryInteract;
+		enabled = false;
+	}
+
+	public void EnableControl()
+	{
+		InputManager.Instance.OnInteractPressed += TryInteract;
+		enabled = true;
 	}
 }

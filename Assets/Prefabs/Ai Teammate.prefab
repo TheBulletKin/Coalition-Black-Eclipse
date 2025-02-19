@@ -543,7 +543,7 @@ MonoBehaviour:
   interactionRange: 3
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 129
   holdPoint: {fileID: 7100344853660602463}
 --- !u!114 &5671389215264514013
 MonoBehaviour:
@@ -560,10 +560,11 @@ MonoBehaviour:
   cameraPos: {fileID: 8232328874099428430}
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   weaponConfig: {fileID: 11400000, guid: ddca2226d7d575648bc7a1601450b413, type: 2}
   currentAmmo: 0
   reserveAmmo: 15
+  heldObjectLaunchForce: 15
 --- !u!114 &4284256450557001990
 MonoBehaviour:
   m_ObjectHideFlags: 0
