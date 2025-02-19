@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
 {
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
+	public GameObject holdPoint;
 
 	private void Start()
 	{

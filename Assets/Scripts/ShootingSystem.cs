@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.UI.GridLayoutGroup;
 
 public class ShootingSystem : MonoBehaviour, IToggleable
 {
@@ -17,6 +18,10 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private bool isReloading = false;
 	private bool isFireRecovery = false;
 	private bool inPlayerControl = false;
+	private GameObject heldObject;
+	private bool isHoldingObject;
+	[SerializeField] private float heldObjectLaunchForce = 15f;
+
 
 	public event Action<int, int> WeaponFired;
 
@@ -26,6 +31,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		mainCam = Camera.main;
 		currentAmmo = weaponConfig.maxAmmo;
 		inPlayerControl = false;
+		isHoldingObject = false;
 		UpdateAmmo(currentAmmo, reserveAmmo);
 	}
 
@@ -47,9 +53,27 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	//Used when the player fires at something
 	public void Fire()
 	{
+		//Will override the regular fire procedure if an item is held
+		if (isHoldingObject)
+		{
+			heldObject.transform.parent = null;
+			Rigidbody rb = heldObject.GetComponent<Rigidbody>();
+			if (rb != null)
+			{
+				rb.isKinematic = false;
+				rb.velocity = mainCam.transform.forward * heldObjectLaunchForce;
+			}
+			isHoldingObject = false;
+			heldObject = null;
+			
+
+			return;
+		}
+
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
 
 
+		//If able to fire and fire has been clicked
 		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
 		if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
@@ -61,9 +85,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			}
 		}
 
-
-
-
+		//Begin recovery and deduce ammo
 		isFireRecovery = true;
 
 		currentAmmo--;
@@ -73,7 +95,10 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+
 	}
+
+
 
 	//Used when AI need to fire at something
 	/// <summary>
@@ -95,7 +120,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			{
 				damageable.TakeDamage(weaponConfig.weaponDamage);
 			}
-			
+
 		}
 
 
@@ -109,7 +134,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Reload();
 		}
 
-		
+
 
 		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 	}
@@ -175,5 +200,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 		UpdateAmmo(currentAmmo, reserveAmmo);
+	}
+
+	public void HoldItem(GameObject heldObject)
+	{
+		this.heldObject = heldObject;
+		isHoldingObject = true;
 	}
 }
