@@ -16,7 +16,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private float detectionScanTimer = 0f;
 	[SerializeField] private float scanCooldown = 0.08f;
 
-	[SerializeField] private int weaponDamage = 10;
+	
 
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
