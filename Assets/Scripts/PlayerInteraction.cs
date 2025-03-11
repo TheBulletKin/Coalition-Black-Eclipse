@@ -34,6 +34,7 @@ public class PlayerInteraction : MonoBehaviour, IToggleable
 		Ray ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2));
 		RaycastHit hit;
 
+		//Temporarily use this for ai spotting
 		if (Physics.Raycast(ray, out hit, interactionRange, interactableLayer))
 		{
 			IInteractable interactable = hit.collider.GetComponent<IInteractable>();

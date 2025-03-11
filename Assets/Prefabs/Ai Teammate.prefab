@@ -430,7 +430,6 @@ MonoBehaviour:
   fireCooldown: 0.4
   detectionScanTimer: 0
   scanCooldown: 0.08
-  weaponDamage: 51
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -540,10 +539,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc1bbd601f49f4f40ab31d59d75169be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  interactionRange: 3
+  interactionRange: 30
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 193
   holdPoint: {fileID: 7100344853660602463}
 --- !u!114 &5671389215264514013
 MonoBehaviour:

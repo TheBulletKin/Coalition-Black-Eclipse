@@ -46,8 +46,6 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		if (enemiesSeen.Count >= 1)
 		{
-
-
 			Health entityToTarget = GetClosestEnemySeen();
 			if (entityToTarget != null)
 			{

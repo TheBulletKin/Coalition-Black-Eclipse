@@ -9,6 +9,7 @@ public class Health : MonoBehaviour, IDamagable
 	[SerializeField] private int currentHealth;
 
 	public event Action<Health> OnEnemyDeath;
+	
 
 	private void Start()
 	{
