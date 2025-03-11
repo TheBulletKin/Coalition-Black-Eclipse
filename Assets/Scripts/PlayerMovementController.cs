@@ -93,6 +93,7 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 	[Header("Additional Values")]
 	private Camera playerCamera;	
 	private CharacterController characterController;
+	private ShootingSystem shootingSystem;
 
 	//Movement values
 	private Vector3 moveDirection;
@@ -111,7 +112,8 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 
 	private void Awake()
 	{
-		characterController = GetComponent<CharacterController>();		
+		characterController = GetComponent<CharacterController>();
+		shootingSystem = GetComponent<ShootingSystem>();
 		Cursor.lockState = CursorLockMode.Locked;
 		Cursor.visible = false;
 		playerCamera = Camera.main;
@@ -154,6 +156,11 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 			CalculateVelocities();
 
 			ApplyFinalMovements();
+
+			if (shootingSystem != null)
+			{
+				shootingSystem.SpreadMultiplierFromVelocity(characterController.velocity);
+			}
 
 		}
 	}

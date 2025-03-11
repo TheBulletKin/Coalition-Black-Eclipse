@@ -10,6 +10,8 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	[SerializeField] private TextMeshProUGUI reserveAmmoText;
 	//Shooting system assigned in CharacterSwitcher
 	[SerializeField] private ShootingSystem shootingSystem;
+	[SerializeField] private Crosshair crosshair;
+	
 
 	private void Start()
 	{
@@ -20,6 +22,11 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		}
 		
 		
+	}
+
+	private void Update()
+	{
+		crosshair.UpdateSpreadVisual(shootingSystem.currentBaseSpread);
 	}
 
 	private void UpdateAmmoCounts(int currentAmmo, int reserveAmmo)
@@ -41,7 +48,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	public void changePlayerTarget(ControllableEntity newPlayer)
 	{
 		playerEntity = newPlayer;
-		shootingSystem = newPlayer.gameObject.GetComponent<ShootingSystem>();
+		shootingSystem = newPlayer.gameObject.GetComponent<ShootingSystem>();		
 		shootingSystem.WeaponFired += UpdateAmmoCounts;
 		
 	}

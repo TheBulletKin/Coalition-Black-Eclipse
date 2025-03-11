@@ -21,6 +21,14 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private GameObject heldObject;
 	private bool isHoldingObject;
 	[SerializeField] private float heldObjectLaunchForce = 15f;
+	[Tooltip("Angle of spread from the camera")]
+	[Range(0f, 45f)]
+	[SerializeField] public float baseSpreadAngle = 20f; 
+	[SerializeField] public float spreadMultiplier = 1f;	
+	private float movementMultiplierWeighting = 0.25f;	
+	[SerializeField] public float currentBaseSpread = 1.0f;
+	[SerializeField] public float crosshairConvergeanceRange = 20.0f;
+
 
 
 	public event Action<int, int> WeaponFired;
@@ -37,7 +45,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	// Update is called once per frame
 	void Update()
-	{
+	{	
+			
+		float spreadRadians = (baseSpreadAngle * spreadMultiplier) * Mathf.Deg2Rad;
+		currentBaseSpread = Mathf.Tan(spreadRadians) * crosshairConvergeanceRange * 15f;
+
 		if (isFireRecovery)
 		{
 			fireTimer += Time.deltaTime;
@@ -65,7 +77,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			}
 			isHoldingObject = false;
 			heldObject = null;
-			
+
 
 			return;
 		}
@@ -73,17 +85,43 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
 
 
-		//If able to fire and fire has been clicked
-		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
-		if (Physics.Raycast(mainCam.transform.position, mainCam.transform.forward, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
+		//Random direction from the crosshair to move
+		float randomAngle = UnityEngine.Random.Range(0f, 359f);
+		float randomAngleRad = randomAngle * Mathf.Deg2Rad;
+		
+		float spreadValue = UnityEngine.Random.Range(0f, currentBaseSpread);		
+		
+			
+		//Find new screen coord to fire from.
+		//Got clockwise angle already.
+		//Hypotenuse is 1 due to unit length. Can use cos and sin directly
+		Vector2 screenOffset = new Vector2(Mathf.Cos(randomAngleRad), Mathf.Sin(randomAngleRad)) * spreadValue; //Will eventually change to a value that is easier to change in the inspector
+		Vector2 screenFirePos = new Vector2(Screen.width / 2, Screen.height / 2) + screenOffset;
+
+
+		//Ray holds origin and direction, so this is the world direction of the spread value
+		Ray fireRay = mainCam.ScreenPointToRay(screenFirePos);
+
+		Vector3 fireDirection = (fireRay.origin + fireRay.direction) - mainCam.transform.position;
+		fireDirection.Normalize();
+
+		if (Physics.Raycast(mainCam.transform.position, fireDirection, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
 		{
 			IDamagable damageable = hit.collider.GetComponent<IDamagable>();
 			if (damageable != null)
 			{
 				damageable.TakeDamage(weaponConfig.weaponDamage);
 			}
+
+			GameObject impactMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			impactMarker.transform.position = hit.point;
+			impactMarker.transform.localScale = Vector3.one * 0.1f;
+			impactMarker.GetComponent<Collider>().enabled = false;
+			Destroy(impactMarker, 2f);
 		}
+
+
 
 		//Begin recovery and deduce ammo
 		isFireRecovery = true;
@@ -109,6 +147,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	public void Fire(Transform targetTransform)
 	{
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
+
+
 
 
 		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
@@ -206,5 +246,10 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		this.heldObject = heldObject;
 		isHoldingObject = true;
+	}
+
+	public void SpreadMultiplierFromVelocity(Vector3 velocity)
+	{
+		spreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting); 
 	}
 }
