@@ -16,7 +16,11 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private float detectionScanTimer = 0f;
 	[SerializeField] private float scanCooldown = 0.08f;
 
-	
+	[Tooltip("How detected the player is, from 0 to 1")]
+	[SerializeField] private float detectionValue = 0f;
+	[SerializeField] private float detectionIncreaseRate = 5f;
+	[SerializeField] private float detectionDecreaseRate = 2f;
+	[SerializeField] private float detectionThreshold = 100f;
 
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
@@ -36,6 +40,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 			DistanceCheck();
 			VisionConeCheck();
 			ObstructionCheck();
+			//DecrementDetection();
 			detectionScanTimer = scanCooldown;
 		}
 		else
@@ -198,6 +203,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 			}
 			else
 			{
+				//If unable to see enemy, remove from enemiesSeen
 				Vector3 vectorToTarget = enemiesSeen[i].transform.position - transform.position;
 				Ray ray = new Ray(transform.position, vectorToTarget.normalized);
 				if (Physics.Raycast(ray, out RaycastHit hit, vectorToTarget.magnitude, obstructionLayers))
@@ -205,7 +211,22 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
 					enemiesSeen.RemoveAt(i);
 				}
+				else
+				{
+					//detectionValue += detectionIncreaseRate * Time.deltaTime;
+					//detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+				}
 			}
+		}
+	}
+
+	private void DecrementDetection()
+	{
+		//If nobody is seen, start lowering that detection value
+		if (enemiesSeen.Count == 0)
+		{
+			//detectionValue -= detectionDecreaseRate * Time.deltaTime;
+			//detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
 		}
 	}
 
