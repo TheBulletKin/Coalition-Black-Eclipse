@@ -360,7 +360,6 @@ MonoBehaviour:
   teammateID: 1
   characterModel: {fileID: 8520932290879977908}
   cameraPos: {fileID: 8232328874099428430}
-  agent: {fileID: 8297751687359297920}
 --- !u!114 &2497608753782231407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -527,7 +526,7 @@ MonoBehaviour:
     isNearGrounded: 0
     groundLayer:
       serializedVersion: 2
-      m_Bits: 1
+      m_Bits: 257
     groundCheckDistance: 1.1
     groundCheckDistanceInAir: 1.2
     jumpGroundingPreventionTime: 0.2
@@ -564,7 +563,7 @@ MonoBehaviour:
   cameraPos: {fileID: 8232328874099428430}
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 449
   weaponConfig: {fileID: 11400000, guid: ddca2226d7d575648bc7a1601450b413, type: 2}
   currentAmmo: 0
   reserveAmmo: 15

@@ -134,7 +134,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 				Vector3 targetVector = enemiesSeen[i].transform.position - transform.position;
 				if (targetVector.magnitude > (shootingSystem.weaponConfig.weaponRange))
 				{
-					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen[i].OnEntityDeath -= OnEnemyDeath;
 					enemiesSeen.RemoveAt(i);
 				}
 			}
@@ -154,7 +154,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 				if (!enemiesSeen.Contains(entityHealthComponent))
 				{
 					enemiesSeen.Add(entityHealthComponent);
-					entityHealthComponent.OnEnemyDeath += OnEnemyDeath;
+					entityHealthComponent.OnEntityDeath += OnEnemyDeath;
 				}
 
 			}
@@ -183,7 +183,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 				}
 				else
 				{
-					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen[i].OnEntityDeath -= OnEnemyDeath;
 					enemiesSeen.RemoveAt(i);
 				}
 			}
@@ -208,7 +208,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 				Ray ray = new Ray(transform.position, vectorToTarget.normalized);
 				if (Physics.Raycast(ray, out RaycastHit hit, vectorToTarget.magnitude, obstructionLayers))
 				{
-					enemiesSeen[i].OnEnemyDeath -= OnEnemyDeath;
+					enemiesSeen[i].OnEntityDeath -= OnEnemyDeath;
 					enemiesSeen.RemoveAt(i);
 				}
 				else

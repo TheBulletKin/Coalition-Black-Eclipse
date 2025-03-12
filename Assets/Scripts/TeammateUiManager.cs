@@ -79,6 +79,14 @@ public class TeammateUiManager : MonoBehaviour
 		}		
 	}
 
+	public void RemoveTeammateCard(AiCommandListener teammate)
+	{
+		Destroy(teammateToUiCard[teammate].gameObject);
+		Destroy(teammateToUiNameplate[teammate].gameObject);
+		teammateToUiCard.Remove(teammate);
+		teammateToUiNameplate.Remove(teammate);
+	}
+
 	private void Update()
 	{
 		foreach (KeyValuePair<AiCommandListener, UiTeammateNameplate> pair in teammateToUiNameplate)

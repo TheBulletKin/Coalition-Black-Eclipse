@@ -10,6 +10,7 @@ public class InLineOfSightAndDetectedDecision : Decision
 	//If something was stored here, each ai would share state information. Will need a fix for this later
 	public override bool Decide(BaseStateMachine stateMachine)
 	{
+		//using getcomponent each frame isn't good
 		EnemySightSensor sightSensor = stateMachine.GetComponent<EnemySightSensor>();
 		if (sightSensor.entityIsDetected)
 		{

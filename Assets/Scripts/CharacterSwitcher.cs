@@ -7,12 +7,12 @@ using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class CharacterSwitcher : MonoBehaviour
 {
-
-	[SerializeField] private List<ControllableEntity> teammates;
+	
 	public Camera playerCamera;
 	public CameraController camController;
 	public PlayerUiImanager uiManager;
 	public CameraStateSwitcher cameraStateSwitcher;
+	public int currentlyControlledTeammate;
 
 
 	void Start()
@@ -28,7 +28,7 @@ public class CharacterSwitcher : MonoBehaviour
 	//Checks to make sure that character exists before switching
 	public void FindCharacter(int teammateId)
 	{
-		foreach (ControllableEntity teammate in teammates)
+		foreach (ControllableEntity teammate in EntityManager.Instance.playerTeammates)
 		{
 			if (teammate.teammateID == teammateId)
 			{
@@ -40,14 +40,15 @@ public class CharacterSwitcher : MonoBehaviour
 				 */
 
 				SwitchToCharacter(teammate);
+				
 			}
 		}
 	}
 
-	private void SwitchToCharacter(ControllableEntity teammate)
+	public void SwitchToCharacter(ControllableEntity teammate)
 	{
 		//First, disable player control on all entities
-		foreach (ControllableEntity entity in teammates)
+		foreach (ControllableEntity entity in EntityManager.Instance.playerTeammates)
 		{
 			if (teammate.teammateID != entity.teammateID)
 			{
@@ -72,6 +73,8 @@ public class CharacterSwitcher : MonoBehaviour
 		cameraStateSwitcher.SwitchTarget(teammate);			
 		
 		teammate.TakeControl();
+
+		currentlyControlledTeammate = teammate.teammateID;
 	}
 
 	private void MoveCamera(GameObject newOwner,Transform cameraPos)

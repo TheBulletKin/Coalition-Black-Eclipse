@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1560d29fd8d2a54095c1cfbdc94d285, type: 3}
-  m_Name: Patrol
+  m_Name: PatrolState
   m_EditorClassIdentifier: 
   Action:
   - {fileID: 11400000, guid: 67c6ec59eaff260448941d56656a0980, type: 2}

@@ -14,6 +14,34 @@ public class EngageAction : FSMAction
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
 		EnemySightSensor enemySightSensor = stateMachine.GetComponent<EnemySightSensor>();
 
-		navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
+		//The enemy can die before this action is ran and it changes states in response
+		if (enemySightSensor.currentTarget)
+		{
+			if (!(enemySightSensor.TargetInWeaponRange())) //If target is not currently in weapon range (+ some wiggle room)
+			{
+				navMeshAgent.isStopped = false;
+				navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
+			}
+			else
+			{
+				RaycastHit hit;
+				if (!enemySightSensor.TargetInLineOfSight(out hit)) //If within range but without eyes on target
+				{
+					//Will appear to home in on players. Necessary for the time being
+					navMeshAgent.isStopped = false;
+					navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
+				}
+				else //If in range and line of sight
+				{
+					
+					navMeshAgent.isStopped = true;
+					navMeshAgent.ResetPath();
+					Vector3 direction = (enemySightSensor.currentTarget.transform.position - stateMachine.transform.position).normalized;
+					direction.y = 0;
+					stateMachine.transform.rotation = Quaternion.LookRotation(direction);
+				}
+
+			}
+		}
 	}
 }

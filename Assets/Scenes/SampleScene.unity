@@ -256,6 +256,75 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &28296495
+GameObject:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 28296497}
+  - component: {fileID: 28296496}
+  m_Layer: 0
+  m_Name: '[default-CSGModel]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 124
+  m_IsActive: 1
+--- !u!114 &28296496
+MonoBehaviour:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28296495}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrefabBehaviour: 0
+  PrefabSourceAlignment: 4
+  PrefabDestinationAlignment: 0
+  Version: 1.1
+  infiniteBrush: {fileID: 0}
+  Settings: 1537
+  VertexChannels: 14
+  ReceiveGI: 2
+  MeshColliderCookingOptions: 14
+  ShowGeneratedMeshes: 0
+  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
+    type: 2}
+  exportType: 0
+  originType: 0
+  exportColliders: 0
+  exportPath: 
+  angleError: 1
+  areaError: 1
+  hardAngle: 60
+  packMargin: 20
+  scaleInLightmap: 1
+  autoUVMaxDistance: 0.5
+  autoUVMaxAngle: 89
+  minimumChartSize: 4
+--- !u!4 &28296497
+Transform:
+  m_ObjectHideFlags: 17
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 28296495}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 924619242}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &32787993
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -453,18 +522,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f270f98e1306146a90598bc46e64f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &67206375 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2952888588522578358, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1632478642}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaae064d4639584cb17497b6a7178d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &85308315
 GameObject:
   m_ObjectHideFlags: 0
@@ -566,7 +623,7 @@ GameObject:
   m_Component:
   - component: {fileID: 103699770}
   - component: {fileID: 103699769}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,7 +706,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105558846}
   - component: {fileID: 105558847}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1160,7 +1217,7 @@ GameObject:
   m_Component:
   - component: {fileID: 131943201}
   - component: {fileID: 131943202}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2076,7 +2133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 173223745}
   - component: {fileID: 173223746}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (37)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2763,7 +2820,7 @@ GameObject:
   m_Component:
   - component: {fileID: 188161596}
   - component: {fileID: 188161597}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (21)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3364,7 +3421,7 @@ GameObject:
   m_Component:
   - component: {fileID: 288253475}
   - component: {fileID: 288253476}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (17)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3625,7 +3682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 295834814}
   - component: {fileID: 295834815}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (28)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4268,18 +4325,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6487707496250139706}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &388114931 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2952888588522578358, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 6487707496250139706}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaae064d4639584cb17497b6a7178d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &396759773
 GameObject:
   m_ObjectHideFlags: 0
@@ -5347,7 +5392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 484865508}
   - component: {fileID: 484865509}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (7)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5608,7 +5653,7 @@ GameObject:
   m_Component:
   - component: {fileID: 497436288}
   - component: {fileID: 497436289}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5870,7 +5915,7 @@ GameObject:
   - component: {fileID: 509864269}
   - component: {fileID: 509864271}
   - component: {fileID: 509864270}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-collider-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6085,7 +6130,7 @@ GameObject:
   m_Component:
   - component: {fileID: 534053417}
   - component: {fileID: 534053418}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6691,53 +6736,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 920f9933f0ed8bd449ff08f02b436df2, type: 3}
---- !u!1 &556514107
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 556514108}
-  - component: {fileID: 556514109}
-  m_Layer: 0
-  m_Name: '[generated-meshes]'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &556514108
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556514107}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1992079879}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &556514109
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 556514107}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5c3643d4978096d4880d7edbf4f65a50, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Version: 1
-  owner: {fileID: 1992079878}
-  helperSurfaces: []
 --- !u!1 &557445762
 GameObject:
   m_ObjectHideFlags: 3
@@ -6848,7 +6846,7 @@ GameObject:
   m_Component:
   - component: {fileID: 560766438}
   - component: {fileID: 560766439}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (33)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7144,7 +7142,7 @@ GameObject:
   m_Component:
   - component: {fileID: 584802949}
   - component: {fileID: 584802950}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (18)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7405,6 +7403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 586320511}
   - component: {fileID: 586320512}
+  - component: {fileID: 586320513}
   m_Layer: 0
   m_Name: EnemyManager
   m_TagString: Untagged
@@ -7440,6 +7439,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies: []
+--- !u!114 &586320513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 586320510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec7e9080fb5fe6e4bbfa684f9599c5c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerTeammates: []
 --- !u!1 &607312234
 GameObject:
   m_ObjectHideFlags: 0
@@ -7487,7 +7499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 616960716}
   - component: {fileID: 616960717}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (16)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7816,7 +7828,7 @@ GameObject:
   m_Component:
   - component: {fileID: 633476072}
   - component: {fileID: 633476073}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (20)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8242,7 +8254,7 @@ GameObject:
   m_Component:
   - component: {fileID: 644744609}
   - component: {fileID: 644744610}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (29)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -8503,7 +8515,7 @@ GameObject:
   m_Component:
   - component: {fileID: 660011206}
   - component: {fileID: 660011207}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-meshes]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9163,7 +9175,7 @@ GameObject:
   m_Component:
   - component: {fileID: 691886092}
   - component: {fileID: 691886093}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9492,7 +9504,7 @@ GameObject:
   m_Component:
   - component: {fileID: 710542776}
   - component: {fileID: 710542777}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (10)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10149,7 +10161,7 @@ GameObject:
   m_Component:
   - component: {fileID: 804739089}
   - component: {fileID: 804739090}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (43)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10934,7 +10946,7 @@ GameObject:
   m_Component:
   - component: {fileID: 852921809}
   - component: {fileID: 852921810}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (34)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11684,7 +11696,7 @@ GameObject:
   m_Component:
   - component: {fileID: 897792663}
   - component: {fileID: 897792664}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12014,7 +12026,7 @@ GameObject:
   - component: {fileID: 907919996}
   - component: {fileID: 907919998}
   - component: {fileID: 907919997}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-collider-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -12285,6 +12297,53 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1493112866}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &924619241
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 924619242}
+  - component: {fileID: 924619243}
+  m_Layer: 0
+  m_Name: '[generated-meshes]'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &924619242
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924619241}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 28296497}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &924619243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924619241}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c3643d4978096d4880d7edbf4f65a50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Version: 1
+  owner: {fileID: 28296496}
+  helperSurfaces: []
 --- !u!1001 &952980421
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12400,11 +12459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e191f3c274119aa43baabf2b2ce30968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerEntities:
-  - {fileID: 388114921}
-  - {fileID: 1977900251}
-  - {fileID: 1920466751}
-  - {fileID: 1797812185}
   visibleEntities: []
   <detectionValue>k__BackingField: 0
   detectionIncreaseRate: 20
@@ -12415,11 +12469,11 @@ MonoBehaviour:
   closeDetectionFalloffDistance: 15
   detectionRateModifier: 0
   isEngagingEnemy: 0
-  _ignoreMask:
+  ignoreMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 1
   maxWeaponRange: 30
-  weaponDamage: 30
+  weaponDamage: 15
   fireTimer: 0
   fireCooldown: 1
 --- !u!195 &972061967
@@ -12459,7 +12513,7 @@ MonoBehaviour:
   cameraPos: {fileID: 0}
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 1
   weaponConfig: {fileID: 0}
   currentAmmo: 0
   reserveAmmo: 0
@@ -12478,7 +12532,7 @@ GameObject:
   m_Component:
   - component: {fileID: 995341565}
   - component: {fileID: 995341566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (44)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13871,7 +13925,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1161273449}
   - component: {fileID: 1161273450}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (30)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14898,7 +14952,7 @@ GameObject:
   - component: {fileID: 1211309029}
   - component: {fileID: 1211309028}
   - component: {fileID: 1211309027}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-render-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15294,18 +15348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79f270f98e1306146a90598bc46e64f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1217951263 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2952888588522578358, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1217951249}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaae064d4639584cb17497b6a7178d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1235234331
 GameObject:
   m_ObjectHideFlags: 0
@@ -15316,7 +15358,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1235234333}
   - component: {fileID: 1235234332}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Tent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15387,7 +15429,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1253437786}
   - component: {fileID: 1253437787}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15648,7 +15690,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1260607963}
   - component: {fileID: 1260607964}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (40)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15911,7 +15953,7 @@ GameObject:
   - component: {fileID: 1261959930}
   - component: {fileID: 1261959929}
   - component: {fileID: 1261959928}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-render-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16024,7 +16066,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1270023023}
   - component: {fileID: 1270023024}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (14)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -16774,7 +16816,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1344319672}
   - component: {fileID: 1344319673}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17037,7 +17079,7 @@ GameObject:
   - component: {fileID: 1376605223}
   - component: {fileID: 1376605222}
   - component: {fileID: 1376605221}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-render-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17150,7 +17192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1386464861}
   - component: {fileID: 1386464860}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17238,7 +17280,7 @@ GameObject:
   - component: {fileID: 1409714705}
   - component: {fileID: 1409714706}
   - component: {fileID: 1409714707}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brushes (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17335,7 +17377,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1420200618}
   - component: {fileID: 1420200619}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (11)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17761,7 +17803,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1435622930}
   - component: {fileID: 1435622931}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (19)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18022,7 +18064,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1438624847}
   - component: {fileID: 1438624848}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-meshes]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18176,7 +18218,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1484595327}
   - component: {fileID: 1484595328}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-meshes]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18445,7 +18487,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1525993111}
   - component: {fileID: 1525993112}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (36)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18800,7 +18842,7 @@ GameObject:
   - component: {fileID: 1550590922}
   - component: {fileID: 1550590921}
   - component: {fileID: 1550590925}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -18935,7 +18977,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1558963391}
   - component: {fileID: 1558963392}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19196,7 +19238,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1561356065}
   - component: {fileID: 1561356066}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (32)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19457,7 +19499,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577168759}
   - component: {fileID: 1577168760}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (39)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19718,7 +19760,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1587767056}
   - component: {fileID: 1587767057}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20368,7 +20410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1644645820}
   - component: {fileID: 1644645821}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (9)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -20632,7 +20674,7 @@ GameObject:
   - component: {fileID: 1650621848}
   - component: {fileID: 1650621847}
   - component: {fileID: 1650621851}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21128,7 +21170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1681377953}
   - component: {fileID: 1681377954}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (13)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -21702,7 +21744,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1718802997}
   - component: {fileID: 1718802998}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (23)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23063,7 +23105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1784266437}
   - component: {fileID: 1784266438}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (42)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23356,12 +23398,6 @@ MonoBehaviour:
     - EdgeIndices: 1a0000001b0000001c0000001d000000
       TexGenIndex: 6
     Generation: 2
---- !u!4 &1797812185 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8524576815190887093, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1632478642}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1811414199
 GameObject:
   m_ObjectHideFlags: 0
@@ -23373,7 +23409,7 @@ GameObject:
   - component: {fileID: 1811414200}
   - component: {fileID: 1811414202}
   - component: {fileID: 1811414201}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: '[generated-collider-mesh]'
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23542,15 +23578,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca29f48a82490ce4b8ad5a6bae585114, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teammates:
-  - {fileID: 1217951263}
-  - {fileID: 1920466750}
-  - {fileID: 67206375}
-  - {fileID: 388114931}
   playerCamera: {fileID: 330585545}
   camController: {fileID: 330585548}
   uiManager: {fileID: 863712483}
   cameraStateSwitcher: {fileID: 1818123432}
+  currentlyControlledTeammate: 0
 --- !u!1 &1836184796
 GameObject:
   m_ObjectHideFlags: 0
@@ -23561,7 +23593,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1836184797}
   - component: {fileID: 1836184798}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (41)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23906,7 +23938,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1844805099}
   - component: {fileID: 1844805100}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (31)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24593,7 +24625,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1885399981}
   - component: {fileID: 1885399982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (22)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24855,7 +24887,7 @@ GameObject:
   - component: {fileID: 1895025832}
   - component: {fileID: 1895025833}
   - component: {fileID: 1895025834}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25153,7 +25185,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1905244437}
   - component: {fileID: 1905244438}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -25569,24 +25601,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!114 &1920466750 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2952888588522578358, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 546403162}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaae064d4639584cb17497b6a7178d4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1920466751 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8524576815190887093, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 546403162}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1929814853
 GameObject:
   m_ObjectHideFlags: 0
@@ -26188,7 +26202,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1937977755}
   - component: {fileID: 1937977756}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -26769,12 +26783,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!4 &1977900251 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8524576815190887093, guid: b3e4c376772227049a7717870c00f9e3,
-    type: 3}
-  m_PrefabInstance: {fileID: 1217951249}
-  m_PrefabAsset: {fileID: 0}
 --- !u!43 &1989974076
 Mesh:
   m_ObjectHideFlags: 16
@@ -26940,75 +26948,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1992079877
-GameObject:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1992079879}
-  - component: {fileID: 1992079878}
-  m_Layer: 0
-  m_Name: '[default-CSGModel]'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 124
-  m_IsActive: 1
---- !u!114 &1992079878
-MonoBehaviour:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992079877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8672dcc90e16b0a489a41edf56e016f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PrefabBehaviour: 0
-  PrefabSourceAlignment: 4
-  PrefabDestinationAlignment: 0
-  Version: 1.1
-  infiniteBrush: {fileID: 0}
-  Settings: 1537
-  VertexChannels: 14
-  ReceiveGI: 2
-  MeshColliderCookingOptions: 14
-  ShowGeneratedMeshes: 0
-  DefaultPhysicsMaterial: {fileID: 13400000, guid: 0c5fdfb44d6f19646a41a0720fbf751a,
-    type: 2}
-  exportType: 0
-  originType: 0
-  exportColliders: 0
-  exportPath: 
-  angleError: 1
-  areaError: 1
-  hardAngle: 60
-  packMargin: 20
-  scaleInLightmap: 1
-  autoUVMaxDistance: 0.5
-  autoUVMaxAngle: 89
-  minimumChartSize: 4
---- !u!4 &1992079879
-Transform:
-  m_ObjectHideFlags: 17
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1992079877}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 556514108}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1992483276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27252,7 +27191,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2030667245}
   - component: {fileID: 2030667246}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (38)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27511,6 +27450,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1231368152477176651, guid: 920f9933f0ed8bd449ff08f02b436df2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 3252170368383179556, guid: 920f9933f0ed8bd449ff08f02b436df2,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -27571,6 +27515,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Model
       objectReference: {fileID: 0}
+    - target: {fileID: 6232397835790596613, guid: 920f9933f0ed8bd449ff08f02b436df2,
+        type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -27606,7 +27555,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2065481228}
   - component: {fileID: 2065481229}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (12)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27982,7 +27931,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2074587925}
   - component: {fileID: 2074587926}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (35)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28243,7 +28192,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2096454423}
   - component: {fileID: 2096454424}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (8)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28880,7 +28829,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2135333842}
   - component: {fileID: 2135333843}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29141,7 +29090,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2138845461}
   - component: {fileID: 2138845462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Brush (15)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29762,4 +29711,4 @@ SceneRoots:
   - {fileID: 511115127}
   - {fileID: 554172266}
   - {fileID: 1493112866}
-  - {fileID: 1992079879}
+  - {fileID: 28296497}

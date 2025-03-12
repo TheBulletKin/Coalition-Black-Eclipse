@@ -8,7 +8,7 @@ public class Health : MonoBehaviour, IDamagable
 	[SerializeField] private int maxHealth = 100;
 	[SerializeField] private int currentHealth;
 
-	public event Action<Health> OnEnemyDeath;
+	public event Action<Health> OnEntityDeath;
 	
 
 	private void Start()
@@ -18,7 +18,7 @@ public class Health : MonoBehaviour, IDamagable
 	public void Die()
 	{
 		Debug.Log("Entity died");
-		OnEnemyDeath?.Invoke(this);
+		OnEntityDeath?.Invoke(this);
 		Destroy(gameObject);
 	}
 

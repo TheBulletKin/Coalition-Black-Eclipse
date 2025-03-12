@@ -37,7 +37,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	void Start()
 	{
 		mainCam = Camera.main;
-		currentAmmo = weaponConfig.maxAmmo;
+		currentAmmo = weaponConfig ? weaponConfig.maxAmmo : 10;		
 		inPlayerControl = false;
 		isHoldingObject = false;
 		UpdateAmmo(currentAmmo, reserveAmmo);

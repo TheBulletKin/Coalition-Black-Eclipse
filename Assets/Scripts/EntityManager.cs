@@ -4,15 +4,67 @@ using UnityEngine;
 
 public class EntityManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public static EntityManager Instance { get; private set; }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	//Public for now, alter later
+	public List<ControllableEntity> playerTeammates;
+
+	private CharacterSwitcher characterSwitcher;
+	private TeammateUiManager teammateUiManager;
+
+	
+
+	private void Start()
+	{
+		if (Instance == null)
+		{
+			Instance = this;
+			DontDestroyOnLoad(gameObject);
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+
+		ControllableEntity[] foundTeammates = FindObjectsByType<ControllableEntity>(FindObjectsSortMode.InstanceID);
+		foreach (ControllableEntity teammate in foundTeammates)
+		{
+			Instance.playerTeammates.Add(teammate);
+			teammate.health.OnEntityDeath += EntityDeathResponse;
+		}
+		
+		characterSwitcher = FindObjectOfType<CharacterSwitcher>();
+		teammateUiManager = FindObjectOfType<TeammateUiManager>();
+
+	}
+
+	public void EntityDeathResponse(Health entity)
+	{
+		//Using getcomponent for now. Will change later
+		entity.OnEntityDeath -= EntityDeathResponse;
+		
+		
+		ControllableEntity controllableEntity = entity.GetComponent<ControllableEntity>();
+		if (controllableEntity != null)
+		{
+			Instance.playerTeammates.Remove(controllableEntity);
+		}
+
+		/* On death:
+		 * Remove references held by other classes to the character that just died
+		 */
+
+		//Automatically switch to random character. (Will set up what happens when all are dead later)
+		if (controllableEntity.teammateID == characterSwitcher.currentlyControlledTeammate)
+		{
+			int divertedCharacterIndex = Random.Range(0, playerTeammates.Count);
+			characterSwitcher.SwitchToCharacter(playerTeammates[divertedCharacterIndex]);
+		}
+		
+
+		//Remove the ui elements for that teammate
+		teammateUiManager.RemoveTeammateCard(controllableEntity.commandListener);
+		
+	}
+
 }

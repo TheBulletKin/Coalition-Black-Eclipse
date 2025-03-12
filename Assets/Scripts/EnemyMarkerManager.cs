@@ -17,7 +17,7 @@ public class EnemyMarkerManager : MonoBehaviour
 		{
 			//used to subscribe to enemy kill event
 			Health entityHealth = entity.GetComponent<Health>();
-			entityHealth.OnEnemyDeath += RemoveEntity;
+			entityHealth.OnEntityDeath += RemoveEntity;
 
 			GameObject newMarker = Instantiate(enemyMarkerPrefab, markersContainer.transform.position, markersContainer.transform.rotation, markersContainer);
 			EnemyMarkerUiElement enemyMarkerUiElement = newMarker.GetComponent<EnemyMarkerUiElement>();
@@ -54,7 +54,7 @@ public class EnemyMarkerManager : MonoBehaviour
 	{
 		//Didn't want to have to getComponent here
 		EnemyEntity enemyToRemove = entityToRemove.GetComponent<EnemyEntity>();
-		entityToRemove.OnEnemyDeath -= RemoveEntity;		
+		entityToRemove.OnEntityDeath -= RemoveEntity;		
 		Destroy(enemyToMarker[enemyToRemove].gameObject);
 		enemyToMarker.Remove(enemyToRemove);
 		

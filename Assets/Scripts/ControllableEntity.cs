@@ -12,11 +12,24 @@ public class ControllableEntity : MonoBehaviour
 	public Transform cameraPos;
 
 	IToggleable[] toggleableComponents;
-	[SerializeField] private NavMeshAgent agent;
+	[SerializeField] public NavMeshAgent agent { get; private set; }
+	[SerializeField] public AIMovement aiMovement { get; private set; }
+	[SerializeField] public AiCommandListener commandListener { get; private set; }
+	[SerializeField] public EntityVisibility entityVisibility { get; private set; }
+	[SerializeField] public ShootingSystem shootingSystem { get; private set; }
+	[SerializeField] public AbilitySystem abilitySystem { get; private set; }
+	[SerializeField] public Health health { get; private set; }
 
-	private void Start()
+	private void Awake()
 	{
 		toggleableComponents = GetComponents<IToggleable>();
+		agent = GetComponent<NavMeshAgent>();
+		aiMovement = GetComponent<AIMovement>();
+		commandListener = GetComponent<AiCommandListener>();
+		entityVisibility = GetComponent<EntityVisibility>();
+		shootingSystem = GetComponent<ShootingSystem>();
+		abilitySystem = GetComponent<AbilitySystem>();
+		health = GetComponent<Health>();
 	}
 
 	public void TakeControl()

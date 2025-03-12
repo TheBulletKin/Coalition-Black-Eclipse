@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class EnemySightSensor : MonoBehaviour
 {
-	
+
 	public Health currentTarget { get; private set; }
-	public List<Health> playerEntities;
 	public List<Health> visibleEntities;
 	private float pingInteval = 0.25f;
 	private float pingTimer = 0.0f;
@@ -25,7 +24,7 @@ public class EnemySightSensor : MonoBehaviour
 	public bool isEngagingEnemy = false;
 
 
-	[SerializeField] private LayerMask _ignoreMask;
+	[SerializeField] private LayerMask ignoreMask;
 
 	[SerializeField] private float maxWeaponRange = 30f;
 	[SerializeField] private int weaponDamage = 30;
@@ -38,7 +37,9 @@ public class EnemySightSensor : MonoBehaviour
 	{
 		detectionValue = 0.0f;
 		detectionRateModifier = 1.0f;
-		
+
+
+
 	}
 
 	private void Update()
@@ -48,7 +49,19 @@ public class EnemySightSensor : MonoBehaviour
 		if (pingTimer >= pingInteval)
 		{
 			//If any enemy is in sight, increment detection. Reduce if not visible
-			if (Ping())
+
+			bool enemyIsInVisibleRange = false;
+			foreach (ControllableEntity target in EntityManager.Instance.playerTeammates)
+			{
+				if (Ping(target)) //If at least one enemy is visible, will continue and change the detection value
+				{
+					enemyIsInVisibleRange = true;
+					break;
+				}
+			}
+
+
+			if (enemyIsInVisibleRange)
 			{
 				float distanceToVisible = (visibleEntities[0].transform.position - transform.position).magnitude;
 
@@ -94,78 +107,114 @@ public class EnemySightSensor : MonoBehaviour
 			pingTimer = 0.0f;
 		}
 
-		fireTimer += deltaTime;
-		if (isEngagingEnemy && currentTarget!= null && fireTimer >= fireCooldown)
+		RaycastHit hit;
+		if (currentTarget != null && isEngagingEnemy && TargetInLineOfSight(out hit) && TargetInWeaponRange())
 		{
-			Health targetHealth = currentTarget.GetComponent<Health>();			
-			currentTarget.TakeDamage(weaponDamage);
-			fireTimer = 0.0f;
+			fireTimer += deltaTime;
+			if(fireTimer >= fireCooldown)
+			{
+				Health targetHealth = currentTarget.GetComponent<Health>();
+				currentTarget.TakeDamage(weaponDamage);
+				fireTimer = 0.0f;
+			}
 		}
+
+	
 
 		if (currentTarget == null)
 		{
 			visibleEntities.Remove(currentTarget);
+			entityIsDetected = false;
+			isEngagingEnemy = false;
 		}
 	}
 
 	//One test to see if any teammate is in view
-	public bool Ping()
+	public bool Ping(ControllableEntity target)
 	{
-		foreach (Health target in playerEntities)
+
+		Health entityHealthComponent = target.health;
+		//Ray from current ai to target
+		ray = new Ray(this.transform.position, target.characterModel.transform.position - this.transform.position);
+
+		var dir = new Vector3(ray.direction.x, 0, ray.direction.z);
+
+		var angle = Vector3.Angle(dir, this.transform.forward);
+
+		//Enemy outside of vision cone
+		if (angle > detectionAngle)
 		{
-			//Ray from current ai to target
-			ray = new Ray(this.transform.position, target.transform.position - this.transform.position);
-
-			var dir = new Vector3(ray.direction.x, 0, ray.direction.z);
-
-			var angle = Vector3.Angle(dir, this.transform.forward);
-
-			//Vision cone check
-			if (angle > detectionAngle)
+			if (visibleEntities.Contains(entityHealthComponent))
 			{
-				if (visibleEntities.Contains(target))
-				{
-					target.OnEnemyDeath -= OnEnemyDeath;
-					visibleEntities.Remove(target);
-				}
-				return false;
+				entityHealthComponent.OnEntityDeath -= OnEnemyDeath;
+				visibleEntities.Remove(entityHealthComponent);
 			}
-
-			//LOS check
-			if (!Physics.Raycast(ray, out var hit, 70, ~_ignoreMask))
-			{
-				if (visibleEntities.Contains(target))
-				{
-					target.OnEnemyDeath -= OnEnemyDeath;
-					visibleEntities.Remove(target);
-				}
-				return false;
-			}
-
-			//When visible
-			if (hit.collider.tag == "Teammate")
-			{
-				EntityVisibility vis = hit.collider.gameObject.GetComponentInParent<EntityVisibility>();
-				if (vis.GetVisibilityMod() > 0) //Can be seen
-				{
-					if (!visibleEntities.Contains(target))
-					{
-						visibleEntities.Add(target);
-						target.OnEnemyDeath += OnEnemyDeath;
-					}
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-
-			}
+			return false;
 		}
 
+		RaycastHit hit;
 
+		//LOS check - Out lets it alter the variable above. Similar to ref but doesn't need to be initialized.
+		if (TargetInLineOfSight(out hit))
+		{
+
+		}
+		else
+		{
+			if (visibleEntities.Contains(entityHealthComponent))
+			{
+				entityHealthComponent.OnEntityDeath -= OnEnemyDeath;
+				visibleEntities.Remove(entityHealthComponent);
+			}
+			return false;
+		}
+
+		//When visible
+		if (hit.collider.tag == "Teammate")
+		{
+			EntityVisibility vis = hit.collider.gameObject.GetComponentInParent<EntityVisibility>();
+			if (vis.GetVisibilityMod() > 0) //Can be seen
+			{
+				if (!visibleEntities.Contains(entityHealthComponent))
+				{
+					visibleEntities.Add(entityHealthComponent);
+					entityHealthComponent.OnEntityDeath += OnEnemyDeath;
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+
+		}
 
 		return false;
+	}
+
+	public bool TargetInLineOfSight(out RaycastHit outHit)
+	{
+		//As it casts a ray from the current location to the targetted teammate,
+		//I just need to get the first object hit and compare tags
+		//Ignore the enemy itself and hit everything else.
+		if (Physics.Raycast(ray, out RaycastHit Hit, 70, ignoreMask))
+		{
+			if (Hit.collider.tag == "Teammate")
+			{
+				outHit = Hit;
+				return true;
+			}
+			else
+			{
+				outHit = new RaycastHit();
+				return false;
+			}
+		}
+		else
+		{
+			outHit = new RaycastHit();
+			return false;
+		}
 	}
 
 	public float GetDetectionValue()
@@ -176,12 +225,13 @@ public class EnemySightSensor : MonoBehaviour
 	private void OnEnemyDeath(Health deadEntity)
 	{
 		visibleEntities.Remove(deadEntity);
+		isEngagingEnemy = false;
 		Debug.Log("Removed entity from list");
 	}
 
 	public bool TargetInWeaponRange()
 	{
-		if ((currentTarget.transform.position - transform.position).magnitude <= maxWeaponRange)
+		if ((currentTarget.transform.position - transform.position).magnitude <= maxWeaponRange - 5f) //5 as some room before needing to move again
 		{
 			return true;
 		}
