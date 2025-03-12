@@ -15,6 +15,10 @@ public class EnemySightSensor : MonoBehaviour
 	[SerializeField] private float detectionIncreaseRate = 5f;
 	[SerializeField] private float detectionDecreaseRate = 2f;
 	[SerializeField] private float detectionThreshold = 100f;
+
+	[SerializeField] private float maxDetectionDistance = 40f;
+	[SerializeField] private float closeDetectionFalloffDistance = 10f;
+	[SerializeField] private float detectionRateModifier;
 	public bool entityIsDetected { get; private set; }
 
 	[SerializeField] private LayerMask _ignoreMask;
@@ -24,6 +28,7 @@ public class EnemySightSensor : MonoBehaviour
 	private void Awake()
 	{
 		detectionValue = 0.0f;
+		detectionRateModifier = 1.0f;
 	}
 
 	private void Update()
@@ -34,8 +39,28 @@ public class EnemySightSensor : MonoBehaviour
 			//If any enemy is in sight, increment detection. Reduce if not visible
 			if (Ping())
 			{
-				detectionValue += detectionIncreaseRate * Time.deltaTime;
-				detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+				float distanceToVisible = (visibleEntities[0].transform.position - transform.position).magnitude;
+
+				//Within 10 metres, maximum gain
+				//Beyond 30 meters, no gain
+				if (distanceToVisible >= maxDetectionDistance)
+				{
+					//Decrement detection
+					if (entityIsDetected == false)
+					{
+						detectionValue -= detectionIncreaseRate * Time.deltaTime;
+						detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+					}
+
+				} else if (distanceToVisible < maxDetectionDistance && distanceToVisible >= 0f) //Within detection range
+				{
+					detectionRateModifier = Mathf.Lerp(1f, 0f,
+					(distanceToVisible - closeDetectionFalloffDistance) / (maxDetectionDistance - closeDetectionFalloffDistance));
+					//Want distance / max distance but normalised to ignore the 10 units close falloff.
+					detectionValue += detectionIncreaseRate * Time.deltaTime * detectionRateModifier;
+					detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+				}
+				
 
 				if (detectionValue >= detectionThreshold)
 				{
