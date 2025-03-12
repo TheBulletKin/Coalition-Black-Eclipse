@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.AI;
 
 //Action ran within the state class
-[CreateAssetMenu(menuName = "FSM/Actions/Chase")]
-public class ChaseAction : FSMAction
+[CreateAssetMenu(menuName = "FSM/Actions/Engage")]
+public class EngageAction : FSMAction
 {
 	//Getting the components dynamically means that nothing is stored in the SO. Badly optimised however
 	//If something was stored here, each ai would share state information. Will need a fix for this later
@@ -14,6 +14,6 @@ public class ChaseAction : FSMAction
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
 		EnemySightSensor enemySightSensor = stateMachine.GetComponent<EnemySightSensor>();
 
-		navMeshAgent.SetDestination(enemySightSensor.currentTarget.position);
+		navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
 	}
 }

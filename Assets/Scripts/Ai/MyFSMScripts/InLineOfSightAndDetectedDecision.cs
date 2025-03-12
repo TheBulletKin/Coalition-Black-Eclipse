@@ -11,7 +11,13 @@ public class InLineOfSightAndDetectedDecision : Decision
 	public override bool Decide(BaseStateMachine stateMachine)
 	{
 		EnemySightSensor sightSensor = stateMachine.GetComponent<EnemySightSensor>();
+		if (sightSensor.entityIsDetected)
+		{
+			sightSensor.isEngagingEnemy = true;
+			return true;
+		}		
 		
-		return sightSensor.entityIsDetected;
+		
+		return false;
 	}
 }

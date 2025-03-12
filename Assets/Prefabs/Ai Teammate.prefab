@@ -293,6 +293,7 @@ GameObject:
   - component: {fileID: 5671389215264514013}
   - component: {fileID: 4284256450557001990}
   - component: {fileID: 5587466839971737750}
+  - component: {fileID: 1519088795991432015}
   m_Layer: 0
   m_Name: Ai Teammate
   m_TagString: Teammate
@@ -430,6 +431,10 @@ MonoBehaviour:
   fireCooldown: 0.4
   detectionScanTimer: 0
   scanCooldown: 0.08
+  detectionValue: 0
+  detectionIncreaseRate: 5
+  detectionDecreaseRate: 2
+  detectionThreshold: 100
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -564,7 +569,10 @@ MonoBehaviour:
   currentAmmo: 0
   reserveAmmo: 15
   heldObjectLaunchForce: 15
-  spreadDistance: 2
+  baseSpreadAngle: 20
+  spreadMultiplier: 1
+  currentBaseSpread: 1
+  crosshairConvergeanceRange: 20
 --- !u!114 &4284256450557001990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -617,6 +625,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.94, z: 0}
+--- !u!114 &1519088795991432015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2342537618159628209}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae917dc81af4d924499e2a8d76597b76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 100
 --- !u!1 &5031286154127115312
 GameObject:
   m_ObjectHideFlags: 0
