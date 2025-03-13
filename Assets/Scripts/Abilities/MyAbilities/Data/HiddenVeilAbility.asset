@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e532a280b77864641bcdfa1a9693b230, type: 3}
   m_Name: HiddenVeilAbility
   m_EditorClassIdentifier: 
+  aiCastAbilityType: 3
+  playerCastAbilityType: 3
   abilityCount: 2
   placementRange: 10
   proxSensorPrefab: {fileID: 6495869608783633811, guid: 68d3f2599a427fc4dab9ef034c566596,

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "TeleportAnchorAbility", menuName = "Abilities/Teleport Anchor")]
 public class TeleportAnchor : CharacterAbility
@@ -72,6 +73,26 @@ public class TeleportAnchor : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		
+		if (gadgetCount > 0)
+		{
+
+			if (anchorPrefab != null)
+			{
+				GameObject anchor = Instantiate(anchorPrefab, targetVecPos, Quaternion.identity);
+				anchor.transform.up = Vector3.up;
+				anchorActive = true;
+				teleportPosition = anchor.transform.position + Vector3.up * 1.5f;
+			}
+			
+			gadgetCount--;
+		}
+		else if (anchorActive == true)
+		{
+			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
+			cont.enabled = false;
+			owner.transform.position = teleportPosition;
+			cont.enabled = true;
+
+		}
 	}
 }

@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a46a58aa838463439673bc54dd92db7, type: 3}
   m_Name: TeleportAnchorAbility
   m_EditorClassIdentifier: 
+  aiCastAbilityType: 3
+  playerCastAbilityType: 0
   anchorPrefab: {fileID: 331984391212392924, guid: 16541f0007245914094e9bcc09ef7b20,
     type: 3}
   anchorProjectile: {fileID: 331984391212392924, guid: bda96252e64cade49948d14cc1e6cb95,

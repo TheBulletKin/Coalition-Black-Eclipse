@@ -4,7 +4,8 @@ using UnityEngine;
 
 public abstract class CharacterAbility : ScriptableObject
 {
-	public AbilityTargetType abilityType;
+	public AbilityTargetType aiCastAbilityType;
+	public AbilityTargetType playerCastAbilityType;
 	//When no target
 	public abstract void Use(AbilitySystem owner);
 	//When targeting a specific gameobject

@@ -38,8 +38,8 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 		if (abilityIndex < abilities.Count)
 		{
-
-			switch (abilities[abilityIndex].abilityType)
+			//Ability is cast different when on ai to players
+			switch (isPlayerControlled ?  abilities[abilityIndex].playerCastAbilityType : abilities[abilityIndex].aiCastAbilityType)
 			{
 				case AbilityTargetType.TARGET_NO:
 					abilities[abilityIndex].Use(this);
