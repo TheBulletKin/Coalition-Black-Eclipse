@@ -37,7 +37,7 @@ public class ProxSensorAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange)
+		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && gadgetCount > 0)
 		{
 			GameObject newSensor = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
 			activeSensors.Add(newSensor.GetComponent<ProximitySensorObject>());

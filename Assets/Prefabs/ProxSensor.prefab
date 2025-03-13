@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1329390636645069916}
   - component: {fileID: 5222553339587985969}
   - component: {fileID: 2925389719573884896}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: ProxSensor
   m_TagString: Untagged
   m_Icon: {fileID: 0}

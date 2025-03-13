@@ -12,10 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b346c2f5c520a6d48b09444d83926822, type: 3}
   m_Name: ProxSensorAbility
   m_EditorClassIdentifier: 
-  aiCastAbilityType: 0
-  playerCastAbilityType: 0
+  aiCastAbilityType: 3
+  playerCastAbilityType: 3
   gadgetCount: 2
   placementRange: 5
   proxSensorPrefab: {fileID: 6495869608783633811, guid: 6ffed8adacac9ef4e96a1b225fd611b6,
     type: 3}
-  activeSensors: []
+  activeSensors:
+  - {fileID: 0}
