@@ -21,7 +21,7 @@ public class DaggerBlinkAbility : CharacterAbility
 		gadgetCount = 1;
 		teleportPosition = Vector3.zero;
 		daggerActive = false;
-	}	
+	}
 
 	private void CreateDagger(Vector3 position, Vector3 normal)
 	{
@@ -70,16 +70,40 @@ public class DaggerBlinkAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, GameObject target)
 	{
-	
+
 	}
 
 	public override void Use(AbilitySystem owner, RaycastHit targetPos)
 	{
-		
+
 	}
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		
+		if (gadgetCount > 0)
+		{
+
+			if (daggerPrefab != null)
+			{
+				placedDagger = Instantiate(daggerPrefab, targetVecPos, Quaternion.identity);
+				placedDagger.transform.up = Vector3.up;
+				daggerActive = true;
+				teleportPosition = placedDagger.transform.position + Vector3.up * 1.5f;
+			}
+
+			gadgetCount--;
+		}
+		else if (daggerActive == true)
+		{
+			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
+			cont.enabled = false;
+			owner.transform.position = teleportPosition;
+			cont.enabled = true;
+			gadgetCount++;
+			Destroy(placedDagger);
+			placedDagger = null;
+
+		}
 	}
 }
+
