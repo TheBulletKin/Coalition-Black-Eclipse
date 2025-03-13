@@ -37,8 +37,8 @@ public class HiddenVeilAbility : CharacterAbility
 
 		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange)
 		{
-			GameObject newSensor = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
-			activeVeils.Add(newSensor.GetComponent<HiddenVeil>());
+			GameObject newVeil = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
+			activeVeils.Add(newVeil.GetComponent<HiddenVeil>());
 		}
 
 	}

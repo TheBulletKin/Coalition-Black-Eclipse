@@ -32,22 +32,15 @@ public class ProxSensorAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, RaycastHit targetPos)
 	{
-		if (targetPos.collider == null)
-		{
-			return;
-		}
-		else
-		{
-			if (Vector3.Distance(owner.transform.position, targetPos.point) <= placementRange)
-			{
-				GameObject newSensor = Instantiate(proxSensorPrefab, targetPos.point, Quaternion.FromToRotation(Vector3.up, targetPos.normal));
-				activeSensors.Add(newSensor.GetComponent<ProximitySensorObject>());
-			}
-		}
+
 	}
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-	
+		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange)
+		{
+			GameObject newSensor = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
+			activeSensors.Add(newSensor.GetComponent<ProximitySensorObject>());
+		}
 	}
 }

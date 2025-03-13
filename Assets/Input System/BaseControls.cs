@@ -282,7 +282,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""31489799-60b7-4657-a940-aaad598600d1"",
-                    ""path"": ""<Keyboard>/c"",
+                    ""path"": ""<Gamepad>/buttonNorth"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
