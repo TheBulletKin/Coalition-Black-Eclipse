@@ -546,7 +546,7 @@ MonoBehaviour:
   interactionRange: 30
   interactableLayer:
     serializedVersion: 2
-    m_Bits: 193
+    m_Bits: 449
   holdPoint: {fileID: 7100344853660602463}
 --- !u!114 &5671389215264514013
 MonoBehaviour:

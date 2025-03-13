@@ -4,6 +4,14 @@ using UnityEngine;
 
 public abstract class CharacterAbility : ScriptableObject
 {
-    public abstract void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default);
+	public AbilityTargetType abilityType;
+	//When no target
+	public abstract void Use(AbilitySystem owner);
+	//When targeting a specific gameobject
+	public abstract void Use(AbilitySystem owner, GameObject target);
+	//When targeting a raycast position
+	public abstract void Use(AbilitySystem owner, RaycastHit targetPos);
+	//When targeting a precomputed position
+	public abstract void Use(AbilitySystem owner, Vector3 targetVecPos);
 	public abstract void Init();
 }

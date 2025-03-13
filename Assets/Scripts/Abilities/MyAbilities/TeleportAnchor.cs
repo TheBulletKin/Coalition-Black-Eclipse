@@ -17,8 +17,20 @@ public class TeleportAnchor : CharacterAbility
 		gadgetCount = 1;
 		teleportPosition = Vector3.zero;
 		anchorActive = false;
+	}	
+
+	private void CreateAnchor(Vector3 position, Vector3 normal)
+	{
+		if (anchorPrefab != null)
+		{
+			GameObject anchor = Instantiate(anchorPrefab, position, Quaternion.LookRotation(-normal, Vector3.up));
+			anchor.transform.up = normal;
+			anchorActive = true;
+			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;
+		}
 	}
-	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
+
+	public override void Use(AbilitySystem owner)
 	{
 		if (gadgetCount > 0)
 		{
@@ -41,24 +53,25 @@ public class TeleportAnchor : CharacterAbility
 		else if (anchorActive == true)
 		{
 			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
-			cont.enabled = false;  
+			cont.enabled = false;
 			owner.transform.position = teleportPosition;
 			cont.enabled = true;
 
 		}
-
 	}
 
-	private void CreateAnchor(Vector3 position, Vector3 normal)
+	public override void Use(AbilitySystem owner, GameObject target)
 	{
-		if (anchorPrefab != null)
-		{
-			GameObject anchor = Instantiate(anchorPrefab, position, Quaternion.LookRotation(-normal, Vector3.up));
-			anchor.transform.up = normal;
-			anchorActive = true;
-			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;
-		}
+		
 	}
 
+	public override void Use(AbilitySystem owner, RaycastHit targetPos)
+	{
+		
+	}
 
+	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
+	{
+		
+	}
 }

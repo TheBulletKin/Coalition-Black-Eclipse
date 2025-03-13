@@ -9,4 +9,5 @@ public interface ICommand
 	void Execute(MonoBehaviour executor);
 	void Cancel(MonoBehaviour executor);
 	public event Action<ICommand> OnCommandCompleted;
+	
 }

@@ -11,13 +11,15 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	public LayerMask hittableLayers;
 	private GameObject targettedObject;
 	private RaycastHit targetPos;
+	private Vector3 targetVecPos;
 	public bool isPlayerControlled = false;
+	//Temporary to send the issuer the currently selected ability
+	PlayerCommandIssuer commandIssuer;
 
 	private void Start()
 	{
-		InputManager.Instance.OnUseItemPressed += UseItem;
-		InputManager.Instance.OnAbilityChangePressed += SetActiveAbility;
 
+		commandIssuer = FindAnyObjectByType<PlayerCommandIssuer>();
 		playerCamera = Camera.main;
 		isPlayerControlled = false;
 
@@ -27,35 +29,84 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 		}
 	}
 
-	private void UseItem()
+	public void CastAbility(int abilityIndex)
 	{
 		if (isPlayerControlled)
 		{
-			GetUseTarget();
-			abilities[currentAbilityIndex].Use(this, targettedObject, targetPos);
+			GetUseTargetDetails();
 		}
+
+		if (abilityIndex < abilities.Count)
+		{
+
+			switch (abilities[abilityIndex].abilityType)
+			{
+				case AbilityTargetType.TARGET_NO:
+					abilities[abilityIndex].Use(this);
+					break;
+				case AbilityTargetType.GAMEOBJECT_TARGET:
+					abilities[abilityIndex].Use(this, targettedObject);
+					break;
+				case AbilityTargetType.RAYCAST_TARGET:
+					abilities[abilityIndex].Use(this, targetPos);
+					break;
+				case AbilityTargetType.VEC3_TARGET:
+					abilities[abilityIndex].Use(this, targetVecPos);
+					break;
+				default:
+					break;
+			}
+		}
+
 
 	}
 
-	private void GetUseTarget()
+	/// <summary>
+	/// Update the ability target details. Used before player ability cast and before ability command execution
+	/// </summary>
+	/// <param name="targettedObject">Targetted gameObject</param>
+	/// <param name="targetPos">RaycastHit result</param>
+	/// <param name="targetVecPos">Vector3 targetted position</param>
+	public void UpdateTargetDetails(GameObject targettedObject = null, RaycastHit targetPos = default, Vector3 targetVecPos = default)
+	{
+		this.targettedObject = targettedObject;
+		this.targetPos = targetPos;
+		this.targetVecPos = targetVecPos;
+	}
+
+	private void PersonalUseItem()
+	{
+		CastAbility(currentAbilityIndex);
+	}
+
+	/// <summary>
+	/// Updates targetted gameobject, raycastHit pos and vector3 target position
+	/// </summary>
+	private void GetUseTargetDetails()
 	{
 		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
 
 		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
-		{
-			targettedObject = hit.collider.gameObject;
-			targetPos = hit;
+		{			
+			UpdateTargetDetails(hit.collider.gameObject, hit, hit.point);
 		}
 		else
-		{
-			targettedObject = null;
-			targetPos = default;
+		{			
+			UpdateTargetDetails(null, default, default);
 		}
 	}
 
 	private void SetActiveAbility(int abilityIndex)
 	{
 		currentAbilityIndex = abilityIndex - 2;
+
+		//Temporary. Assume last changed ability is next ability to cast
+		if (isPlayerControlled)
+		{
+			commandIssuer.currentAbilityIndex = currentAbilityIndex;
+		}
+		
+		
 	}
 
 	public Vector3 GetAimDirection()
@@ -71,10 +122,14 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	public void DisableControl()
 	{
 		isPlayerControlled = false;
+		InputManager.Instance.OnUseItemPressed -= PersonalUseItem;
+		InputManager.Instance.OnAbilityChangePressed -= SetActiveAbility;
 	}
 
 	public void EnableControl()
 	{
 		isPlayerControlled = true;
+		InputManager.Instance.OnUseItemPressed += PersonalUseItem;
+		InputManager.Instance.OnAbilityChangePressed += SetActiveAbility;
 	}
 }

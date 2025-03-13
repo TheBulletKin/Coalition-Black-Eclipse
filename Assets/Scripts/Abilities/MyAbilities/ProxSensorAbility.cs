@@ -18,7 +18,19 @@ public class ProxSensorAbility : CharacterAbility
 		
 	}
 
-	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
+	
+
+	public override void Use(AbilitySystem owner)
+	{
+	
+	}
+
+	public override void Use(AbilitySystem owner, GameObject target)
+	{
+		
+	}
+
+	public override void Use(AbilitySystem owner, RaycastHit targetPos)
 	{
 		if (targetPos.collider == null)
 		{
@@ -32,5 +44,10 @@ public class ProxSensorAbility : CharacterAbility
 				activeSensors.Add(newSensor.GetComponent<ProximitySensorObject>());
 			}
 		}
+	}
+
+	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
+	{
+	
 	}
 }

@@ -6,5 +6,6 @@ public enum CommandType
 {
    MOVE,
    LOOK,
+   ABILITY,
    NONE
 }

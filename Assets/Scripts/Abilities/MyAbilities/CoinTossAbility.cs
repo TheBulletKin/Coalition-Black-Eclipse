@@ -15,7 +15,7 @@ public class CoinTossAbility : CharacterAbility
 	}
 
 
-	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
+	public override void Use(AbilitySystem owner)
 	{
 		if (coinCount > 0)
 		{
@@ -35,8 +35,21 @@ public class CoinTossAbility : CharacterAbility
 			}
 			coinCount--;
 		}
-		
+	}
 
+	public override void Use(AbilitySystem owner, GameObject target)
+	{
+		
+	}
+
+	public override void Use(AbilitySystem owner, RaycastHit targetPos)
+	{
+		
+	}
+
+	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
+	{
+		
 	}
 
 	private void CreateDistraction(Vector3 position, Vector3 normal)

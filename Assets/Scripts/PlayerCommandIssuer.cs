@@ -13,9 +13,13 @@ public class PlayerCommandIssuer : MonoBehaviour
 	public float interactionRange = 3f;
 	public LayerMask interactableLayer;
 	public int currentGroupOrTeammateIndex;
+
+	//Temporary for ability command
+	public int currentAbilityIndex;
 	public bool selectingGroup;
 	public GameObject moveMarker;
 	public GameObject lookMarker;
+	public GameObject abilityMarker;
 
 	public Action<int, bool> OnTeammateOrGroupChanged;
 
@@ -189,6 +193,11 @@ public class PlayerCommandIssuer : MonoBehaviour
 				targetPosition = TryGetSelectedPosition();
 				newCommand = new LookCommand(entity.GetComponent<AIMovement>(), targetPosition);
 				return newCommand;
+			case CommandType.ABILITY:
+				targetPosition = TryGetSelectedPosition();
+				AbilitySystem abilitySystem = entity.GetComponent<AbilitySystem>();
+				newCommand = new AbilityCommand(abilitySystem, currentAbilityIndex, targetPosition); //How can I better pass the ability to this?
+				return newCommand;
 			case CommandType.NONE:
 				return null;
 			default:
@@ -216,6 +225,9 @@ public class PlayerCommandIssuer : MonoBehaviour
 				break;
 			case CommandType.LOOK:
 				newWaypoint = Instantiate(lookMarker, targetPosition, Quaternion.identity);
+				break;
+			case CommandType.ABILITY:
+				newWaypoint = Instantiate(abilityMarker, targetPosition, Quaternion.identity);
 				break;
 			case CommandType.NONE:
 				break;

@@ -12,10 +12,10 @@ public class SubterfugeAbility : CharacterAbility
 		isDisguised = false;
 
 	}
+	
 
-	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
+	public override void Use(AbilitySystem owner)
 	{
-
 		EntityVisibility entityVis = owner.gameObject.GetComponent<EntityVisibility>();
 		if (entityVis != null)
 		{
@@ -27,6 +27,20 @@ public class SubterfugeAbility : CharacterAbility
 		{
 			Debug.LogWarning("Subterfuge Ability : No EntityVisibility component found on ability owner");
 		}
+	}
 
+	public override void Use(AbilitySystem owner, GameObject target)
+	{
+		
+	}
+
+	public override void Use(AbilitySystem owner, RaycastHit targetPos)
+	{
+		
+	}
+
+	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
+	{
+		
 	}
 }

@@ -17,19 +17,29 @@ public class HiddenVeilAbility : CharacterAbility
 
 	}
 
-	public override void Use(AbilitySystem owner, GameObject target = null, RaycastHit targetPos = default)
+	public override void Use(AbilitySystem owner)
 	{
-		if (targetPos.collider == null)
+
+	}
+
+	public override void Use(AbilitySystem owner, GameObject target)
+	{
+
+	}
+
+	public override void Use(AbilitySystem owner, RaycastHit targetPos)
+	{
+
+	}
+
+	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
+	{
+
+		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange)
 		{
-			return;
+			GameObject newSensor = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
+			activeVeils.Add(newSensor.GetComponent<HiddenVeil>());
 		}
-		else
-		{
-			if (Vector3.Distance(owner.transform.position, targetPos.point) <= placementRange)
-			{
-				GameObject newSensor = Instantiate(proxSensorPrefab, targetPos.point, Quaternion.FromToRotation(Vector3.up, targetPos.normal));
-				activeVeils.Add(newSensor.GetComponent<HiddenVeil>());
-			}
-		}
+
 	}
 }

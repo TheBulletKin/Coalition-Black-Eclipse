@@ -256,7 +256,9 @@ public class InputManager : MonoBehaviour
 			case "b":
 				return CommandType.MOVE;		
 			case "v":
-				return CommandType.LOOK;				
+				return CommandType.LOOK;
+			case "c":
+				return CommandType.ABILITY;
 			default:
 				return CommandType.NONE;				
 		}
