@@ -24,10 +24,12 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[Tooltip("Angle of spread from the camera")]
 	[Range(0f, 45f)]
 	[SerializeField] public float baseSpreadAngle = 20f; 
-	[SerializeField] public float spreadMultiplier = 1f;	
-	private float movementMultiplierWeighting = 0.25f;	
+	[SerializeField] public float spreadMultiplier = 1f;
+	[SerializeField] private float movementMultiplierWeighting = 0.25f;	
 	[SerializeField] public float currentBaseSpread = 1.0f;
 	[SerializeField] public float crosshairConvergeanceRange = 20.0f;
+	[SerializeField] private AnimationCurve speedSpreadCurve;
+	[SerializeField] private PlayerMovementController playerMovementController;
 
 
 
@@ -41,6 +43,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		inPlayerControl = false;
 		isHoldingObject = false;
 		UpdateAmmo(currentAmmo, reserveAmmo);
+		playerMovementController = GetComponent<PlayerMovementController>();
 	}
 
 	// Update is called once per frame
@@ -62,7 +65,9 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	}
 
-	//Used when the player fires at something
+	/// <summary>
+	/// Used when the player is firing at an ambiguous target
+	/// </summary>
 	public void Fire()
 	{
 		//Will override the regular fire procedure if an item is held
@@ -138,9 +143,9 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 
-	//Used when AI need to fire at something
+	
 	/// <summary>
-	/// 
+	/// Used when the ai is firing at a target
 	/// </summary>
 	/// <param name="targetTransform"></param>
 	/// <returns>True if hit an enemy</returns>
@@ -248,8 +253,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		isHoldingObject = true;
 	}
 
-	public void SpreadMultiplierFromVelocity(Vector3 velocity)
+	public void SpreadMultiplierFromVelocity(Vector3 velocity, float maxSpeed)
 	{
-		spreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting); 
+		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
+		
+		
+		spreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve); 
 	}
 }

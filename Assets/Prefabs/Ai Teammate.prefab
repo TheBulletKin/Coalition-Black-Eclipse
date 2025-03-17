@@ -570,8 +570,16 @@ MonoBehaviour:
   heldObjectLaunchForce: 15
   baseSpreadAngle: 20
   spreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
   currentBaseSpread: 1
   crosshairConvergeanceRange: 20
+  speedSpreadCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  playerMovementController: {fileID: 0}
 --- !u!114 &4284256450557001990
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -596,7 +604,7 @@ MonoBehaviour:
   currentAbilityIndex: 0
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 65
+    m_Bits: 321
   isPlayerControlled: 0
 --- !u!143 &5587466839971737750
 CharacterController:

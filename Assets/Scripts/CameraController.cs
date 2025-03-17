@@ -7,6 +7,7 @@ public class CameraController : MonoBehaviour
 	//Base camera variables
 	[SerializeField] public bool canLookAround = true;
 	[SerializeField] private float lookSensitivity = 1f;
+	[SerializeField] private float lookSensModifier = 1.0f;
 
 	//Camera rotation values
 	[SerializeField] private float cameraPitch;
@@ -48,7 +49,7 @@ public class CameraController : MonoBehaviour
 		if (canLookAround)
 		{
 			inputVector = InputManager.Instance.LookAxis;
-			inputVector = Vector2.Scale(inputVector, new Vector2(lookSensitivity, lookSensitivity));
+			inputVector = Vector2.Scale(inputVector, new Vector2(lookSensitivity * lookSensModifier, lookSensitivity * lookSensModifier));
 			SetCameraYaw(cameraYaw + inputVector.x);
 
 			SetCameraPitch(cameraPitch - inputVector.y);
