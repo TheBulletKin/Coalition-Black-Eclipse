@@ -563,7 +563,7 @@ MonoBehaviour:
   cameraPos: {fileID: 8232328874099428430}
   hittableLayers:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 449
   weaponConfig: {fileID: 11400000, guid: ddca2226d7d575648bc7a1601450b413, type: 2}
   currentAmmo: 0
   reserveAmmo: 15

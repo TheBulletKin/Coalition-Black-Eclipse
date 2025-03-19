@@ -145,7 +145,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		foreach (Collider collider in enemiesInRange)
 		{
-			Health entityHealthComponent = collider.GetComponent<Health>();
+			Health entityHealthComponent = collider.GetComponentInParent<Health>();
 
 			if (entityHealthComponent != null)
 			{
