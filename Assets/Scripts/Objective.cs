@@ -7,7 +7,7 @@ public class Objective : MonoBehaviour, IInteractable
     
 	public void Interact(GameObject instigator)
     {
-        ObjectiveTracker.Instance.CompleteObjective(this);
+        ObjectiveTracker.Instance.CompleteObjective(this.gameObject);
         Destroy(gameObject);
     }
 

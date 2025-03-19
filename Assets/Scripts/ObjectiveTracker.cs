@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.Android;
 
 public class ObjectiveTracker : MonoBehaviour
 {
-   public static ObjectiveTracker Instance { get; private set; }
+	public static ObjectiveTracker Instance { get; private set; }
 
-	[SerializeField] private List<Objective> objectives;
+	[SerializeField] public List<GameObject> objectives;
 	[SerializeField] private bool objectiveComplete;
+	[SerializeField] private ObjectiveUiManager uiManager;
+	[SerializeField] private GameObject extractionPoint;
 
 	private void Awake()
 	{
@@ -21,34 +24,39 @@ public class ObjectiveTracker : MonoBehaviour
 		{
 			Destroy(gameObject);
 		}
+
+
 	}
 
 	private void Start()
 	{
-		Objective[] objectivesFound = FindObjectsByType<Objective>(FindObjectsSortMode.None);
-		foreach (Objective objective in objectivesFound)
-		{
-			objectives.Add(objective);
-		}
+
 	}
 
-	public void CompleteObjective(Objective objective)
+	public void CompleteObjective(GameObject objective)
 	{
+		uiManager.RemoveObjMarker(objective);
 		objectives.Remove(objective);
-	}
-
-	private void CheckObjectivesComplete()
-	{
-		if (objectives.Count <= 0)
+		if (objectives.Count <= 0 && objectiveComplete == false)
 		{
 			objectiveComplete = true;
-			GameManager.Instance.FinishGame(EndReason.OBJECTIVE_COMPLETE);
+			uiManager.addObjectiveMarker(extractionPoint);
 		}
+
 	}
 
-	public void CompleteExtraction()
+	public bool CompleteExtraction()
 	{
-
+		if (objectiveComplete == true)
+		{
+			uiManager.RemoveObjMarker(extractionPoint);
+			GameManager.Instance.FinishGame(EndReason.OBJECTIVE_COMPLETE);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 }

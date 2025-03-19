@@ -298,6 +298,7 @@ public class EnemySightSensor : MonoBehaviour
 		
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireSphere(transform.position, maxDetectionDistance);
+		Gizmos.DrawWireSphere(transform.position, closeDetectionFalloffDistance);
 
 		Gizmos.color = Color.red;
 		Vector3 forward = transform.forward * maxDetectionDistance;

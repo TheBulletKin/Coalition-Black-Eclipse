@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 	public static GameManager Instance { get; private set; }
 	[SerializeField] private GameState gameState;
 
+	[SerializeField] private GameObject victoryMessage;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -40,6 +42,7 @@ public class GameManager : MonoBehaviour
 		{
 			case EndReason.OBJECTIVE_COMPLETE:
 				Debug.Log("Game finished, objectives complete");
+				victoryMessage.SetActive(true);
 				break;
 			case EndReason.TIME_ENDED:
 				break;
