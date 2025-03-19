@@ -11,10 +11,16 @@ public class PatrolAction : FSMAction
 	{
 		//It can ask for the component here, then the state machine will hold it. 
 		//So the state machine doesn't necessarily need to hold them all.
-		var navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
-		var patrolPoints = stateMachine.GetComponent<PatrolPoints>();
+		NavMeshAgent navMeshAgent = stateMachine.enemyEntity.navMeshAgent;
+		PatrolPointsSystem patrolPoints = stateMachine.enemyEntity.patrolPoints;
 
 		if (patrolPoints.HasReached(navMeshAgent))
-			navMeshAgent.SetDestination(patrolPoints.GetNext().position);
+		{
+			if (patrolPoints.WaypointDurationFinished(navMeshAgent))
+			{
+				navMeshAgent.SetDestination(patrolPoints.GetNext().position);
+			}
+		}		
+			
 	}
 }

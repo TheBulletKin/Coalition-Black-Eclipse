@@ -11,6 +11,7 @@ public class CameraStateSwitcher : MonoBehaviour
 	public Quaternion prevCameraAngle;
     public Transform topDownCameraPos;
 	public Camera camera;
+	public float mapCamDistance = 25f;
 
 	public PlayerMovementController movementController;
 	public CameraController cameraController;
@@ -36,15 +37,16 @@ public class CameraStateSwitcher : MonoBehaviour
 
 		//Cache old camera angle and rotate it downwards
 		prevCameraAngle = Camera.main.transform.rotation;
-		Quaternion newRotation = Quaternion.Euler(90f, prevCameraAngle.y, prevCameraAngle.z);
-		Camera.main.transform.localRotation = newRotation;
+		//Quaternion newRotation = Quaternion.Euler(90f, prevCameraAngle.y, prevCameraAngle.z);
+		Quaternion newRotation = Quaternion.Euler(90f, 0f, 0f);
+		Camera.main.transform.rotation = newRotation;
 
 		//Confine cursor to window
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
 		camera.orthographic = true;
-		camera.orthographicSize = 23f;
+		camera.orthographicSize = mapCamDistance;
 
 		OnCameraStateChanged?.Invoke(CameraStates.TOPDOWN);
 
