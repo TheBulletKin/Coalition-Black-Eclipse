@@ -159,7 +159,7 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 
 			if (shootingSystem != null)
 			{
-				shootingSystem.SpreadMultiplierFromVelocity(characterController.velocity);
+				shootingSystem.SpreadMultiplierFromVelocity(characterController.velocity, movespeedSettings.walkSpeed);
 			}
 
 		}
