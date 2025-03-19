@@ -292,11 +292,19 @@ public class EnemySightSensor : MonoBehaviour
 
 
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.red;
-		Gizmos.DrawLine(ray.origin, ray.origin + ray.direction * 100);
+	private void OnDrawGizmosSelected()
+	{		
+		
+		
 		Gizmos.color = Color.blue;
-		Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.forward * 100);
+		Gizmos.DrawWireSphere(transform.position, maxDetectionDistance);
+
+		Gizmos.color = Color.red;
+		Vector3 forward = transform.forward * maxDetectionDistance;
+		Quaternion leftRayRotation = Quaternion.AngleAxis(-detectionAngle / 2, Vector3.up);
+		Quaternion rightRayRotation = Quaternion.AngleAxis(detectionAngle / 2, Vector3.up);
+		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
+		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
 	}
+	
 }

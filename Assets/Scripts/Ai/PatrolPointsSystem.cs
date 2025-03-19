@@ -3,33 +3,61 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using static AIMovement;
 
 public class PatrolPointsSystem : MonoBehaviour
 {
-	[SerializeField] private PatrolWaypointParent patrolPoints;
+	[SerializeField] public PatrolWaypointParent patrolPoints;
 	public bool isAtWaypoint = false;
 	public float waypointTimer = 0.0f;
 
-	public PatrolWaypoint CurrentPoint => patrolPoints.waypoints[currentPoint];
+	[Header("Temporary attributes")]
+	[SerializeField] private float lookRotationSpeed = 2f;
 
-	private int currentPoint = 0;
+
+	public PatrolWaypoint currentPoint;
+
+	private int currentPointIndex = 0;
 
 	/// <summary>
 	/// Gets the next point to patrol to
 	/// </summary>
 	/// <returns></returns>
-	public PatrolWaypoint GetNext()
+	public PatrolWaypoint SetNextWaypoint()
 	{
-		PatrolWaypoint patrolWaypoint = patrolPoints.waypoints[currentPoint];
-		currentPoint = (currentPoint + 1) % patrolPoints.waypoints.Count;
-		return patrolWaypoint;
+		currentPointIndex = (currentPointIndex + 1) % patrolPoints.waypoints.Count;
+		currentPoint = patrolPoints.waypoints[currentPointIndex];
+		return currentPoint;
 	}
+
+	private void Start()
+	{
+		if (patrolPoints.waypoints != null && patrolPoints.waypoints.Count > 0)
+		{
+			currentPoint = patrolPoints.waypoints[currentPointIndex];
+		}
+
+
+	}
+
 
 	private void Update()
 	{
 		if (isAtWaypoint)
 		{
 			waypointTimer += Time.deltaTime;
+
+
+			Vector3 worldForward = currentPoint.orientation.transform.TransformDirection(Vector3.forward);
+
+
+			Quaternion targetRotation = Quaternion.LookRotation(worldForward);
+
+			//transform.rotation = targetRotation;	
+
+			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, lookRotationSpeed * Time.deltaTime);
+
+			transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 		}
 
 	}
@@ -61,7 +89,7 @@ public class PatrolPointsSystem : MonoBehaviour
 
 	public bool WaypointDurationFinished(NavMeshAgent navMeshAgent)
 	{
-		if (waypointTimer >= CurrentPoint.waitDuration)
+		if (waypointTimer >= currentPoint.waitDuration)
 		{
 			waypointTimer = 0.0f;
 			isAtWaypoint = false;
@@ -73,4 +101,6 @@ public class PatrolPointsSystem : MonoBehaviour
 		}
 
 	}
+
+
 }

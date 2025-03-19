@@ -96,6 +96,11 @@ GameObject:
   - component: {fileID: 7305451824568763593}
   - component: {fileID: 9074530248577911496}
   - component: {fileID: 841039299320179677}
+  - component: {fileID: 5095011553529449216}
+  - component: {fileID: 1417124802820564995}
+  - component: {fileID: 1452609163043407768}
+  - component: {fileID: 3339947618540181137}
+  - component: {fileID: 1919731550340908967}
   m_Layer: 6
   m_Name: Enemy
   m_TagString: Enemy
@@ -146,6 +151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 858e772bf3c69a7429cd6a5821f73df4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isRevealed: 0
+  stateMachine: {fileID: 0}
+  patrolPoints: {fileID: 0}
+  navMeshAgent: {fileID: 0}
 --- !u!136 &9074530248577911496
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -196,6 +205,120 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5095011553529449216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80d3d400233f79b45b92bfb1e76a83b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initialState: {fileID: 11400000, guid: 1803dc4355235a74ca42f70f2a9d8c8a, type: 2}
+  enemyEntity: {fileID: 0}
+--- !u!114 &1417124802820564995
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e191f3c274119aa43baabf2b2ce30968, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visibleEntities: []
+  <detectionValue>k__BackingField: 0
+  detectionIncreaseRate: 50
+  detectionDecreaseRate: 10
+  detectionThreshold: 1
+  detectionAngle: 106.3
+  maxDetectionDistance: 50
+  closeDetectionFalloffDistance: 15
+  detectionRateModifier: 0
+  isEngagingEnemy: 0
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 257
+  maxWeaponRange: 30
+  weaponDamage: 55
+  fireTimer: 0
+  fireCooldown: 1
+--- !u!195 &1452609163043407768
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.96
+  m_BaseOffset: 0.94
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &3339947618540181137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aeb9030e30e2f54e811629fce401a43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraPos: {fileID: 0}
+  hittableLayers:
+    serializedVersion: 2
+    m_Bits: 1
+  weaponConfig: {fileID: 0}
+  currentAmmo: 0
+  reserveAmmo: 0
+  heldObjectLaunchForce: 15
+  baseSpreadAngle: 20
+  spreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
+  currentBaseSpread: 1
+  crosshairConvergeanceRange: 20
+  speedSpreadCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  playerMovementController: {fileID: 0}
+--- !u!114 &1919731550340908967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b400a8811e07e4e438f94a27e2d876e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolPoints: {fileID: 0}
+  isAtWaypoint: 0
+  waypointTimer: 0
+  lookRotationSpeed: 135
+  currentPoint: {fileID: 0}
 --- !u!1 &6232397835790596613
 GameObject:
   m_ObjectHideFlags: 0

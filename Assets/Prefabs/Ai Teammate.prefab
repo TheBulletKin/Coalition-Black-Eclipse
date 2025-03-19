@@ -148,7 +148,7 @@ GameObject:
   - component: {fileID: 8348525668773659780}
   - component: {fileID: 5599501812497481950}
   - component: {fileID: 664283841665789733}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Goggles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -787,7 +787,7 @@ GameObject:
   - component: {fileID: 7544800557243342397}
   - component: {fileID: 1039189996106082923}
   - component: {fileID: 6941144647078364422}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: AiModel
   m_TagString: Teammate
   m_Icon: {fileID: 0}
