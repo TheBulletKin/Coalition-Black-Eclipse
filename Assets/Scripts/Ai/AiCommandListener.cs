@@ -10,6 +10,7 @@ public class AiCommandListener : MonoBehaviour, IToggleable
 	private int commandsTotal;
 	private ICommand currentExecutingCommand;
 	public Color teammateColour;
+	public string teammateName;
 	[SerializeField] private LineRenderer moveWaypointLine;
 	[SerializeField] private List<LineRenderer> lookWaypointLines;
 	[SerializeField] private float pathUpdateSpeed = 0.25f;

@@ -27,6 +27,7 @@ public class TeammateUiManager : MonoBehaviour
 				teammateCard.teammateColour = ai.teammateColour;
 				teammateCard.background.color = ai.teammateColour;
 				teammateCard.teamIndexText.text = (aiTeammates.IndexOf(ai) + 1).ToString();
+				teammateCard.nameText.text = ai.teammateName;
 				teammateToUiCard.Add(ai, teammateCard);
 
 				//Create the ui nameplates that follow teammates

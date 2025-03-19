@@ -291,7 +291,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 257
   maxWeaponRange: 30
-  weaponDamage: 1
+  weaponDamage: 30
   fireTimer: 0
   fireCooldown: 0.7
 --- !u!195 &1452609163043407768

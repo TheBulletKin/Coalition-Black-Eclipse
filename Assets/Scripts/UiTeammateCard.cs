@@ -9,6 +9,7 @@ public class UiTeammateCard : MonoBehaviour
     public TextMeshProUGUI teamIndexText;
 	public Color teammateColour { set; private get; }
     public Image background;
+    public TextMeshProUGUI nameText;
 
     public void ToggleAsActiveTeammate(bool state)
     {
