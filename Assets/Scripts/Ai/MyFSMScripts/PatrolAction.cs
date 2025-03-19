@@ -14,7 +14,7 @@ public class PatrolAction : FSMAction
 		NavMeshAgent navMeshAgent = stateMachine.enemyEntity.navMeshAgent;
 		PatrolPointsSystem patrolPoints = stateMachine.enemyEntity.patrolPoints;
 
-		if (patrolPoints.patrolPoints)
+		if (patrolPoints.patrolPoints != null && patrolPoints.patrolPoints.waypoints.Count > 0)
 		{
 			if (patrolPoints.HasReached(navMeshAgent))
 			{

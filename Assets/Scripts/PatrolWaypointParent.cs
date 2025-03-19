@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PatrolWaypointParent : MonoBehaviour
 {
-	public List<PatrolWaypoint> waypoints;
+	public List<PatrolWaypoint> waypoints = new List<PatrolWaypoint>();
 	public Color waypointColour;
+
+	
 }

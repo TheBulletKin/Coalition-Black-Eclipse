@@ -86,7 +86,7 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	{
 		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
 
-		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 20f, hittableLayers))
+		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 70f, hittableLayers))
 		{			
 			UpdateTargetDetails(hit.collider.gameObject, hit, hit.point);
 		}

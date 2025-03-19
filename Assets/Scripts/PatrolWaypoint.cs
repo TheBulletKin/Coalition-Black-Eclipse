@@ -6,6 +6,7 @@ public class PatrolWaypoint : MonoBehaviour
 {
 	public Transform orientation;
     public float waitDuration = 0.0f;
+	public int patrolPointIndex = 0;
 
 	private void Start()
 	{		
