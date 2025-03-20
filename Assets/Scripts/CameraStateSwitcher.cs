@@ -21,7 +21,7 @@ public class CameraStateSwitcher : MonoBehaviour
 	private void Start()
 	{
 		InputManager.Instance.OnMapViewEnterPressed += SwitchToMap;
-		
+		prevCameraAngle = Camera.main.transform.rotation;
 	}
 
 	private void SwitchToMap()
@@ -54,6 +54,12 @@ public class CameraStateSwitcher : MonoBehaviour
 		InputManager.Instance.OnMapViewExitPressed += SwitchToPlayer;
 		InputManager.Instance.DisableFPSMaps();
 		InputManager.Instance.EnableMapViewMaps();
+
+		foreach (ControllableEntity teammate in EntityManager.Instance.playerTeammates)
+		{
+			
+			teammate.aiDetection.visionCone.SetActive(true);
+		}
 	}
 
 	private void SwitchToPlayer()
@@ -85,6 +91,11 @@ public class CameraStateSwitcher : MonoBehaviour
 		InputManager.Instance.OnMapViewExitPressed -= SwitchToPlayer;
 		InputManager.Instance.EnableFPSMaps();
 		InputManager.Instance.DisableMapViewMaps();
+
+		foreach (ControllableEntity teammate in EntityManager.Instance.playerTeammates)
+		{
+			teammate.aiDetection.visionCone.SetActive(false);
+		}
 	}
 
 	private void OnDestroy()

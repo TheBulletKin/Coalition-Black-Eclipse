@@ -403,6 +403,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groupIndex: 0
   teammateColour: {r: 0.7169812, g: 0.3077608, b: 0.3077608, a: 1}
+  teammateName: 
   moveWaypointLine: {fileID: 3953967171312708828}
   lookWaypointLines: []
   pathUpdateSpeed: 0.1
@@ -440,6 +441,7 @@ MonoBehaviour:
   obstructionLayers:
     serializedVersion: 2
     m_Bits: 257
+  visionConeMaterial: {fileID: 2100000, guid: 3a2be9f172641de488577c0719f36085, type: 2}
   enemiesSeen: []
 --- !u!114 &9133000728209936275
 MonoBehaviour:

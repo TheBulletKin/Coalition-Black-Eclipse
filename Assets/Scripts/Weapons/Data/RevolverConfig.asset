@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 0
   weaponName: Revolver
-  weaponDamage: 65
-  weaponRange: 30
+  weaponDamage: 100
+  weaponRange: 47.3
+  firingAngle: 60
   maxAmmo: 6
   fireRate: 73
   isAutomatic: 0

@@ -19,6 +19,7 @@ public class ControllableEntity : MonoBehaviour
 	[SerializeField] public ShootingSystem shootingSystem { get; private set; }
 	[SerializeField] public AbilitySystem abilitySystem { get; private set; }
 	[SerializeField] public Health health { get; private set; }
+	[SerializeField] public AiDetectAndEngage aiDetection { get; private set; }
 
 	private void Awake()
 	{
@@ -30,6 +31,7 @@ public class ControllableEntity : MonoBehaviour
 		shootingSystem = GetComponent<ShootingSystem>();
 		abilitySystem = GetComponent<AbilitySystem>();
 		health = GetComponent<Health>();
+		aiDetection = GetComponent<AiDetectAndEngage>();
 	}
 
 	public void TakeControl()

@@ -14,6 +14,8 @@ public class EntityManager : MonoBehaviour
 
 	
 
+	
+
 	private void Start()
 	{
 		if (Instance == null)

@@ -25,11 +25,14 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
 
+	[SerializeField] private Material visionConeMaterial;
+	public GameObject visionCone;
+
 	[SerializeField] private List<Health> enemiesSeen;
 
 	private void Start()
 	{
-
+		CreatePieSlice();
 	}
 
 	private void Update()
@@ -174,7 +177,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 			Vector3 forwardDirection = transform.forward;
 			float angle = Vector3.Angle(forwardDirection, directionToTarget.normalized);
 
-			if (angle >= detectionAngle)
+			if (angle >= shootingSystem.weaponConfig.firingAngle)
 			{
 				if (enemiesSeen[i] == null)
 				{
@@ -250,8 +253,8 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		Gizmos.color = Color.red;
 		Vector3 forward = transform.forward * shootingSystem.weaponConfig.weaponRange;
-		Quaternion leftRayRotation = Quaternion.AngleAxis(-detectionAngle / 2, Vector3.up);
-		Quaternion rightRayRotation = Quaternion.AngleAxis(detectionAngle / 2, Vector3.up);
+		Quaternion leftRayRotation = Quaternion.AngleAxis(-shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
+		Quaternion rightRayRotation = Quaternion.AngleAxis(shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
 		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
 	}
@@ -270,5 +273,24 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	public void EnableControl()
 	{
 		enabled = false;
+	}
+
+	private void CreatePieSlice()
+	{
+		visionCone = new GameObject("PieSliceMesh");
+		visionCone.transform.SetParent(transform);
+		visionCone.transform.localPosition = Vector3.zero;
+		visionCone.transform.localRotation = Quaternion.identity;
+
+		MeshFilter meshFilter = visionCone.AddComponent<MeshFilter>();
+		MeshRenderer meshRenderer = visionCone.AddComponent<MeshRenderer>();
+
+		meshRenderer.material = visionConeMaterial;
+
+		// Add the PieSliceMeshGenerator component
+		VisionCone meshGenerator = visionCone.AddComponent<VisionCone>();
+		meshGenerator.UpdateMesh(shootingSystem.weaponConfig.weaponRange, shootingSystem.weaponConfig.firingAngle);
+
+		visionCone.SetActive(false);
 	}
 }
