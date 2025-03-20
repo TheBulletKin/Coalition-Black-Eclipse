@@ -279,8 +279,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visibleEntities: []
   <detectionValue>k__BackingField: 0
-  detectionIncreaseRate: 70
-  detectionDecreaseRate: 10
+  detectionIncreaseRate: 85
+  detectionDecreaseRate: 50
   detectionThreshold: 1
   detectionAngle: 106.3
   maxDetectionDistance: 50
@@ -291,7 +291,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 257
   maxWeaponRange: 30
-  weaponDamage: 30
+  weaponDamage: 55
   fireTimer: 0
   fireCooldown: 0.7
 --- !u!195 &1452609163043407768
