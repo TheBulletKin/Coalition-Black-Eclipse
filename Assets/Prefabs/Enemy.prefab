@@ -290,7 +290,7 @@ MonoBehaviour:
   ignoreMask:
     serializedVersion: 2
     m_Bits: 257
-  maxWeaponRange: 30
+  maxWeaponRange: 43
   weaponDamage: 55
   fireTimer: 0
   fireCooldown: 0.7
