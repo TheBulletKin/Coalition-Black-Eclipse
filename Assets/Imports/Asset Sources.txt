@@ -1,0 +1,14 @@
+Models --------
+DP 24 - Me
+SVDM - Me
+Throwing Knife - https://sketchfab.com/3d-models/throwing-knife-8e47c2ff42894aa1bac12af46d08aced
+Revolver - https://sketchfab.com/3d-models/50ds-revolver-6206a6debbf049ca83133b59d0273e35
+Night Vision Goggles + helmet - https://sketchfab.com/3d-models/night-vision-goggles-navy-seals-6cf9c96971fb4dc19a225d68a14d1458
+Us Vest - https://sketchfab.com/3d-models/low-poly-game-ready-armor-vest-90c084b9a56441b1afcfa9293b6fe4af
+Metal rectangular building - https://sketchfab.com/3d-models/fmb-building-001-1cc1906791c64df5816cede54cae8499
+Empty hangar - https://sketchfab.com/3d-models/hangar-bad8c6349749480d85ee58f8d1a9355b
+
+Textures ----
+Camo textures - https://assetstore.unity.com/packages/2d/textures-materials/camouflage-texture-pack-308905
+Painted stone textures - https://assetstore.unity.com/packages/2d/textures-materials/stone/hand-painted-stone-textures-28645
+Grass and dirt textures - https://assetstore.unity.com/packages/2d/textures-materials/nature/handpainted-grass-ground-textures-187634
