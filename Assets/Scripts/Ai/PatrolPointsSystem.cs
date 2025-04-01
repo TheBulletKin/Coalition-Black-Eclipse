@@ -32,7 +32,7 @@ public class PatrolPointsSystem : MonoBehaviour
 
 	private void Start()
 	{
-		if (patrolPoints.waypoints != null && patrolPoints.waypoints.Count > 0)
+		if (patrolPoints != null && patrolPoints.waypoints != null && patrolPoints.waypoints.Count > 0)
 		{
 			currentPoint = patrolPoints.waypoints[currentPointIndex];
 		}

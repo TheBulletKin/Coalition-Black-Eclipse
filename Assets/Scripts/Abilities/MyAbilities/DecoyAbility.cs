@@ -6,28 +6,32 @@ using UnityEngine;
 public class DecoyAbility : CharacterAbility
 {
 	[SerializeField] private GameObject decoyPrefab;
+	[SerializeField] private int abilityCount = 2;
 	public override void Init()
 	{
-		
-	}	
+		abilityCount = 2;
+	}
 
 	public override void Use(AbilitySystem owner)
 	{
-		
+
 	}
 
 	public override void Use(AbilitySystem owner, GameObject target)
 	{
-		
+
 	}
 
 	public override void Use(AbilitySystem owner, RaycastHit targetPos)
 	{
-		Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
+		GameObject newDecoy = Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
+		EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
+
 	}
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
-	{
-		
+	{		
+		GameObject newDecoy = Instantiate(decoyPrefab, targetVecPos, Quaternion.identity);
+		EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
 	}
 }

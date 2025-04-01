@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class EnemySightSensor : MonoBehaviour
 {
@@ -54,6 +55,15 @@ public class EnemySightSensor : MonoBehaviour
 			foreach (ControllableEntity target in EntityManager.Instance.playerTeammates)
 			{
 				if (Ping(target)) //If at least one enemy is visible, will continue and change the detection value
+				{
+					enemyIsInVisibleRange = true;
+					break;
+				}
+			}
+
+			foreach (Decoy decoy in EntityManager.Instance.playerDecoys)
+			{
+				if (Ping(decoy)) //If at least one decoy is visible, will continue and change the detection value
 				{
 					enemyIsInVisibleRange = true;
 					break;
@@ -129,13 +139,21 @@ public class EnemySightSensor : MonoBehaviour
 		}
 	}
 
-	//One test to see if any teammate is in view
+	public bool Ping(Decoy target)
+	{
+		return TestVisibility(target.health);
+	}
+
 	public bool Ping(ControllableEntity target)
 	{
 
-		Health entityHealthComponent = target.health;
+		return TestVisibility(target.health);
+	}
+
+	public bool TestVisibility(Health target)
+	{		
 		//Ray from current ai to target
-		ray = new Ray(this.transform.position, target.characterModel.transform.position - this.transform.position);
+		ray = new Ray(this.transform.position, target.transform.position - this.transform.position);
 
 		var dir = new Vector3(ray.direction.x, 0, ray.direction.z);
 
@@ -144,10 +162,10 @@ public class EnemySightSensor : MonoBehaviour
 		//Enemy outside of vision cone
 		if (angle > detectionAngle)
 		{
-			if (visibleEntities.Contains(entityHealthComponent))
+			if (visibleEntities.Contains(target))
 			{
-				entityHealthComponent.OnEntityDeath -= OnEnemyDeath;
-				visibleEntities.Remove(entityHealthComponent);
+				target.OnEntityDeath -= OnEnemyDeath;
+				visibleEntities.Remove(target);
 			}
 			return false;
 		}
@@ -161,10 +179,10 @@ public class EnemySightSensor : MonoBehaviour
 		}
 		else
 		{
-			if (visibleEntities.Contains(entityHealthComponent))
+			if (visibleEntities.Contains(target))
 			{
-				entityHealthComponent.OnEntityDeath -= OnEnemyDeath;
-				visibleEntities.Remove(entityHealthComponent);
+				target.OnEntityDeath -= OnEnemyDeath;
+				visibleEntities.Remove(target);
 			}
 			return false;
 		}
@@ -175,10 +193,10 @@ public class EnemySightSensor : MonoBehaviour
 			EntityVisibility vis = hit.collider.gameObject.GetComponentInParent<EntityVisibility>();
 			if (vis.GetVisibilityMod() > 0) //Can be seen
 			{
-				if (!visibleEntities.Contains(entityHealthComponent))
+				if (!visibleEntities.Contains(target))
 				{
-					visibleEntities.Add(entityHealthComponent);
-					entityHealthComponent.OnEntityDeath += OnEnemyDeath;
+					visibleEntities.Add(target);
+					target.OnEntityDeath += OnEnemyDeath;
 				}
 				return true;
 			}
@@ -191,6 +209,9 @@ public class EnemySightSensor : MonoBehaviour
 
 		return false;
 	}
+	
+	//One test to see if any teammate is in view
+	
 
 	public bool TargetInLineOfSight(out RaycastHit outHit)
 	{

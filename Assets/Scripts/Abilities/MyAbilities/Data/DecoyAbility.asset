@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72999899c21143e47952551bc7984fa8, type: 3}
   m_Name: DecoyAbility
   m_EditorClassIdentifier: 
+  aiCastAbilityType: 3
+  playerCastAbilityType: 2
   decoyPrefab: {fileID: 2342537618159628209, guid: 0cffff6f8a37b5f418e5326d7179f283,
     type: 3}
+  abilityCount: 2
