@@ -966,6 +966,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""SelectAbility"",
+                    ""type"": ""Button"",
+                    ""id"": ""23c0c557-71d5-46bc-8794-570f94c7c615"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Exit Map"",
                     ""type"": ""Button"",
                     ""id"": ""d7420f82-f022-49ba-88f9-2c238ab6e90b"",
@@ -1075,6 +1084,105 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""MapMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""436b52eb-f886-43a5-a8d0-e42516d9ee43"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4ece183c-4c72-4f0c-a6bb-65ba90e5571a"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""5bcaffa5-7220-48eb-87fd-b9d3c27e5279"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""93b52399-6aef-40ca-8d9f-49f9d68c48be"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""14ebe463-41d5-4111-b877-b79b8b754e6d"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1738a94c-7f6d-478e-8b28-05e3b3f3fa07"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6d135428-a9a3-4a8e-b269-c80462916c12"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""74304498-2010-4a01-8dd6-bb3849ffe163"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7ea20ab6-1cd9-4e19-9c1c-ab879cfc1f88"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SelectAbility"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
@@ -1478,6 +1586,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
+        m_MapView_SelectAbility = m_MapView.FindAction("SelectAbility", throwIfNotFound: true);
         m_MapView_ExitMap = m_MapView.FindAction("Exit Map", throwIfNotFound: true);
         m_MapView_ExecuteGoCode = m_MapView.FindAction("ExecuteGoCode", throwIfNotFound: true);
         m_MapView_SelectAiTeammate = m_MapView.FindAction("SelectAiTeammate", throwIfNotFound: true);
@@ -1734,6 +1843,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_MapView;
     private List<IMapViewActions> m_MapViewActionsCallbackInterfaces = new List<IMapViewActions>();
     private readonly InputAction m_MapView_MapMove;
+    private readonly InputAction m_MapView_SelectAbility;
     private readonly InputAction m_MapView_ExitMap;
     private readonly InputAction m_MapView_ExecuteGoCode;
     private readonly InputAction m_MapView_SelectAiTeammate;
@@ -1745,6 +1855,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         private @BaseControls m_Wrapper;
         public MapViewActions(@BaseControls wrapper) { m_Wrapper = wrapper; }
         public InputAction @MapMove => m_Wrapper.m_MapView_MapMove;
+        public InputAction @SelectAbility => m_Wrapper.m_MapView_SelectAbility;
         public InputAction @ExitMap => m_Wrapper.m_MapView_ExitMap;
         public InputAction @ExecuteGoCode => m_Wrapper.m_MapView_ExecuteGoCode;
         public InputAction @SelectAiTeammate => m_Wrapper.m_MapView_SelectAiTeammate;
@@ -1763,6 +1874,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @MapMove.started += instance.OnMapMove;
             @MapMove.performed += instance.OnMapMove;
             @MapMove.canceled += instance.OnMapMove;
+            @SelectAbility.started += instance.OnSelectAbility;
+            @SelectAbility.performed += instance.OnSelectAbility;
+            @SelectAbility.canceled += instance.OnSelectAbility;
             @ExitMap.started += instance.OnExitMap;
             @ExitMap.performed += instance.OnExitMap;
             @ExitMap.canceled += instance.OnExitMap;
@@ -1788,6 +1902,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @MapMove.started -= instance.OnMapMove;
             @MapMove.performed -= instance.OnMapMove;
             @MapMove.canceled -= instance.OnMapMove;
+            @SelectAbility.started -= instance.OnSelectAbility;
+            @SelectAbility.performed -= instance.OnSelectAbility;
+            @SelectAbility.canceled -= instance.OnSelectAbility;
             @ExitMap.started -= instance.OnExitMap;
             @ExitMap.performed -= instance.OnExitMap;
             @ExitMap.canceled -= instance.OnExitMap;
@@ -1847,6 +1964,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     public interface IMapViewActions
     {
         void OnMapMove(InputAction.CallbackContext context);
+        void OnSelectAbility(InputAction.CallbackContext context);
         void OnExitMap(InputAction.CallbackContext context);
         void OnExecuteGoCode(InputAction.CallbackContext context);
         void OnSelectAiTeammate(InputAction.CallbackContext context);

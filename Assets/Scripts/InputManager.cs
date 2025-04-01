@@ -218,7 +218,10 @@ public class InputManager : MonoBehaviour
 		controls.MapView.SelectAiGroup.performed += SelectAiGroupPerformed;
 		//Go codes
 		controls.MapView.ExecuteGoCode.performed += ActivateGoCodePerformed;
-		
+
+		//Change ability
+		controls.MapView.SelectAbility.performed += AbilitySelectPerformed;
+
 	}
 
 
@@ -236,6 +239,9 @@ public class InputManager : MonoBehaviour
 		controls.MapView.SelectAiGroup.performed -= SelectAiGroupPerformed;
 		//Go codes
 		controls.MapView.ExecuteGoCode.performed -= ActivateGoCodePerformed;
+
+		//Change ability
+		controls.MapView.SelectAbility.performed += AbilitySelectPerformed;
 	}
 
 	//----- Command creation
