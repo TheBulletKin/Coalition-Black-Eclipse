@@ -17,7 +17,7 @@ public class Health : MonoBehaviour, IDamagable
 	}
 	public void Die()
 	{
-		Debug.Log("Entity died");
+		Debug.Log(gameObject.name + " died");
 		OnEntityDeath?.Invoke(this);
 		Destroy(gameObject);
 	}
@@ -26,7 +26,7 @@ public class Health : MonoBehaviour, IDamagable
 	{
 
 		currentHealth -= Math.Abs(damage);
-		Debug.Log("Entity took " + damage + " damage");
+		Debug.Log(gameObject.name + " took " + damage + " damage");
 		if (currentHealth < 0)
 		{
 			currentHealth = 0;

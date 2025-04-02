@@ -54,11 +54,11 @@ public class CharacterSwitcher : MonoBehaviour
 			{
 				entity.LoseControl();
 				entity.characterModel.SetActive(true);
-				Debug.Log(entity.gameObject.name + " lost control");
+				//Debug.Log(entity.gameObject.name + " lost control");
 			}
 		}
 		
-		Debug.Log(teammate.gameObject.name + " gained control");
+		//Debug.Log(teammate.gameObject.name + " gained control");
 
 		//Move the player camera and change parent
 		MoveCamera(teammate.gameObject, teammate.cameraPos);

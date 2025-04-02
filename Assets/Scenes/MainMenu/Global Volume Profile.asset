@@ -25,34 +25,6 @@ MonoBehaviour:
   texture:
     m_OverrideState: 0
     m_Value: {fileID: 0}
---- !u!114 &-3253873179725296155
-MonoBehaviour:
-  m_ObjectHideFlags: 3
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c5e1dc532bcb41949b58bc4f2abfbb7e, type: 3}
-  m_Name: LensDistortion
-  m_EditorClassIdentifier: 
-  active: 0
-  intensity:
-    m_OverrideState: 0
-    m_Value: 0.421
-  xMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  yMultiplier:
-    m_OverrideState: 0
-    m_Value: 1
-  center:
-    m_OverrideState: 0
-    m_Value: {x: 0.5, y: 0.5}
-  scale:
-    m_OverrideState: 0
-    m_Value: 1
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -69,7 +41,6 @@ MonoBehaviour:
   - {fileID: 5784698646444455704}
   - {fileID: 3562572183656670863}
   - {fileID: 6783793242749282608}
-  - {fileID: -3253873179725296155}
   - {fileID: -4651060290006903107}
 --- !u!114 &3562572183656670863
 MonoBehaviour:
@@ -92,7 +63,7 @@ MonoBehaviour:
     m_Value: 14
   colorFilter:
     m_OverrideState: 1
-    m_Value: {r: 0.82276213, g: 1.2731794, b: 0.8808806, a: 1}
+    m_Value: {r: 0.81124496, g: 1.2026849, b: 0.86382645, a: 1}
   hueShift:
     m_OverrideState: 0
     m_Value: 0
