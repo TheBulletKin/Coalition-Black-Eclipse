@@ -24,7 +24,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
-
+	[SerializeField] private Color visionConeColour;
 	[SerializeField] private Material visionConeMaterial;
 	public GameObject visionCone;
 
@@ -284,8 +284,15 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		MeshFilter meshFilter = visionCone.AddComponent<MeshFilter>();
 		MeshRenderer meshRenderer = visionCone.AddComponent<MeshRenderer>();
+		
 
 		meshRenderer.material = visionConeMaterial;
+
+		MaterialPropertyBlock propertyBlock = new MaterialPropertyBlock();
+
+		meshRenderer.GetPropertyBlock(propertyBlock);
+		propertyBlock.SetColor("_BaseColor", visionConeColour);
+		meshRenderer.SetPropertyBlock(propertyBlock);
 
 		// Add the PieSliceMeshGenerator component
 		VisionCone meshGenerator = visionCone.AddComponent<VisionCone>();
