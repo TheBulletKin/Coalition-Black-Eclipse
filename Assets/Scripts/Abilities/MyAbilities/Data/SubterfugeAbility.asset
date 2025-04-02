@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01fb2f842e6777c49937a58ad6ebd76a, type: 3}
   m_Name: SubterfugeAbility
   m_EditorClassIdentifier: 
-  entityVis: {fileID: 0}
+  aiCastAbilityType: 0
+  playerCastAbilityType: 0
+  abilityIcon: {fileID: 0}
+  abilityName: Subterfuge

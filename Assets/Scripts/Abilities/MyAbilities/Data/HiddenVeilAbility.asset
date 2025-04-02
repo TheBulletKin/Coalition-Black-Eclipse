@@ -14,9 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiCastAbilityType: 3
   playerCastAbilityType: 3
+  abilityIcon: {fileID: 0}
+  abilityName: Hidden Veil
   abilityCount: 2
   placementRange: 10
   proxSensorPrefab: {fileID: 6495869608783633811, guid: 68d3f2599a427fc4dab9ef034c566596,
     type: 3}
-  activeVeils:
-  - {fileID: 0}
+  activeVeils: []

@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiCastAbilityType: 3
   playerCastAbilityType: 0
+  abilityIcon: {fileID: 0}
+  abilityName: Dagger Blink
   daggerPrefab: {fileID: 331984391212392924, guid: 4bbc79599b0817c439a8bed91584d6ff,
     type: 3}
   daggerProjectile: {fileID: 331984391212392924, guid: a256d3c332770664da8b1467f1504550,

@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7cb1103fecdb20546abd8e84f800aa14, type: 3}
   m_Name: CoinTossAbility
   m_EditorClassIdentifier: 
+  aiCastAbilityType: 0
+  playerCastAbilityType: 0
+  abilityIcon: {fileID: 0}
+  abilityName: Coin Toss
   coinCount: 5
   coinProjectile: {fileID: 6495869608783633811, guid: 145c4491a5e6bdf42a8f39fcd8b22204,
     type: 3}

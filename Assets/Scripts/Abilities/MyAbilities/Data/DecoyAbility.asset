@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiCastAbilityType: 3
   playerCastAbilityType: 2
+  abilityIcon: {fileID: 0}
+  abilityName: Decoy
   decoyPrefab: {fileID: 2342537618159628209, guid: 0cffff6f8a37b5f418e5326d7179f283,
     type: 3}
   abilityCount: 2

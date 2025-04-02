@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   aiCastAbilityType: 3
   playerCastAbilityType: 0
+  abilityIcon: {fileID: 0}
+  abilityName: Teleport Anchor
   anchorPrefab: {fileID: 331984391212392924, guid: 16541f0007245914094e9bcc09ef7b20,
     type: 3}
   anchorProjectile: {fileID: 331984391212392924, guid: bda96252e64cade49948d14cc1e6cb95,
@@ -21,6 +23,6 @@ MonoBehaviour:
   travelDuration: 1.5
   arcHeight: 5
   launchForce: 15
-  gadgetCount: 0
-  anchorActive: 1
-  teleportPosition: {x: 6.8075805, y: 1.49, z: -51.727615}
+  gadgetCount: 1
+  anchorActive: 0
+  teleportPosition: {x: 0, y: 0, z: 0}
