@@ -13,9 +13,22 @@ public class WeaponConfig : ScriptableObject
     [Tooltip("Fire rate in shots per minute")]
     public float fireRate;
     public bool isAutomatic;
-    public float maxRotationAngle;
-    public float rotationInfluence;
+
+    [Header("Rotational Spread Values")]
+	[Tooltip("How much of an effect rotation speed has on spread")]
+	public float rotationInfluence;
+	[Tooltip("How fast rotational spread decreases by itself")]
 	public float rotationalSpreadDecreaseSpeed = 1f;
+	[Tooltip("Maximum spread value")]
+	public float rotationSpreadMax = 1f;
+	[Tooltip("Rotational speed below which spread isn't applied")]
+	public float minRotSpeedForSpread = 1f;	
+	[Tooltip("Controls spread gain based on angular velocity")]
     public AnimationCurve rotationInfluenceCurve;
-    public float rotationSpreadMax = 1f;
+	[Tooltip("Multipliy the effects of spread gain through rotation speed")]
+	public float rotationCurveMultiplier = 1f;
+	[Tooltip("Compared with current rotation speed to create clamped 0-1 value for curve evaluation")]
+	public float maxRotationSpeed = 1f;
+    
+    
 }

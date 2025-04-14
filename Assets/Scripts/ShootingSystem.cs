@@ -31,8 +31,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private AnimationCurve speedSpreadCurve;
 	[SerializeField] private PlayerMovementController playerMovementController;
 	[SerializeField] private Quaternion lastFrameRotation;
-	private float rotationSpread;
-	
+	[SerializeField] private float rotationSpread;
+	[SerializeField] private float rotationSpeed;
+	private float smoothedAngleDiff = 0f;
+	[SerializeField] private float angleSmoothingFactor = 0.1f;
+
 
 
 
@@ -54,54 +57,50 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	// Update is called once per frame
 	void Update()
 	{
+
+		float deltaTime = Time.deltaTime;
 		if (inPlayerControl)
 		{
 			Quaternion currentRotation = mainCam.transform.rotation;
+			
+			float angleDifference = Quaternion.Angle(currentRotation, lastFrameRotation);
 
-			//Multiplying forward by the rotation creates a vector that points in that direction
-			Vector3 currentForward = currentRotation * Vector3.forward;
-			Vector3 lagForward = lastFrameRotation * Vector3.forward;
+			//Since the rotation speed can be tiny and lost in frame by frame calculations, lerp picks up on changes over a slightly longer period
+			//More slowly moves to the target speed over several frames
+			smoothedAngleDiff = Mathf.Lerp(smoothedAngleDiff, angleDifference / deltaTime, angleSmoothingFactor);
+			rotationSpeed = smoothedAngleDiff;
 
-			float angle = Vector3.Angle(currentForward, lagForward);
-
-
-			if (angle > weaponConfig.maxRotationAngle)
+			if (rotationSpeed < 0.00001)
 			{
-				lagForward = Vector3.RotateTowards(currentForward, lagForward, weaponConfig.maxRotationAngle * Mathf.Deg2Rad, 0f);
-				lastFrameRotation = Quaternion.LookRotation(lagForward);
+				rotationSpeed = 0f; 
 			}
-			
 
+			//In order to use the animation curve properly, normalise from 0-1
+			float normalizedRotationSpeed = Mathf.InverseLerp(0f, weaponConfig.maxRotationSpeed, rotationSpeed);
+			//Curve result controls how much the angular velocity influences spread gain
+			float curveValue = weaponConfig.rotationInfluenceCurve.Evaluate(normalizedRotationSpeed) * weaponConfig.rotationCurveMultiplier;
 
-			float angularDifference = Quaternion.Angle(currentRotation, lastFrameRotation);
+			//Only raise spread when above this minimum threshold
+			if (rotationSpeed > weaponConfig.minRotSpeedForSpread)
+			{
+				rotationSpread += curveValue * weaponConfig.rotationInfluence * deltaTime;
+			}
+			else
+			{
+				//rotationSpread -= weaponConfig.rotationalSpreadDecreaseSpeed * deltaTime;
+				rotationSpread = Mathf.MoveTowards(rotationSpread, 0f, weaponConfig.rotationalSpreadDecreaseSpeed * deltaTime);
+			}		
 
-		
+			rotationSpread = Mathf.Clamp(rotationSpread, 0f, weaponConfig.rotationSpreadMax);
 
-			//Value of 0-1 based on difference between forward vector, lag vector and max weapon angle
-			float rotationSpreadValue = Mathf.Clamp01(angularDifference / weaponConfig.maxRotationAngle);
-
-			//Apply a curve that can smoothly control the spread influence
-			rotationSpreadValue = weaponConfig.rotationInfluenceCurve.Evaluate(rotationSpreadValue);
-
-			//Apply a flat multiplier for rotational spread influence
-			rotationSpreadValue = rotationSpreadValue * weaponConfig.rotationInfluence;
-
-			//Add a final clamp to control maximum possible spread
-			rotationSpreadValue = Mathf.Min(rotationSpreadValue, weaponConfig.rotationSpreadMax);
-
-			//Raw rotational spread value is the base spread * this final multiplier
-			float rawRotationSpread = baseSpreadAngle * rotationSpreadValue;
-
-			
-			
-
-
-			float totalAngle = (baseSpreadAngle * movementSpreadMultiplier) + (baseSpreadAngle * (rotationSpreadValue * weaponConfig.rotationInfluence));
+			//Apply both movement and aim spread
+			float totalAngle = (baseSpreadAngle * movementSpreadMultiplier) + (baseSpreadAngle * rotationSpread);
 			float spreadRadians = totalAngle * Mathf.Deg2Rad;
-
+			
+			//Determine the final spread from screen centre
 			currentBaseSpread = Mathf.Tan(spreadRadians) * crosshairConvergeanceRange * 15f;
 
-			lastFrameRotation = Quaternion.RotateTowards(lastFrameRotation, currentRotation, weaponConfig.rotationalSpreadDecreaseSpeed * Time.deltaTime);
+			lastFrameRotation = currentRotation;
 		}
 		else
 		{
