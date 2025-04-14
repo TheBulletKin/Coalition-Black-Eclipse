@@ -2,31 +2,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
 	public static AudioManager instance;
 	[SerializeField] private GameObject audioSourcePrefab;
+	[SerializeField] private AudioMixer mainAudioMixer;
+	[SerializeField] private AudioMixerGroup playerFootstepGroup;
+	[SerializeField] private AudioMixerGroup enemyFootstepGroup;
+
 
 	[Serializable]
-	private class FootstepSounds
+	private class SoundCollections
 	{
-		public List<AudioClip> clips;
+		public GameSoundCollection footstepSounds;
+		public GameSoundCollection idleBarkSounds;
 	}
 
-	[SerializeField] private FootstepSounds footstepSounds;
+	[SerializeField]
+	private SoundCollections soundCollections;
 
-	[Serializable]
-	private class IdleBarkSounds
-	{
-		public List<AudioClip> clips;
-	}
-
-	[SerializeField] private IdleBarkSounds idleBarkSounds;
-
-	public Dictionary<SoundType, List<AudioClip>> soundTypeToAudioClip = new Dictionary<SoundType, List<AudioClip>>();
+	public Dictionary<SoundType, GameSound> soundTypeToAudioClip = new Dictionary<SoundType, GameSound>();
 	[Tooltip("All currently active audio sources")]
 	public List<AudioSource> sources = new List<AudioSource>();
+
+	private int maxPoolSize = 25;
 
 	private void Awake()
 	{
@@ -43,8 +44,8 @@ public class AudioManager : MonoBehaviour
 
 	private void Start()
 	{
-		soundTypeToAudioClip.Add(SoundType.FOOTSTEP, footstepSounds.clips);
-		soundTypeToAudioClip.Add(SoundType.IDLE_BARK, idleBarkSounds.clips);
+		soundTypeToAudioClip.Add(SoundType.FOOTSTEP, soundCollections.footstepSounds);
+		soundTypeToAudioClip.Add(SoundType.IDLE_BARK, soundCollections.idleBarkSounds);
 	}
 
 	/// <summary>
@@ -55,13 +56,27 @@ public class AudioManager : MonoBehaviour
 	/// <returns></returns>
 	private AudioSource CreateAudioSource()
 	{
-		foreach (AudioSource activeSource in sources)
+		
+		//If an audio source is free, use that.
+		//if the audio source has been deleted for whatever reason, ensure it's removed from the list
+		for (int i = sources.Count - 1; i >= 0; i--)
 		{
-			if (!activeSource.isPlaying)
+			AudioSource activeSource = sources[i];
+			
+			if (activeSource == null || !activeSource.isPlaying)
+			{
+				sources.RemoveAt(i);
+			}
+			else if (!activeSource.isPlaying)
 			{
 				return activeSource;
 			}
+		}
 
+		if (sources.Count >= maxPoolSize)
+		{
+			Debug.LogWarning("AudioSource pool is full, no new sources can be created");
+			return null;
 		}
 
 		GameObject sourceGameObject = Instantiate(audioSourcePrefab, transform);
@@ -70,10 +85,17 @@ public class AudioManager : MonoBehaviour
 		return source;
 	}
 
-	public void PlaySound(GameSound sound, Vector3? position = null, Transform followTarget = null)
+	public void PlaySound(SoundType type, MixerBus busTarget, Vector3? position = null, Transform followTarget = null)
 	{
 		Vector3 soundPos = followTarget ? followTarget.position : (position ?? Vector3.zero);
 		Vector3 listenerPos = Camera.main.transform.position;
+
+		GameSound sound = soundTypeToAudioClip[type];
+		if (sound == null)
+		{
+			Debug.LogWarning("Sound not found");
+			return;
+		}
 
 		float distance = Vector3.Distance(listenerPos, soundPos);
 		if (sound.spatial && distance > sound.maxDistance)
@@ -82,12 +104,29 @@ public class AudioManager : MonoBehaviour
 		}
 
 
+
 		AudioSource source = CreateAudioSource();
-		source.clip = sound.clip;
+		if (source == null)
+		{
+			Debug.LogWarning("No available audio sources to play sound");
+			return;
+		}
+
+		source.clip = sound.GetAudioClip();
 		source.volume = sound.volume;
 		source.pitch = sound.pitch;
 		source.loop = sound.loop;
 		source.spatialBlend = sound.spatial ? 1f : 0f;
+
+		switch (busTarget)
+		{
+			case MixerBus.FOOTSTEP_PLAYER:
+				source.outputAudioMixerGroup = playerFootstepGroup;
+				break;
+			case MixerBus.FOOTSTEP_ENEMY:
+				source.outputAudioMixerGroup = enemyFootstepGroup;
+				break;
+		}
 
 		if (followTarget != null)
 		{
@@ -99,9 +138,7 @@ public class AudioManager : MonoBehaviour
 			source.transform.SetParent(null);
 			source.transform.position = position ?? Vector3.zero;
 		}
-
 		source.Play();
-
 
 	}
 
