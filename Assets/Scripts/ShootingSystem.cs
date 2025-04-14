@@ -257,7 +257,6 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
 		
-		
 		spreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve); 
 	}
 }
