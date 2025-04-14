@@ -59,10 +59,30 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 
 		float deltaTime = Time.deltaTime;
+
+		HandleRotationSpread(deltaTime);
+		
+
+		Debug.DrawLine(transform.position, transform.position + (lastFrameRotation * Vector3.forward) * 5f, Color.red);
+
+		if (isFireRecovery)
+		{
+			fireTimer += Time.deltaTime;
+			if (fireTimer >= 1 / (weaponConfig.fireRate / 60))
+			{
+				isFireRecovery = false;
+				fireTimer = 0;
+			}
+		}
+
+	}
+
+	private void HandleRotationSpread(float deltaTime)
+	{
 		if (inPlayerControl)
 		{
 			Quaternion currentRotation = mainCam.transform.rotation;
-			
+
 			float angleDifference = Quaternion.Angle(currentRotation, lastFrameRotation);
 
 			//Since the rotation speed can be tiny and lost in frame by frame calculations, lerp picks up on changes over a slightly longer period
@@ -72,7 +92,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 			if (rotationSpeed < 0.00001)
 			{
-				rotationSpeed = 0f; 
+				rotationSpeed = 0f;
 			}
 
 			//In order to use the animation curve properly, normalise from 0-1
@@ -89,14 +109,14 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			{
 				//rotationSpread -= weaponConfig.rotationalSpreadDecreaseSpeed * deltaTime;
 				rotationSpread = Mathf.MoveTowards(rotationSpread, 0f, weaponConfig.rotationalSpreadDecreaseSpeed * deltaTime);
-			}		
+			}
 
 			rotationSpread = Mathf.Clamp(rotationSpread, 0f, weaponConfig.rotationSpreadMax);
 
 			//Apply both movement and aim spread
 			float totalAngle = (baseSpreadAngle * movementSpreadMultiplier) + (baseSpreadAngle * rotationSpread);
 			float spreadRadians = totalAngle * Mathf.Deg2Rad;
-			
+
 			//Determine the final spread from screen centre
 			currentBaseSpread = Mathf.Tan(spreadRadians) * crosshairConvergeanceRange * 15f;
 
@@ -106,19 +126,6 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		{
 			currentBaseSpread = 0f;
 		}
-
-		Debug.DrawLine(transform.position, transform.position + (lastFrameRotation * Vector3.forward) * 5f, Color.red);
-
-		if (isFireRecovery)
-		{
-			fireTimer += Time.deltaTime;
-			if (fireTimer >= 1 / (weaponConfig.fireRate / 60))
-			{
-				isFireRecovery = false;
-				fireTimer = 0;
-			}
-		}
-
 	}
 
 	/// <summary>
