@@ -13,4 +13,9 @@ public class WeaponConfig : ScriptableObject
     [Tooltip("Fire rate in shots per minute")]
     public float fireRate;
     public bool isAutomatic;
+    public float maxRotationAngle;
+    public float rotationInfluence;
+	public float rotationalSpreadDecreaseSpeed = 1f;
+    public AnimationCurve rotationInfluenceCurve;
+    public float rotationSpreadMax = 1f;
 }

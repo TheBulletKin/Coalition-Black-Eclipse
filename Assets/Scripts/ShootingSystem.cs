@@ -23,13 +23,17 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private float heldObjectLaunchForce = 15f;
 	[Tooltip("Angle of spread from the camera")]
 	[Range(0f, 45f)]
-	[SerializeField] public float baseSpreadAngle = 20f; 
-	[SerializeField] public float spreadMultiplier = 1f;
-	[SerializeField] private float movementMultiplierWeighting = 0.25f;	
+	[SerializeField] public float baseSpreadAngle = 20f;
+	[SerializeField] public float movementSpreadMultiplier = 1f;
+	[SerializeField] private float movementMultiplierWeighting = 0.25f;
 	[SerializeField] public float currentBaseSpread = 1.0f;
 	[SerializeField] public float crosshairConvergeanceRange = 20.0f;
 	[SerializeField] private AnimationCurve speedSpreadCurve;
 	[SerializeField] private PlayerMovementController playerMovementController;
+	[SerializeField] private Quaternion lastFrameRotation;
+	private float rotationSpread;
+	
+
 
 
 
@@ -39,19 +43,72 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	void Start()
 	{
 		mainCam = Camera.main;
-		currentAmmo = weaponConfig ? weaponConfig.maxAmmo : 10;		
+		currentAmmo = weaponConfig ? weaponConfig.maxAmmo : 10;
 		inPlayerControl = false;
 		isHoldingObject = false;
 		UpdateAmmo(currentAmmo, reserveAmmo);
 		playerMovementController = GetComponent<PlayerMovementController>();
+		lastFrameRotation = transform.rotation;
 	}
 
 	// Update is called once per frame
 	void Update()
-	{	
+	{
+		if (inPlayerControl)
+		{
+			Quaternion currentRotation = mainCam.transform.rotation;
+
+			//Multiplying forward by the rotation creates a vector that points in that direction
+			Vector3 currentForward = currentRotation * Vector3.forward;
+			Vector3 lagForward = lastFrameRotation * Vector3.forward;
+
+			float angle = Vector3.Angle(currentForward, lagForward);
+
+
+			if (angle > weaponConfig.maxRotationAngle)
+			{
+				lagForward = Vector3.RotateTowards(currentForward, lagForward, weaponConfig.maxRotationAngle * Mathf.Deg2Rad, 0f);
+				lastFrameRotation = Quaternion.LookRotation(lagForward);
+			}
 			
-		float spreadRadians = (baseSpreadAngle * spreadMultiplier) * Mathf.Deg2Rad;
-		currentBaseSpread = Mathf.Tan(spreadRadians) * crosshairConvergeanceRange * 15f;
+
+
+			float angularDifference = Quaternion.Angle(currentRotation, lastFrameRotation);
+
+		
+
+			//Value of 0-1 based on difference between forward vector, lag vector and max weapon angle
+			float rotationSpreadValue = Mathf.Clamp01(angularDifference / weaponConfig.maxRotationAngle);
+
+			//Apply a curve that can smoothly control the spread influence
+			rotationSpreadValue = weaponConfig.rotationInfluenceCurve.Evaluate(rotationSpreadValue);
+
+			//Apply a flat multiplier for rotational spread influence
+			rotationSpreadValue = rotationSpreadValue * weaponConfig.rotationInfluence;
+
+			//Add a final clamp to control maximum possible spread
+			rotationSpreadValue = Mathf.Min(rotationSpreadValue, weaponConfig.rotationSpreadMax);
+
+			//Raw rotational spread value is the base spread * this final multiplier
+			float rawRotationSpread = baseSpreadAngle * rotationSpreadValue;
+
+			
+			
+
+
+			float totalAngle = (baseSpreadAngle * movementSpreadMultiplier) + (baseSpreadAngle * (rotationSpreadValue * weaponConfig.rotationInfluence));
+			float spreadRadians = totalAngle * Mathf.Deg2Rad;
+
+			currentBaseSpread = Mathf.Tan(spreadRadians) * crosshairConvergeanceRange * 15f;
+
+			lastFrameRotation = Quaternion.RotateTowards(lastFrameRotation, currentRotation, weaponConfig.rotationalSpreadDecreaseSpeed * Time.deltaTime);
+		}
+		else
+		{
+			currentBaseSpread = 0f;
+		}
+
+		Debug.DrawLine(transform.position, transform.position + (lastFrameRotation * Vector3.forward) * 5f, Color.red);
 
 		if (isFireRecovery)
 		{
@@ -94,10 +151,10 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		//Random direction from the crosshair to move
 		float randomAngle = UnityEngine.Random.Range(0f, 359f);
 		float randomAngleRad = randomAngle * Mathf.Deg2Rad;
-		
-		float spreadValue = UnityEngine.Random.Range(0f, currentBaseSpread);		
-		
-			
+
+		float spreadValue = UnityEngine.Random.Range(0f, currentBaseSpread);
+
+
 		//Find new screen coord to fire from.
 		//Got clockwise angle already.
 		//Hypotenuse is 1 due to unit length. Can use cos and sin directly
@@ -143,7 +200,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 
-	
+
 	/// <summary>
 	/// Used when the ai is firing at a target
 	/// </summary>
@@ -256,7 +313,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	public void SpreadMultiplierFromVelocity(Vector3 velocity, float maxSpeed)
 	{
 		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
-		
-		spreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve); 
+
+		movementSpreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve);
 	}
 }
