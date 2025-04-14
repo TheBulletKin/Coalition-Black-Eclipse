@@ -5,5 +5,6 @@ using UnityEngine;
 public enum MixerBus
 {
     FOOTSTEP_PLAYER,
-    FOOTSTEP_ENEMY
+    FOOTSTEP_ENEMY,
+    MUSIC
 }

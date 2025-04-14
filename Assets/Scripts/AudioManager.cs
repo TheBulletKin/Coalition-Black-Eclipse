@@ -11,6 +11,7 @@ public class AudioManager : MonoBehaviour
 	[SerializeField] private AudioMixer mainAudioMixer;
 	[SerializeField] private AudioMixerGroup playerFootstepGroup;
 	[SerializeField] private AudioMixerGroup enemyFootstepGroup;
+	[SerializeField] private AudioMixerGroup musicGroup;
 
 
 	[Serializable]
@@ -22,6 +23,8 @@ public class AudioManager : MonoBehaviour
 
 	[SerializeField]
 	private SoundCollections soundCollections;
+
+	public GameSoundSingle backgroundMusic;
 
 	public Dictionary<SoundType, GameSound> soundTypeToAudioClip = new Dictionary<SoundType, GameSound>();
 	[Tooltip("All currently active audio sources")]
@@ -46,6 +49,9 @@ public class AudioManager : MonoBehaviour
 	{
 		soundTypeToAudioClip.Add(SoundType.FOOTSTEP, soundCollections.footstepSounds);
 		soundTypeToAudioClip.Add(SoundType.IDLE_BARK, soundCollections.idleBarkSounds);
+		soundTypeToAudioClip.Add(SoundType.MUSIC, backgroundMusic);
+
+		PlaySound(SoundType.MUSIC, MixerBus.MUSIC, null, null);
 	}
 
 	/// <summary>
@@ -125,6 +131,9 @@ public class AudioManager : MonoBehaviour
 				break;
 			case MixerBus.FOOTSTEP_ENEMY:
 				source.outputAudioMixerGroup = enemyFootstepGroup;
+				break;
+			case MixerBus.MUSIC:
+				source.outputAudioMixerGroup = musicGroup;
 				break;
 		}
 
