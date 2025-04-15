@@ -20,9 +20,10 @@ MonoBehaviour:
   maxAmmo: 1
   fireRate: 80
   isAutomatic: 0
-  maxRotationAngle: 90
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 1
+  rotationSpreadMax: 1
+  minRotSpeedForSpread: 1
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -47,3 +48,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  rotationCurveMultiplier: 1
+  maxRotationSpeed: 1
+  gunfireSound: {fileID: 11400000, guid: 5ef058cf27aafa14790d1e746f206d17, type: 2}

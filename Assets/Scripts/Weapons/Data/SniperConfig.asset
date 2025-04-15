@@ -50,3 +50,4 @@ MonoBehaviour:
     m_RotationOrder: 4
   rotationCurveMultiplier: 4
   maxRotationSpeed: 45
+  gunfireSound: {fileID: 11400000, guid: 280cfeb3aca50e045acec9905b396ba9, type: 2}

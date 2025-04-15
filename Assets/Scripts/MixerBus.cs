@@ -6,5 +6,6 @@ public enum MixerBus
 {
     FOOTSTEP_PLAYER,
     FOOTSTEP_ENEMY,
-    MUSIC
+    MUSIC,
+    GUNSHOT
 }

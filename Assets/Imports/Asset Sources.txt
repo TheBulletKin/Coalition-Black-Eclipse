@@ -12,7 +12,8 @@ Low poly trees - https://assetstore.unity.com/packages/3d/vegetation/trees/low-p
 tactical glasses - https://sketchfab.com/3d-models/ukrainian-tactical-glass-047e8c85814d46b6a16fd7915fc137d7
 pixel grass - https://sketchfab.com/3d-models/dead-bushes-psx-minecraft-valheim-pixel-style-d778733db74945c98981f5d58681bd1a
 Stylised bush - https://sketchfab.com/3d-models/small-stylised-bush-a83fd7049a784ca6bc0095e7323451d0
-dry grass -https://sketchfab.com/3d-models/grass-bushes-game-ready-asset-aa1fa43af9bf4228adfddb54ea123ad1#download
+dry grass -https://sketchfab.com/3d-models/grass-bushes-game-ready-asset-aa1fa43af9bf4228adfddb54ea123ad1
+G3A3 - https://sketchfab.com/3d-models/low-poly-g3a3-a9b125f1c09c4c56b6ff607ffc10f905
 
 Textures ----
 Camo textures - https://assetstore.unity.com/packages/2d/textures-materials/camouflage-texture-pack-308905
@@ -23,3 +24,9 @@ Skybox - AllSky Free (asset store)
 Audio ---
 woodland footsteps - https://pixabay.com/sound-effects/woodland-footsteps-stereo-30143/
 stealth infiltration music - https://pixabay.com/music/upbeat-stealth-breacher-tense-title-screen-218087/
+sniper rifle fire - https://pixabay.com/sound-effects/sniper-rifle-5989/
+shotgun fire - https://pixabay.com/sound-effects/shotgun-firing-3-14483/
+revolver fire - https://pixabay.com/sound-effects/single-gunshot-53-101733/
+throwing knife throw - https://pixabay.com/sound-effects/knife-slice-41231/
+battle rifle - https://pixabay.com/sound-effects/battle-rifle-42734/
+G3A3 - https://sketchfab.com/3d-models/low-poly-g3a3-a9b125f1c09c4c56b6ff607ffc10f905

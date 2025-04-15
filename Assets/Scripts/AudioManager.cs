@@ -12,6 +12,7 @@ public class AudioManager : MonoBehaviour
 	[SerializeField] private AudioMixerGroup playerFootstepGroup;
 	[SerializeField] private AudioMixerGroup enemyFootstepGroup;
 	[SerializeField] private AudioMixerGroup musicGroup;
+	[SerializeField] private AudioMixerGroup gunshotsGroup;
 
 
 	[Serializable]
@@ -62,15 +63,16 @@ public class AudioManager : MonoBehaviour
 	/// <returns></returns>
 	private AudioSource CreateAudioSource()
 	{
-		
+
 		//If an audio source is free, use that.
 		//if the audio source has been deleted for whatever reason, ensure it's removed from the list
 		for (int i = sources.Count - 1; i >= 0; i--)
 		{
 			AudioSource activeSource = sources[i];
-			
+
 			if (activeSource == null || !activeSource.isPlaying)
 			{
+				Destroy(sources[i].gameObject);
 				sources.RemoveAt(i);
 			}
 			else if (!activeSource.isPlaying)
@@ -91,11 +93,15 @@ public class AudioManager : MonoBehaviour
 		return source;
 	}
 
+	/// <summary>
+	/// Used to retrieve a random sound from a sound category
+	/// </summary>
+	/// <param name="type"></param>
+	/// <param name="busTarget"></param>
+	/// <param name="position"></param>
+	/// <param name="followTarget"></param>
 	public void PlaySound(SoundType type, MixerBus busTarget, Vector3? position = null, Transform followTarget = null)
 	{
-		Vector3 soundPos = followTarget ? followTarget.position : (position ?? Vector3.zero);
-		Vector3 listenerPos = Camera.main.transform.position;
-
 		GameSound sound = soundTypeToAudioClip[type];
 		if (sound == null)
 		{
@@ -103,13 +109,27 @@ public class AudioManager : MonoBehaviour
 			return;
 		}
 
+		PlaySound(sound, busTarget, position, followTarget);
+
+	}
+
+	/// <summary>
+	/// Used to play a specific sound
+	/// </summary>
+	/// <param name="sound"></param>
+	/// <param name="busTarget"></param>
+	/// <param name="position"></param>
+	/// <param name="followTarget"></param>
+	public void PlaySound(GameSound sound, MixerBus busTarget, Vector3? position = null, Transform followTarget = null)
+	{
+		Vector3 soundPos = followTarget ? followTarget.position : (position ?? Vector3.zero);
+		Vector3 listenerPos = Camera.main.transform.position;
+
 		float distance = Vector3.Distance(listenerPos, soundPos);
 		if (sound.spatial && distance > sound.maxDistance)
 		{
 			return;
 		}
-
-
 
 		AudioSource source = CreateAudioSource();
 		if (source == null)
@@ -135,6 +155,9 @@ public class AudioManager : MonoBehaviour
 			case MixerBus.MUSIC:
 				source.outputAudioMixerGroup = musicGroup;
 				break;
+			case MixerBus.GUNSHOT:
+				source.outputAudioMixerGroup = gunshotsGroup;
+				break;
 		}
 
 		if (followTarget != null)
@@ -148,7 +171,6 @@ public class AudioManager : MonoBehaviour
 			source.transform.position = position ?? Vector3.zero;
 		}
 		source.Play();
-
 	}
 
 	public void StopSound(AudioSource source)

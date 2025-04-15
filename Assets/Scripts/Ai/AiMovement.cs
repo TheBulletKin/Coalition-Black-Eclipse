@@ -70,7 +70,7 @@ public class AIMovement : MonoBehaviour
 
 		if (distanceMoved >= stepDistance)
 		{
-			AudioManager.instance.PlaySound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z), transform);
+			AudioManager.instance.PlaySound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z), null);
 			distanceMoved = 0f;
 		}
 

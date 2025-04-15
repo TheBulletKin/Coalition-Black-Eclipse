@@ -29,6 +29,9 @@ public class WeaponConfig : ScriptableObject
 	public float rotationCurveMultiplier = 1f;
 	[Tooltip("Compared with current rotation speed to create clamped 0-1 value for curve evaluation")]
 	public float maxRotationSpeed = 1f;
+
+	[Header("Sounds")]
+	public GameSoundSingle gunfireSound;
     
     
 }

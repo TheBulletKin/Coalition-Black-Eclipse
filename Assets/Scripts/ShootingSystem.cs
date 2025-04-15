@@ -35,6 +35,9 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private float rotationSpeed;
 	private float smoothedAngleDiff = 0f;
 	[SerializeField] private float angleSmoothingFactor = 0.1f;
+	[SerializeField] private GameObject gunshotSoundPos;
+
+	[SerializeField] private GameSoundSingle defaultGunshotSound;
 
 
 
@@ -201,7 +204,16 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+		//Temporary. Tightly coupled isn't good
+		if (weaponConfig.gunfireSound != null)
+		{
+			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
 
+		}
+		else
+		{
+			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+		}
 	}
 
 
@@ -216,10 +228,6 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
 
-
-
-
-		Ray fireRay = mainCam.ScreenPointToRay(Input.mousePosition);
 
 		if (Physics.Raycast(cameraPos.transform.position, targetTransform.position - cameraPos.position, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
 		{
@@ -245,6 +253,15 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+		if (weaponConfig.gunfireSound != null)
+		{
+			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+
+		}
+		else
+		{
+			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+		}
 	}
 
 	private void Reload()
