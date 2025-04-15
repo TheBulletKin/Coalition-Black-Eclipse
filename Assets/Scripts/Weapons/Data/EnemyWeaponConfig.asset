@@ -17,9 +17,10 @@ MonoBehaviour:
   weaponDamage: 55
   weaponRange: 43
   firingAngle: 60
-  maxAmmo: 15
+  maxAmmo: 4
   fireRate: 60
   isAutomatic: 0
+  reloadDuration: 1.5
   rotationInfluence: 0
   rotationalSpreadDecreaseSpeed: 1
   rotationSpreadMax: 1

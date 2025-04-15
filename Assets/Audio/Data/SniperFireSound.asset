@@ -17,4 +17,4 @@ MonoBehaviour:
   loop: 0
   spatial: 1
   maxDistance: 50
-  clip: {fileID: 8300000, guid: e588566feac4e004cb3b0dbd3a776651, type: 3}
+  clip: {fileID: 8300000, guid: 8f3dec93e21337b4fb32c5f64d782cd2, type: 3}

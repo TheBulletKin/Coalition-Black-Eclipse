@@ -13,6 +13,7 @@ public class WeaponConfig : ScriptableObject
     [Tooltip("Fire rate in shots per minute")]
     public float fireRate;
     public bool isAutomatic;
+	public float reloadDuration = 1.5f;
 
     [Header("Rotational Spread Values")]
 	[Tooltip("How much of an effect rotation speed has on spread")]

@@ -64,7 +64,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		float deltaTime = Time.deltaTime;
 
 		HandleRotationSpread(deltaTime);
-		
+
 
 		Debug.DrawLine(transform.position, transform.position + (lastFrameRotation * Vector3.forward) * 5f, Color.red);
 
@@ -282,7 +282,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	private IEnumerator ReloadRoutine()
 	{
-		yield return new WaitForSeconds(1.5f);
+		yield return new WaitForSeconds(weaponConfig.reloadDuration);
 
 		if (reserveAmmo > 0)
 		{
@@ -307,7 +307,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 	public void UpdateAmmo(int currentAmmo, int reserveAmmo)
 	{
-		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+		if (inPlayerControl)
+		{
+			WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+		}
+
 	}
 
 	public void DisableControl()

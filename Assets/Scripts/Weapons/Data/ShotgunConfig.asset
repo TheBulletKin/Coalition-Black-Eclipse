@@ -20,6 +20,7 @@ MonoBehaviour:
   maxAmmo: 4
   fireRate: 58
   isAutomatic: 0
+  reloadDuration: 2
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 100
   rotationSpreadMax: 1
