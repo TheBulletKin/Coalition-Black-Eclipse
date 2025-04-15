@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayButton : MainMenuButton
+public class LoadSceneButton : MainMenuButton
 {
+	public string SceneName;
 	protected override void OnClick()
 	{
-		SceneManager.LoadScene("SampleScene");
+		SceneManager.LoadScene(SceneName);
 	}
 	
 }

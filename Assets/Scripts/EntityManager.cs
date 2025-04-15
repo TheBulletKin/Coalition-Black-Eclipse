@@ -62,9 +62,16 @@ public class EntityManager : MonoBehaviour
 
 			Instance.playerTeammates.Remove(controllableEntity);
 
+			if (Instance.playerTeammates.Count == 0) //When all teammates dead
+			{
+				GameManager.Instance.FinishGame(EndReason.ALL_TEAM_DEAD);
+				return;
+			}
+
 			//Automatically switch to random character. (Will set up what happens when all are dead later)
 			if (controllableEntity.teammateID == characterSwitcher.currentlyControlledTeammate)
 			{
+
 				int divertedCharacterIndex = Random.Range(0, playerTeammates.Count);
 				characterSwitcher.SwitchToCharacter(playerTeammates[divertedCharacterIndex]);
 			}

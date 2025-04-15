@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance { get; private set; }
 	[SerializeField] private GameState gameState;
+	[SerializeField] private EndReason endReason;
 
 	[SerializeField] private GameObject victoryMessage;
 
@@ -38,6 +40,7 @@ public class GameManager : MonoBehaviour
 
 	public void FinishGame(EndReason reason)
 	{
+		endReason = reason;
 		switch (reason)
 		{
 			case EndReason.OBJECTIVE_COMPLETE:
@@ -47,6 +50,9 @@ public class GameManager : MonoBehaviour
 			case EndReason.TIME_ENDED:
 				break;
 			case EndReason.ALL_TEAM_DEAD:
+				Debug.Log("Game over, all teammates died");
+				SceneManager.LoadScene("GameOverScene");
+				Cursor.lockState = CursorLockMode.Confined;
 				break;
 			case EndReason.MANUAL_CLOSE:
 				break;
