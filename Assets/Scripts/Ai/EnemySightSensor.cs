@@ -7,6 +7,7 @@ public class EnemySightSensor : MonoBehaviour
 {
 
 	public Health currentTarget { get; private set; }
+	public ShootingSystem shootingSystem;
 	public List<Health> visibleEntities;
 	private float pingInteval = 0.25f;
 	private float pingTimer = 0.0f;
@@ -117,16 +118,20 @@ public class EnemySightSensor : MonoBehaviour
 			pingTimer = 0.0f;
 		}
 
+
 		RaycastHit hit;
 		if (currentTarget != null && isEngagingEnemy && TargetInLineOfSight(out hit) && TargetInWeaponRange())
 		{
+
+			shootingSystem.Fire(currentTarget.transform);
+			/*
 			fireTimer += deltaTime;
 			if(fireTimer >= fireCooldown)
 			{
 				Health targetHealth = currentTarget.GetComponent<Health>();
 				currentTarget.TakeDamage(weaponDamage);
 				fireTimer = 0.0f;
-			}
+			}*/
 		}
 
 	

@@ -32,6 +32,8 @@ public class ControllableEntity : MonoBehaviour
 		abilitySystem = GetComponent<AbilitySystem>();
 		health = GetComponent<Health>();
 		aiDetection = GetComponent<AiDetectAndEngage>();
+
+
 	}
 
 	public void TakeControl()
@@ -58,6 +60,12 @@ public class ControllableEntity : MonoBehaviour
 			item.DisableControl();
 		}
 		agent.enabled = true;
+	}
+
+	public void HandleDeath()
+	{
+		//Previously didn't unsubscribe to the fire and shoot methods when dead. This is a temp fix.
+		shootingSystem.DisableControl();
 	}
 
 }

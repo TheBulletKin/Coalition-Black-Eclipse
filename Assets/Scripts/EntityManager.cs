@@ -58,6 +58,8 @@ public class EntityManager : MonoBehaviour
 		ControllableEntity controllableEntity = entity.GetComponent<ControllableEntity>();
 		if (controllableEntity != null)
 		{
+			controllableEntity.HandleDeath();
+
 			Instance.playerTeammates.Remove(controllableEntity);
 
 			//Automatically switch to random character. (Will set up what happens when all are dead later)

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 349e7af975fb76945a3f2ae9e90db3ac, type: 3}
+  m_Name: EnemyWeaponConfig
+  m_EditorClassIdentifier: 
+  weaponType: 2
+  weaponName: G3A3 Rifle
+  weaponDamage: 55
+  weaponRange: 43
+  firingAngle: 60
+  maxAmmo: 15
+  fireRate: 60
+  isAutomatic: 0
+  rotationInfluence: 0
+  rotationalSpreadDecreaseSpeed: 1
+  rotationSpreadMax: 1
+  minRotSpeedForSpread: 1
+  rotationInfluenceCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rotationCurveMultiplier: 1
+  maxRotationSpeed: 1
+  gunfireSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c, type: 2}
