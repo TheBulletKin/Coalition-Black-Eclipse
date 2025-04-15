@@ -306,7 +306,9 @@ MonoBehaviour:
   rotationSpread: 0
   rotationSpeed: 0
   angleSmoothingFactor: 0.1
-  gunshotSoundPos: {fileID: 1458065815646684729}
+  bulletOriginPos: {fileID: 1150371606643504378}
+  tracerPrefab: {fileID: 7055721893435273854, guid: fc76bdf82f6124a42958a78901d2a776,
+    type: 3}
   defaultGunshotSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c,
     type: 2}
 --- !u!114 &1919731550340908967
@@ -1033,12 +1035,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5ec9d1adb3bb9be4e9e14b745e0d7612, type: 3}
---- !u!1 &1458065815646684729 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1453520398177871317, guid: 5ec9d1adb3bb9be4e9e14b745e0d7612,
-    type: 3}
-  m_PrefabInstance: {fileID: 6727067822449644}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1954523913537297325 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1947871844586125377, guid: 5ec9d1adb3bb9be4e9e14b745e0d7612,

@@ -35,7 +35,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private float rotationSpeed;
 	private float smoothedAngleDiff = 0f;
 	[SerializeField] private float angleSmoothingFactor = 0.1f;
-	[SerializeField] private GameObject gunshotSoundPos;
+	[SerializeField] private GameObject bulletOriginPos;
+	[SerializeField] private GameObject tracerPrefab;
 
 	[SerializeField] private GameSoundSingle defaultGunshotSound;
 
@@ -190,6 +191,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			impactMarker.transform.localScale = Vector3.one * 0.1f;
 			impactMarker.GetComponent<Collider>().enabled = false;
 			Destroy(impactMarker, 2f);
+
+			CreateTracer(bulletOriginPos.transform.position, hit.point);
 		}
 
 
@@ -207,12 +210,12 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		//Temporary. Tightly coupled isn't good
 		if (weaponConfig.gunfireSound != null)
 		{
-			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
 
 		}
 		else
 		{
-			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
 		}
 	}
 
@@ -236,7 +239,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			{
 				damageable.TakeDamage(weaponConfig.weaponDamage);
 			}
-
+			CreateTracer(bulletOriginPos.transform.position, hit.point);
 		}
 
 
@@ -255,12 +258,26 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 		if (weaponConfig.gunfireSound != null)
 		{
-			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
-
+			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			
 		}
 		else
 		{
-			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, gunshotSoundPos.transform.position, null);
+			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+		}
+	}
+
+	private void CreateTracer(Vector3 startPos, Vector3 endPos)
+	{		
+
+		GameObject tracer = Instantiate(tracerPrefab, startPos, Quaternion.identity);
+		TrailRenderer trail = tracer.GetComponent<TrailRenderer>();
+
+		if (trail != null)
+		{
+			trail.Clear();
+			tracer.transform.position = endPos;
+			Destroy(tracer, trail.time);
 		}
 	}
 

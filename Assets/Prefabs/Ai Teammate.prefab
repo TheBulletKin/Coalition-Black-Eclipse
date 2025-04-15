@@ -484,7 +484,9 @@ MonoBehaviour:
   rotationSpread: 0
   rotationSpeed: 0
   angleSmoothingFactor: 0.1
-  gunshotSoundPos: {fileID: 0}
+  bulletOriginPos: {fileID: 0}
+  tracerPrefab: {fileID: 7055721893435273854, guid: fc76bdf82f6124a42958a78901d2a776,
+    type: 3}
   defaultGunshotSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c,
     type: 2}
 --- !u!114 &4284256450557001990
