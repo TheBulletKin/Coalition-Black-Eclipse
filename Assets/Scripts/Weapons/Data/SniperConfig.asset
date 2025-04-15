@@ -48,6 +48,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  rotationCurveMultiplier: 4
+  rotationCurveMultiplier: 3
   maxRotationSpeed: 45
   gunfireSound: {fileID: 11400000, guid: 280cfeb3aca50e045acec9905b396ba9, type: 2}
