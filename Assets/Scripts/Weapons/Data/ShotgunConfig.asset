@@ -21,6 +21,9 @@ MonoBehaviour:
   fireRate: 58
   isAutomatic: 0
   reloadDuration: 2
+  spreadGainPerShot: 1
+  isShotgun: 1
+  pelletsPerShot: 10
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 100
   rotationSpreadMax: 1

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ProximitySensorObject : MonoBehaviour, IGadget
 {
 	public Transform GadgetTransform => transform;
+	private List<Health> entitiesInProximity = new List<Health>();
 
 	private void OnTriggerEnter(Collider other)
 	{
@@ -14,9 +15,15 @@ public class ProximitySensorObject : MonoBehaviour, IGadget
 
 			//Temporary
 			Health health = other.GetComponentInParent<Health>();
-			health.OnEntityDeath += ClearProxSensor;
 
-			GameEvents.OnGadgetActivated(this);
+			if (health != null && !entitiesInProximity.Contains(health))
+			{
+				health.OnEntityDeath += ClearProxSensor;
+				entitiesInProximity.Add(health);
+				GameEvents.OnGadgetActivated(this);
+				Debug.Log(other.gameObject.name + " entered prox sensor range");
+			}		
+
 		}
 		if (other.gameObject.CompareTag("Player"))
 		{
@@ -31,9 +38,15 @@ public class ProximitySensorObject : MonoBehaviour, IGadget
 			Debug.Log("Enemy left prox sensor range");
 
 			Health health = other.GetComponentInParent<Health>();
-			health.OnEntityDeath -= ClearProxSensor;
 
-			GameEvents.OnGadgetDeactivated(this);
+			if (health != null && entitiesInProximity.Contains(health))
+			{
+				health.OnEntityDeath -= ClearProxSensor;
+				entitiesInProximity.Remove(health);
+				GameEvents.OnGadgetDeactivated(this);
+				Debug.Log(other.gameObject.name + " left prox sensor range");
+			}
+			
 		}
 		if (other.gameObject.CompareTag("Player"))
 		{
@@ -43,7 +56,11 @@ public class ProximitySensorObject : MonoBehaviour, IGadget
 
 	private void ClearProxSensor(Health entity)
 	{
-		entity.OnEntityDeath -= ClearProxSensor;
+		foreach (Health health in entitiesInProximity)
+		{
+			health.OnEntityDeath -= ClearProxSensor;
+		}
+		
 		GameEvents.OnGadgetDeactivated(this);
 	}
 }

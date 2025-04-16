@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class EnemySightSensor : MonoBehaviour
+public class AiSightSensor : MonoBehaviour
 {
 
 	public Health currentTarget { get; private set; }
@@ -14,6 +14,8 @@ public class EnemySightSensor : MonoBehaviour
 	[Tooltip("How detected the player is, from 0 to 1")]
 	[field: SerializeField]
 	public float detectionValue { get; private set; }
+
+
 	[SerializeField] private float detectionIncreaseRate = 5f;
 	[SerializeField] private float detectionDecreaseRate = 2f;
 	[SerializeField] private float detectionThreshold = 100f;
@@ -28,10 +30,6 @@ public class EnemySightSensor : MonoBehaviour
 
 	[SerializeField] private LayerMask ignoreMask;
 
-	[SerializeField] private float maxWeaponRange = 30f;
-	[SerializeField] private int weaponDamage = 30;
-	[SerializeField] private float fireTimer = 0f;
-	[SerializeField] private float fireCooldown = 0.5f;
 
 	private Ray ray;
 
@@ -257,7 +255,7 @@ public class EnemySightSensor : MonoBehaviour
 
 	public bool TargetInWeaponRange()
 	{
-		if ((currentTarget.transform.position - transform.position).magnitude <= maxWeaponRange - 5f) //5 as some room before needing to move again
+		if ((currentTarget.transform.position - transform.position).magnitude <= shootingSystem.weaponConfig.weaponRange - 5f) //5 as some room before needing to move again
 		{
 			return true;
 		}
@@ -306,7 +304,7 @@ public class EnemySightSensor : MonoBehaviour
 		else
 		{
 			closestEnemy = null;
-			closestDistance = maxWeaponRange;
+			closestDistance = shootingSystem.weaponConfig.weaponRange;
 		}
 
 

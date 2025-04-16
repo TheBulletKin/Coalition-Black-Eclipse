@@ -12,7 +12,7 @@ public class EngageAction : FSMAction
 	public override void Execute(BaseStateMachine stateMachine)
 	{
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
-		EnemySightSensor enemySightSensor = stateMachine.GetComponent<EnemySightSensor>();
+		AiSightSensor enemySightSensor = stateMachine.GetComponent<AiSightSensor>();
 
 		//The enemy can die before this action is ran and it changes states in response
 		if (enemySightSensor.currentTarget)

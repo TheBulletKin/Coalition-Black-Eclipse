@@ -11,7 +11,7 @@ public class InLineOfSightAndDetectedDecision : Decision
 	public override bool Decide(BaseStateMachine stateMachine)
 	{
 		//using getcomponent each frame isn't good
-		EnemySightSensor sightSensor = stateMachine.GetComponent<EnemySightSensor>();
+		AiSightSensor sightSensor = stateMachine.GetComponent<AiSightSensor>();
 		if (sightSensor.entityIsDetected)
 		{
 			sightSensor.isEngagingEnemy = true;

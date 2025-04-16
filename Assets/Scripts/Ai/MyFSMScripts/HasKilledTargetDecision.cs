@@ -8,7 +8,7 @@ public class HasKilledTargetDecision : Decision
 	//Ran while in the engage state
 	public override bool Decide(BaseStateMachine stateMachine)
 	{
-		EnemySightSensor sightSensor = stateMachine.GetComponent<EnemySightSensor>();
+		AiSightSensor sightSensor = stateMachine.GetComponent<AiSightSensor>();
 		if (sightSensor.currentTarget == null) //Means the target is dead
 		{			
 			return true;

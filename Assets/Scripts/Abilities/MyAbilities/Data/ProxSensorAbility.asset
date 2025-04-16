@@ -19,11 +19,9 @@ MonoBehaviour:
   gadgetCount: 5
   startGadgetCount: 5
   placementRange: 30
-  launchForce: 12
+  launchForce: 13
   sensorObjectPrefab: {fileID: 6495869608783633811, guid: 6ffed8adacac9ef4e96a1b225fd611b6,
     type: 3}
   sensorProjectilePrefab: {fileID: 6495869608783633811, guid: 130fe664c6472244daa945ef7945e78b,
     type: 3}
-  activeSensors:
-  - {fileID: 0}
-  - {fileID: 0}
+  activeSensors: []

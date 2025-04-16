@@ -112,10 +112,10 @@ GameObject:
   - component: {fileID: 7305451824568763593}
   - component: {fileID: 841039299320179677}
   - component: {fileID: 5095011553529449216}
-  - component: {fileID: 1417124802820564995}
   - component: {fileID: 1452609163043407768}
   - component: {fileID: 3339947618540181137}
   - component: {fileID: 1919731550340908967}
+  - component: {fileID: 8101612026855224660}
   - component: {fileID: 5041572629650936404}
   m_Layer: 6
   m_Name: Enemy
@@ -219,36 +219,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialState: {fileID: 11400000, guid: 1803dc4355235a74ca42f70f2a9d8c8a, type: 2}
   enemyEntity: {fileID: 0}
---- !u!114 &1417124802820564995
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6073673368753034052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e191f3c274119aa43baabf2b2ce30968, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shootingSystem: {fileID: 3339947618540181137}
-  visibleEntities: []
-  <detectionValue>k__BackingField: 0
-  detectionIncreaseRate: 85
-  detectionDecreaseRate: 50
-  detectionThreshold: 1
-  detectionAngle: 106.3
-  maxDetectionDistance: 50
-  closeDetectionFalloffDistance: 15
-  detectionRateModifier: 0
-  isEngagingEnemy: 0
-  ignoreMask:
-    serializedVersion: 2
-    m_Bits: 257
-  maxWeaponRange: 43
-  weaponDamage: 55
-  fireTimer: 0
-  fireCooldown: 0.7
 --- !u!195 &1452609163043407768
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -329,6 +299,36 @@ MonoBehaviour:
   waypointTimer: 0
   lookRotationSpeed: 135
   currentPoint: {fileID: 0}
+--- !u!114 &8101612026855224660
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6073673368753034052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71075c53deaa70847a975aaeab4bd167, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shootingSystem: {fileID: 3339947618540181137}
+  visibleEntities: []
+  <detectionValue>k__BackingField: 0
+  detectionIncreaseRate: 5
+  detectionDecreaseRate: 2
+  detectionThreshold: 100
+  detectionAngle: 60
+  maxDetectionDistance: 40
+  closeDetectionFalloffDistance: 10
+  detectionRateModifier: 0
+  isEngagingEnemy: 0
+  ignoreMask:
+    serializedVersion: 2
+    m_Bits: 0
+  maxWeaponRange: 30
+  weaponDamage: 30
+  fireTimer: 0
+  fireCooldown: 0.5
 --- !u!114 &5041572629650936404
 MonoBehaviour:
   m_ObjectHideFlags: 0
