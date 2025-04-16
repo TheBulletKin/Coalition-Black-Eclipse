@@ -17,8 +17,10 @@ public class WeaponConfig : ScriptableObject
     public bool isAutomatic;
 	public float reloadDuration = 1.5f;
 	public float spreadGainPerShot = 1f;
+	public bool isShotgun = false;
+	public float pelletsPerShot = 1f;	
 
-    [Header("Rotational Spread Values")]
+	[Header("Rotational Spread Values")]
 	[Tooltip("How much of an effect rotation speed has on spread")]
 	public float rotationInfluence;
 	[Tooltip("How fast rotational spread decreases by itself")]

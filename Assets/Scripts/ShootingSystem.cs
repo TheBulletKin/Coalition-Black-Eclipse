@@ -153,48 +153,20 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
-
-
-
-		//Random direction from the crosshair to move
-		float randomAngle = UnityEngine.Random.Range(0f, 359f);
-		float randomAngleRad = randomAngle * Mathf.Deg2Rad;
-
-		float spreadValue = UnityEngine.Random.Range(0f, currentBaseSpread);
-
-
-		//Find new screen coord to fire from.
-		//Got clockwise angle already.
-		//Hypotenuse is 1 due to unit length. Can use cos and sin directly
-		Vector2 screenOffset = new Vector2(Mathf.Cos(randomAngleRad), Mathf.Sin(randomAngleRad)) * spreadValue; //Will eventually change to a value that is easier to change in the inspector
-		Vector2 screenFirePos = new Vector2(Screen.width / 2, Screen.height / 2) + screenOffset;
-
-
-		//Ray holds origin and direction, so this is the world direction of the spread value
-		Ray fireRay = mainCam.ScreenPointToRay(screenFirePos);
-
-		Vector3 fireDirection = (fireRay.origin + fireRay.direction) - mainCam.transform.position;
-		fireDirection.Normalize();
-
-		if (Physics.Raycast(mainCam.transform.position, fireDirection, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
+		
+		if (weaponConfig.isShotgun)
 		{
-			IDamagable damageable = hit.collider.GetComponent<IDamagable>();
-			if (damageable != null)
+			for (int i = 0; i < weaponConfig.pelletsPerShot; i++)
 			{
-				damageable.TakeDamage(weaponConfig.weaponDamage);
+				CastBulletRay(Mathf.RoundToInt(weaponConfig.weaponDamage / weaponConfig.pelletsPerShot));
 			}
-
-			GameObject impactMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
-			impactMarker.transform.position = hit.point;
-			impactMarker.transform.localScale = Vector3.one * 0.1f;
-			impactMarker.GetComponent<Collider>().enabled = false;
-			Destroy(impactMarker, 2f);
-
-			CreateTracer(bulletOriginPos.transform.position, hit.point);
+		}
+		else
+		{
+			CastBulletRay(weaponConfig.weaponDamage);
 		}
 
-
-
+		
 		//Begin recovery and deduce ammo
 		isFireRecovery = true;
 
@@ -218,6 +190,51 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
 		}
 	}
+
+	private void CastBulletRay(int damage)
+	{
+		//Random direction from the crosshair to move
+		float randomAngle = UnityEngine.Random.Range(0f, 359f);
+		float randomAngleRad = randomAngle * Mathf.Deg2Rad;
+		float spreadValue = UnityEngine.Random.Range(0f, currentBaseSpread);
+
+		//Find new screen coord to fire from.
+		//Got clockwise angle already.
+		//Hypotenuse is 1 due to unit length. Can use cos and sin directly
+		Vector2 screenOffset = new Vector2(Mathf.Cos(randomAngleRad), Mathf.Sin(randomAngleRad)) * spreadValue;
+
+		Vector2 screenFirePos = new Vector2(Screen.width / 2, Screen.height / 2) + screenOffset;
+
+		//Ray holds origin and direction, so this is the world direction of the spread value
+		Ray fireRay = mainCam.ScreenPointToRay(screenFirePos);
+
+		Vector3 fireDirection = (fireRay.origin + fireRay.direction) - mainCam.transform.position;
+		fireDirection.Normalize();
+
+		if (Physics.Raycast(mainCam.transform.position, fireDirection, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
+		{
+			IDamagable damageable = hit.collider.GetComponent<IDamagable>();
+			if (damageable != null)
+			{
+				damageable.TakeDamage(damage);
+			}
+
+			GameObject impactMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
+			impactMarker.transform.position = hit.point;
+			impactMarker.transform.localScale = Vector3.one * 0.1f;
+			impactMarker.GetComponent<Collider>().enabled = false;
+			Destroy(impactMarker, 2f);
+
+			CreateTracer(bulletOriginPos.transform.position, hit.point);
+		}
+		else
+		{
+			Vector3 fallbackPoint = mainCam.transform.position + fireDirection * weaponConfig.weaponRange;
+			CreateTracer(bulletOriginPos.transform.position, fallbackPoint);			
+		}
+	}
+
+	
 
 
 
@@ -261,7 +278,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		if (weaponConfig.gunfireSound != null)
 		{
 			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
-			
+
 		}
 		else
 		{
@@ -270,7 +287,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	}
 
 	private void CreateTracer(Vector3 startPos, Vector3 endPos)
-	{		
+	{
 
 		GameObject tracer = Instantiate(tracerPrefab, startPos, Quaternion.identity);
 		TrailRenderer trail = tracer.GetComponent<TrailRenderer>();
