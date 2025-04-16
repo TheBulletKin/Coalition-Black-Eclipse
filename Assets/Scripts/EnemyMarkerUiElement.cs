@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EnemyMarkerUiElement : MonoBehaviour
+public class EnemyMarkerUiElement : UiElement
 {
-    public GameObject MarkerDisplay;
+	//Direct reference makes sense because of the codependence
+	public EnemyEntity attachedEnemy;
+
+	
 }

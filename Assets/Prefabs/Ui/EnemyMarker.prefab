@@ -170,7 +170,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01e83301b2111a64ca497d3aa98d071e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarkerDisplay: {fileID: 994408537103062813}
+  trackWorldPosition: 0
+  worldPositionOffset: {x: 0, y: 2, z: 0}
+  worldTarget: {fileID: 0}
+  isBlockedByGeometry: 0
+  occluderLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  scalesByDistance: 0
+  shouldDisplay: 0
+  uiElement: {fileID: 994408537103062813}
+  attachedEnemy: {fileID: 0}
 --- !u!1 &7935071853186493678
 GameObject:
   m_ObjectHideFlags: 0

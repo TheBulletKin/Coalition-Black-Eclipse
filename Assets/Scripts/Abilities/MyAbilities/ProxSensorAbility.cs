@@ -40,7 +40,10 @@ public class ProxSensorAbility : CharacterAbility
 		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && gadgetCount > 0)
 		{
 			GameObject newSensor = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
-			activeSensors.Add(newSensor.GetComponent<ProximitySensorObject>());
+			ProximitySensorObject sensorObject = newSensor.GetComponent<ProximitySensorObject>();
+			activeSensors.Add(sensorObject);
+
+			GameEvents.OnGadgetPlaced?.Invoke(sensorObject);
 		}
 	}
 }

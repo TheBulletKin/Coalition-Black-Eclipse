@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8951474141479478932}
   - component: {fileID: 652564578586735750}
   - component: {fileID: 8614913070073350056}
+  - component: {fileID: -3535013013441125242}
   m_Layer: 0
   m_Name: TeleportAnchor
   m_TagString: Untagged
@@ -105,3 +106,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-3535013013441125242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331984391212392924}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51040d2db0715004fa467e98d13d8498, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

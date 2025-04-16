@@ -39,8 +39,15 @@ public class PlayerInteraction : MonoBehaviour, IToggleable
 		{
 			IInteractable interactable = hit.collider.GetComponent<IInteractable>();
 			if (interactable != null)
-			{
+			{				
 				interactable.Interact(gameObject);
+			} else //Temp fix for enemy hitboxes not working properly
+			{
+				IInteractable interactableInParent = hit.collider.GetComponentInParent<IInteractable>();
+				if (interactableInParent != null)				{
+
+					interactableInParent.Interact(gameObject);
+				}
 			}
 		}
 

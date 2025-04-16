@@ -177,6 +177,7 @@ MonoBehaviour:
   stateMachine: {fileID: 0}
   patrolPoints: {fileID: 0}
   navMeshAgent: {fileID: 0}
+  health: {fileID: 0}
 --- !u!54 &841039299320179677
 Rigidbody:
   m_ObjectHideFlags: 0

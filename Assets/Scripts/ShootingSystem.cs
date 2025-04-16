@@ -200,6 +200,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		//Begin recovery and deduce ammo
 		isFireRecovery = true;
 
+		rotationSpread += weaponConfig.spreadGainPerShot;
+
 		currentAmmo--;
 		if (currentAmmo <= 0)
 		{

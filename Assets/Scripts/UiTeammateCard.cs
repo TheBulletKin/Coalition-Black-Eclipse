@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UiTeammateCard : MonoBehaviour
+public class UiTeammateCard : UiElement
 {
     public TextMeshProUGUI teamIndexText;
 	public Color teammateColour { set; private get; }

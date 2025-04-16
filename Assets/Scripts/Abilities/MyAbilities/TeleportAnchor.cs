@@ -6,6 +6,7 @@ public class TeleportAnchor : CharacterAbility
 {
 	public GameObject anchorPrefab;
 	public GameObject anchorProjectile;
+	public TeleportAnchorObject anchorObject;
 	[SerializeField] private float travelDuration = 1.5f;
 	[SerializeField] private float arcHeight = 5f;
 	[SerializeField] private float launchForce = 20f;
@@ -26,8 +27,11 @@ public class TeleportAnchor : CharacterAbility
 		{
 			GameObject anchor = Instantiate(anchorPrefab, position, Quaternion.LookRotation(-normal, Vector3.up));
 			anchor.transform.up = normal;
+			anchorObject = anchor.GetComponent<TeleportAnchorObject>();
 			anchorActive = true;
-			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;
+			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;		
+
+			GameEvents.OnGadgetPlaced?.Invoke(anchorObject);
 		}
 	}
 

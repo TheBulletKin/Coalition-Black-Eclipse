@@ -6,6 +6,8 @@ public class WeaponConfig : ScriptableObject
 {
     public WeaponType weaponType;
     public string weaponName;
+
+	[Header("Main Stats")]
     public int weaponDamage;
     public float weaponRange;
     public float firingAngle = 60;
@@ -14,6 +16,7 @@ public class WeaponConfig : ScriptableObject
     public float fireRate;
     public bool isAutomatic;
 	public float reloadDuration = 1.5f;
+	public float spreadGainPerShot = 1f;
 
     [Header("Rotational Spread Values")]
 	[Tooltip("How much of an effect rotation speed has on spread")]
