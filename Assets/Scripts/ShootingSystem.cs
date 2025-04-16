@@ -15,7 +15,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private float fireTimer = 0;
 	private bool isReloading = false;
 	private bool isFireRecovery = false;
-	private bool inPlayerControl = false;
+	public bool inPlayerControl { get; private set; }
 	private GameObject heldObject;
 	private bool isHoldingObject;
 	[SerializeField] private float heldObjectLaunchForce = 15f;
@@ -246,6 +246,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 		isFireRecovery = true;
+
+		OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
 
 		currentAmmo--;
 		if (currentAmmo <= 0)

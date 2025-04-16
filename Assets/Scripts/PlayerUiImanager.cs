@@ -53,8 +53,13 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 
 	private void UpdateAmmoCounts(ShootingSystem shootingSystem, int currentAmmo, int reserveAmmo)
 	{
-		currentAmmoText.text = currentAmmo.ToString();
-		reserveAmmoText.text = reserveAmmo.ToString();
+		if (shootingSystem.inPlayerControl)
+		{
+			currentAmmoText.text = currentAmmo.ToString();
+			reserveAmmoText.text = reserveAmmo.ToString();
+		}
+
+
 	}
 
 	public void DisableControl()

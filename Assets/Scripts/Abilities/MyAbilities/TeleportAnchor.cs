@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEngine.UI.GridLayoutGroup;
 
 [CreateAssetMenu(fileName = "TeleportAnchorAbility", menuName = "Abilities/Teleport Anchor")]
 public class TeleportAnchor : CharacterAbility
@@ -35,6 +36,14 @@ public class TeleportAnchor : CharacterAbility
 		}
 	}
 
+
+	private void TeleportToAnchor(AbilitySystem owner)
+	{
+		CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
+		cont.enabled = false;
+		owner.transform.position = teleportPosition;
+		cont.enabled = true;
+	}
 	public override void Use(AbilitySystem owner)
 	{
 		if (gadgetCount > 0)
@@ -57,11 +66,7 @@ public class TeleportAnchor : CharacterAbility
 		}
 		else if (anchorActive == true)
 		{
-			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
-			cont.enabled = false;
-			owner.transform.position = teleportPosition;
-			cont.enabled = true;
-
+			TeleportToAnchor(owner);
 		}
 	}
 
@@ -81,21 +86,15 @@ public class TeleportAnchor : CharacterAbility
 		{
 
 			if (anchorPrefab != null)
-			{
-				GameObject anchor = Instantiate(anchorPrefab, targetVecPos, Quaternion.identity);
-				anchor.transform.up = Vector3.up;
-				anchorActive = true;
-				teleportPosition = anchor.transform.position + Vector3.up * 1.5f;
+			{		
+				CreateAnchor(targetVecPos, Vector3.up);
 			}
 			
 			gadgetCount--;
 		}
 		else if (anchorActive == true)
 		{
-			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
-			cont.enabled = false;
-			owner.transform.position = teleportPosition;
-			cont.enabled = true;
+			TeleportToAnchor(owner);
 
 		}
 	}
