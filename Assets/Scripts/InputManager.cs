@@ -142,8 +142,8 @@ public class InputManager : MonoBehaviour
 		controls.FPS.Sprint.canceled += SprintCancelled;
 		controls.FPS.Jump.started += JumpStarted;
 		controls.FPS.Jump.canceled += JumpCancelled;
-		controls.FPS.Crouch.started += CrouchStarted;
-		controls.FPS.Crouch.canceled += CrouchCancelled;
+		//controls.FPS.Crouch.started += CrouchStarted;
+		//controls.FPS.Crouch.canceled += CrouchCancelled;
 
 		//Map toggles
 		controls.FPS.EnterMapView.performed += EnterMapViewPerformed;
