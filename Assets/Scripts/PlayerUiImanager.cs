@@ -51,7 +51,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 
 	}
 
-	private void UpdateAmmoCounts(int currentAmmo, int reserveAmmo)
+	private void UpdateAmmoCounts(ShootingSystem shootingSystem, int currentAmmo, int reserveAmmo)
 	{
 		currentAmmoText.text = currentAmmo.ToString();
 		reserveAmmoText.text = reserveAmmo.ToString();
@@ -59,7 +59,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 
 	public void DisableControl()
 	{
-		shootingSystem.WeaponFired -= UpdateAmmoCounts;
+		shootingSystem.OnWeaponFired -= UpdateAmmoCounts;
 	}
 
 	public void EnableControl()
@@ -71,7 +71,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	{
 		playerEntity = newPlayer;
 		shootingSystem = newPlayer.gameObject.GetComponent<ShootingSystem>();
-		shootingSystem.WeaponFired += UpdateAmmoCounts;
+		shootingSystem.OnWeaponFired += UpdateAmmoCounts;
 
 		abilitySystem = newPlayer.gameObject.GetComponent<AbilitySystem>();
 		UpdateAbilityHotbar();

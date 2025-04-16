@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.GridLayoutGroup;
 
 public class ShootingSystem : MonoBehaviour, IToggleable
 {
@@ -44,7 +42,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 
-	public event Action<int, int> WeaponFired;
+	public event Action<ShootingSystem, int, int> OnWeaponFired;
 
 
 	void Start()
@@ -208,7 +206,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Reload();
 		}
 
-		WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+		OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
 		//Temporary. Tightly coupled isn't good
 		if (weaponConfig.gunfireSound != null)
 		{
@@ -328,7 +326,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		if (inPlayerControl)
 		{
-			WeaponFired?.Invoke(currentAmmo, reserveAmmo);
+			OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
 		}
 
 	}
