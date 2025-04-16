@@ -19,7 +19,7 @@ public sealed class Transition : ScriptableObject
 		if (Decision.Decide(stateMachine) && !(TrueState is RemainInState))
 		{
 			stateMachine.CurrentState = TrueState;
-			Debug.Log("Entering new state");
+			Debug.Log(stateMachine.gameObject.name + " now entering " + TrueState.name + " state");
 		}			
 		else if (!(FalseState is RemainInState))
 		{

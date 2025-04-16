@@ -20,3 +20,13 @@ MonoBehaviour:
   coinProjectile: {fileID: 6495869608783633811, guid: 145c4491a5e6bdf42a8f39fcd8b22204,
     type: 3}
   launchForce: 20
+  emittedSound:
+    soundPos: {x: 119.229645, y: 0.16870707, z: 2.2636347}
+    soundRadius: 15
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 512

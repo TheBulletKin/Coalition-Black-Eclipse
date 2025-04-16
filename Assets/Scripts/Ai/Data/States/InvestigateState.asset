@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e1560d29fd8d2a54095c1cfbdc94d285, type: 3}
-  m_Name: PatrolState
+  m_Name: InvestigateState
   m_EditorClassIdentifier: 
   Action:
-  - {fileID: 11400000, guid: 67c6ec59eaff260448941d56656a0980, type: 2}
+  - {fileID: 11400000, guid: e0104bf4215ebd94e9f08ae0d18dfc3a, type: 2}
   Transitions:
+  - {fileID: 11400000, guid: a25bdbbc617bcf3449e5b551ab039f63, type: 2}
   - {fileID: 11400000, guid: c2e1793bc38a97540ae84b22e6708083, type: 2}
-  - {fileID: 11400000, guid: 94240f4c6328b7747a2abb1ecdfbaa00, type: 2}

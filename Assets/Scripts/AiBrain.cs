@@ -4,15 +4,14 @@ using UnityEngine;
 
 public class AiBrain : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public AiSightSensor sightSensor;
+    public AiSoundSensor soundSensor;
+    public AIMovement aiMovement;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Start()
+	{
+		sightSensor = GetComponent<AiSightSensor>();
+		soundSensor = GetComponent<AiSoundSensor>();
+		aiMovement = GetComponent<AIMovement>();
+	}
 }

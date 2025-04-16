@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Cinemachine.CinemachineTargetGroup;
 using static UnityEngine.GraphicsBuffer;
 
 public class AiSightSensor : MonoBehaviour
 {
 
-	public Health currentTarget { get; private set; }
+	[field: SerializeField] public Health currentTarget { get; private set; }
 	public ShootingSystem shootingSystem;
 	public List<Health> visibleEntities;
 	private float pingInteval = 0.25f;
@@ -141,16 +143,11 @@ public class AiSightSensor : MonoBehaviour
 	}
 
 	public bool TestVisibility(Health target)
-	{		
-		//Ray from current ai to target
-		ray = new Ray(this.transform.position, target.transform.position - this.transform.position);
+	{			
+		if (TargetInVisionCone(target.transform.position))
+		{
 
-		var dir = new Vector3(ray.direction.x, 0, ray.direction.z);
-
-		var angle = Vector3.Angle(dir, this.transform.forward);
-
-		//Enemy outside of vision cone
-		if (angle > visionConfig.detectionAngle)
+		} else
 		{
 			if (visibleEntities.Contains(target))
 			{
@@ -158,7 +155,7 @@ public class AiSightSensor : MonoBehaviour
 				visibleEntities.Remove(target);
 			}
 			return false;
-		}
+		}		
 
 		RaycastHit hit;
 
@@ -208,7 +205,7 @@ public class AiSightSensor : MonoBehaviour
 		//As it casts a ray from the current location to the targetted teammate,
 		//I just need to get the first object hit and compare tags
 		//Ignore the enemy itself and hit everything else.
-		if (Physics.Raycast(ray, out RaycastHit Hit, 70, visionConfig.ignoreMask))
+		if (Physics.Raycast(ray, out RaycastHit Hit, visionConfig.detectionAngle, visionConfig.ignoreMask))
 		{
 			if (Hit.collider.tag == "Teammate")
 			{
@@ -226,6 +223,32 @@ public class AiSightSensor : MonoBehaviour
 			outHit = new RaycastHit();
 			return false;
 		}
+	}
+
+	public bool TargetInVisionCone(Vector3 target)
+	{
+		return TargetInCone(target, visionConfig.detectionAngle);
+	}
+
+	public bool TargetInPreferredVisionCone(Vector3 target)
+	{
+		return TargetInCone(target, visionConfig.preferredAngle);
+	}
+
+	private bool TargetInCone(Vector3 target, float coneAngle)
+	{
+		ray = new Ray(this.transform.position, target - this.transform.position);
+
+		var dir = new Vector3(ray.direction.x, 0, ray.direction.z).normalized;
+
+		float angle = Vector3.Angle(transform.forward, dir);
+
+		//Enemy outside of vision cone
+		if (angle < coneAngle * 0.5f)
+		{
+			return true;
+		}
+		return false;
 	}
 
 	public float GetDetectionValue()

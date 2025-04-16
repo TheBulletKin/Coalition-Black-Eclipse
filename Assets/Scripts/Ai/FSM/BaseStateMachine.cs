@@ -11,9 +11,12 @@ using UnityEngine;
 public class BaseStateMachine : MonoBehaviour
 {
 	[SerializeField] private BaseState initialState;
-	public EnemyEntity enemyEntity;
 
 	public BaseState CurrentState { get; set; }
+
+	[Header("Entity components")]
+	public EnemyEntity enemyEntity;
+	public AiBrain aiBrain;	
 
 	private Dictionary<Type, Component> cachedComponents;
 
@@ -22,6 +25,7 @@ public class BaseStateMachine : MonoBehaviour
 		CurrentState = initialState;
 		cachedComponents = new Dictionary<Type, Component>();
 		enemyEntity = GetComponent<EnemyEntity>();
+		aiBrain = GetComponent<AiBrain>();
 	}
 
 	private void Update()

@@ -7,41 +7,60 @@ using UnityEngine.AI;
 [CreateAssetMenu(menuName = "FSM/Actions/Engage")]
 public class EngageAction : FSMAction
 {
+	
 	//Getting the components dynamically means that nothing is stored in the SO. Badly optimised however
 	//If something was stored here, each ai would share state information. Will need a fix for this later
 	public override void Execute(BaseStateMachine stateMachine)
 	{
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
-		AiSightSensor enemySightSensor = stateMachine.GetComponent<AiSightSensor>();
+		AiSightSensor sightSensor = stateMachine.aiBrain.sightSensor;
+		AIMovement aiMovement = stateMachine.aiBrain.aiMovement;
 
-		//The enemy can die before this action is ran and it changes states in response
-		if (enemySightSensor.currentTarget)
+		if (sightSensor.currentTarget)
 		{
-			if (!(enemySightSensor.TargetInWeaponRange())) //If target is not currently in weapon range (+ some wiggle room)
+			Transform engageTarget = sightSensor.currentTarget.transform;
+			//The enemy can die before this action is ran and it changes states in response
+
+			if (engageTarget == null)
 			{
-				navMeshAgent.isStopped = false;
-				navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
+				engageTarget = sightSensor.currentTarget.transform;
 			}
-			else
+			if (!(sightSensor.TargetInWeaponRange())) //Isn't in weapon range
+			{
+				aiMovement.MoveTo(engageTarget.position);
+				aiMovement.SetLooking(false);
+			}
+			else //Is in weapon range
 			{
 				RaycastHit hit;
-				if (!enemySightSensor.TargetInLineOfSight(out hit)) //If within range but without eyes on target
+				if (!sightSensor.TargetInLineOfSight(out hit)) //Isn't within line of sight
 				{
-					//Will appear to home in on players. Necessary for the time being
-					navMeshAgent.isStopped = false;
-					navMeshAgent.SetDestination(enemySightSensor.currentTarget.transform.position);
+					aiMovement.MoveTo(engageTarget.position);
+					aiMovement.SetLooking(false);
 				}
-				else //If in range and line of sight
+				else //Is within line of sight
 				{
-					
-					navMeshAgent.isStopped = true;
-					navMeshAgent.ResetPath();
-					Vector3 direction = (enemySightSensor.currentTarget.transform.position - stateMachine.transform.position).normalized;
-					direction.y = 0;
-					stateMachine.transform.rotation = Quaternion.LookRotation(direction);
-				}
+					/* Optional if I want the ai to not rotate when in the vision cone
+					if (sightSensor.TargetInVisionCone(engageTarget)) //Is in vision cone
+					{
+						if (sightSensor.TargetInPreferredVisionCone(engageTarget))
+						{
+							aiMovement.SetLooking(false);
+						}						
+					}
+					else
+					{
+						aiMovement.SetLooking(engageTarget);
+					}
+					*/
 
+					navMeshAgent.ResetPath();
+
+					aiMovement.SetLooking(engageTarget.position);
+				}
 			}
 		}
+		
+
 	}
 }

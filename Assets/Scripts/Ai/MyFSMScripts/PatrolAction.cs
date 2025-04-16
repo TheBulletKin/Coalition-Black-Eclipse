@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,6 +14,8 @@ public class PatrolAction : FSMAction
 		//So the state machine doesn't necessarily need to hold them all.
 		NavMeshAgent navMeshAgent = stateMachine.enemyEntity.navMeshAgent;
 		PatrolPointsSystem patrolPoints = stateMachine.enemyEntity.patrolPoints;
+		AIMovement aiMovement = stateMachine.aiBrain.aiMovement;
+		aiMovement.SetLooking(false);
 
 		if (patrolPoints.patrolPoints != null && patrolPoints.patrolPoints.waypoints.Count > 0)
 		{
@@ -20,12 +23,17 @@ public class PatrolAction : FSMAction
 			{
 				if (patrolPoints.WaypointDurationFinished(navMeshAgent))
 				{
-					PatrolWaypoint nextWaypoint = patrolPoints.SetNextWaypoint();
-
-					navMeshAgent.SetDestination(nextWaypoint.transform.position);
-
+					PatrolWaypoint nextWaypoint = patrolPoints.SetNextWaypoint();				
+					aiMovement.MoveTo(nextWaypoint.transform.position);
 				}
 			}
+		}
+		else
+		{
+			if (Vector3.Distance(navMeshAgent.destination, patrolPoints.initialPosition) > 0.1 && !navMeshAgent.pathPending)
+			{
+				aiMovement.MoveTo(patrolPoints.initialPosition);
+			}		
 		}
 
 

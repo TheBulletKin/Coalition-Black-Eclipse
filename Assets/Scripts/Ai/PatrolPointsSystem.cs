@@ -13,6 +13,10 @@ public class PatrolPointsSystem : MonoBehaviour
 
 	[Header("Temporary attributes")]
 	[SerializeField] private float lookRotationSpeed = 2f;
+	
+	// Later I will change this so each ai has a static patrol position they return to and reorient themselves to
+	 
+	public Vector3 initialPosition;
 
 
 	public PatrolWaypoint currentPoint;
@@ -37,7 +41,7 @@ public class PatrolPointsSystem : MonoBehaviour
 			currentPoint = patrolPoints.waypoints[currentPointIndex];
 		}
 
-
+		initialPosition = transform.position;
 	}
 
 
