@@ -5,12 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewVisionConfig", menuName = "Ai Senses/Vision Config")]
 public class AiVisionConfig : ScriptableObject
 {
-	[SerializeField] private float detectionIncreaseRate = 5f;
-	[SerializeField] private float detectionDecreaseRate = 2f;
-	[SerializeField] private float detectionThreshold = 100f;
+	public float detectionIncreaseRate = 5f;
+	public float detectionDecreaseRate = 2f;
+	public float detectionThreshold = 100f;
 
-	[SerializeField] private float detectionAngle = 60f;
-	[SerializeField] private float maxDetectionDistance = 40f;
-	[SerializeField] private float closeDetectionFalloffDistance = 10f;
-	[SerializeField] private float detectionRateModifier;
+	public float detectionAngle = 60f;
+	public float maxDetectionDistance = 40f;
+	public float closeDetectionFalloffDistance = 10f;
+	public float detectionRateModifier;
+
+	public LayerMask ignoreMask;
 }

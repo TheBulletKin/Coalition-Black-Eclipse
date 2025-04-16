@@ -16,19 +16,9 @@ public class AiSightSensor : MonoBehaviour
 	public float detectionValue { get; private set; }
 
 
-	[SerializeField] private float detectionIncreaseRate = 5f;
-	[SerializeField] private float detectionDecreaseRate = 2f;
-	[SerializeField] private float detectionThreshold = 100f;
-
-	[SerializeField] private float detectionAngle = 60f;
-	[SerializeField] private float maxDetectionDistance = 40f;
-	[SerializeField] private float closeDetectionFalloffDistance = 10f;
-	[SerializeField] private float detectionRateModifier;
+	[SerializeField] private AiVisionConfig visionConfig;
 	public bool entityIsDetected { get; private set; }
 	public bool isEngagingEnemy = false;
-
-
-	[SerializeField] private LayerMask ignoreMask;
 
 
 	private Ray ray;
@@ -36,10 +26,7 @@ public class AiSightSensor : MonoBehaviour
 	private void Awake()
 	{
 		detectionValue = 0.0f;
-		detectionRateModifier = 1.0f;
-
-
-
+		
 	}
 
 	private void Update()
@@ -76,27 +63,27 @@ public class AiSightSensor : MonoBehaviour
 
 				//Within 10 metres, maximum gain
 				//Beyond 30 meters, no gain
-				if (distanceToVisible >= maxDetectionDistance)
+				if (distanceToVisible >= visionConfig.maxDetectionDistance)
 				{
 					//Decrement detection
 					if (entityIsDetected == false)
 					{
-						detectionValue -= detectionIncreaseRate * deltaTime;
-						detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+						detectionValue -= visionConfig.detectionIncreaseRate * deltaTime;
+						detectionValue = Mathf.Clamp(detectionValue, 0, visionConfig.detectionThreshold);
 					}
 
 				}
-				else if (distanceToVisible < maxDetectionDistance && distanceToVisible >= 0f) //Within detection range
+				else if (distanceToVisible < visionConfig.maxDetectionDistance && distanceToVisible >= 0f) //Within detection range
 				{
-					detectionRateModifier = Mathf.Lerp(1f, 0f,
-					(distanceToVisible - closeDetectionFalloffDistance) / (maxDetectionDistance - closeDetectionFalloffDistance));
+					visionConfig.detectionRateModifier = Mathf.Lerp(1f, 0f,
+					(distanceToVisible - visionConfig.closeDetectionFalloffDistance) / (visionConfig.maxDetectionDistance - visionConfig.closeDetectionFalloffDistance));
 					//Want distance / max distance but normalised to ignore the 10 units close falloff.
-					detectionValue += detectionIncreaseRate * deltaTime * detectionRateModifier;
-					detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+					detectionValue += visionConfig.detectionIncreaseRate * deltaTime * visionConfig.detectionRateModifier;
+					detectionValue = Mathf.Clamp(detectionValue, 0, visionConfig.detectionThreshold);
 				}
 
 
-				if (detectionValue >= detectionThreshold)
+				if (detectionValue >= visionConfig.detectionThreshold)
 				{
 					entityIsDetected = true;
 					currentTarget = visibleEntities[0];
@@ -107,8 +94,8 @@ public class AiSightSensor : MonoBehaviour
 				//Ensures that after detection the ai won't just forget the player's position
 				if (entityIsDetected == false)
 				{
-					detectionValue -= detectionIncreaseRate * deltaTime;
-					detectionValue = Mathf.Clamp(detectionValue, 0, detectionThreshold);
+					detectionValue -= visionConfig.detectionIncreaseRate * deltaTime;
+					detectionValue = Mathf.Clamp(detectionValue, 0, visionConfig.detectionThreshold);
 				}
 
 			}
@@ -163,7 +150,7 @@ public class AiSightSensor : MonoBehaviour
 		var angle = Vector3.Angle(dir, this.transform.forward);
 
 		//Enemy outside of vision cone
-		if (angle > detectionAngle)
+		if (angle > visionConfig.detectionAngle)
 		{
 			if (visibleEntities.Contains(target))
 			{
@@ -221,7 +208,7 @@ public class AiSightSensor : MonoBehaviour
 		//As it casts a ray from the current location to the targetted teammate,
 		//I just need to get the first object hit and compare tags
 		//Ignore the enemy itself and hit everything else.
-		if (Physics.Raycast(ray, out RaycastHit Hit, 70, ignoreMask))
+		if (Physics.Raycast(ray, out RaycastHit Hit, 70, visionConfig.ignoreMask))
 		{
 			if (Hit.collider.tag == "Teammate")
 			{
@@ -321,13 +308,13 @@ public class AiSightSensor : MonoBehaviour
 		
 		
 		Gizmos.color = Color.blue;
-		Gizmos.DrawWireSphere(transform.position, maxDetectionDistance);
-		Gizmos.DrawWireSphere(transform.position, closeDetectionFalloffDistance);
+		Gizmos.DrawWireSphere(transform.position, visionConfig.maxDetectionDistance);
+		Gizmos.DrawWireSphere(transform.position, visionConfig.closeDetectionFalloffDistance);
 
 		Gizmos.color = Color.red;
-		Vector3 forward = transform.forward * maxDetectionDistance;
-		Quaternion leftRayRotation = Quaternion.AngleAxis(-detectionAngle / 2, Vector3.up);
-		Quaternion rightRayRotation = Quaternion.AngleAxis(detectionAngle / 2, Vector3.up);
+		Vector3 forward = transform.forward * visionConfig.maxDetectionDistance;
+		Quaternion leftRayRotation = Quaternion.AngleAxis(-visionConfig.detectionAngle / 2, Vector3.up);
+		Quaternion rightRayRotation = Quaternion.AngleAxis(visionConfig.detectionAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
 		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
 	}

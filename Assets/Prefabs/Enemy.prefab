@@ -314,21 +314,11 @@ MonoBehaviour:
   shootingSystem: {fileID: 3339947618540181137}
   visibleEntities: []
   <detectionValue>k__BackingField: 0
-  detectionIncreaseRate: 5
-  detectionDecreaseRate: 2
-  detectionThreshold: 100
-  detectionAngle: 60
-  maxDetectionDistance: 40
-  closeDetectionFalloffDistance: 10
-  detectionRateModifier: 0
+  visionConfig: {fileID: 11400000, guid: 3dd0e0077d97e684ea89ee701083f785, type: 2}
   isEngagingEnemy: 0
   ignoreMask:
     serializedVersion: 2
-    m_Bits: 0
-  maxWeaponRange: 30
-  weaponDamage: 30
-  fireTimer: 0
-  fireCooldown: 0.5
+    m_Bits: 257
 --- !u!114 &5041572629650936404
 MonoBehaviour:
   m_ObjectHideFlags: 0
