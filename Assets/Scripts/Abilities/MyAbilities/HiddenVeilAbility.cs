@@ -10,13 +10,13 @@ public class HiddenVeilAbility : CharacterAbility
 	[SerializeField] private float veilRadius = 5f;
 	[SerializeField] private GameObject proxSensorPrefab;
 	[SerializeField] private List<HiddenVeil> activeVeils;
-	//private HiddenStatusEffect hiddenStatusEffect;
+	[HideInInspector] private HiddenStatusEffect hiddenStatusEffect;
 
 	public override void Init(AbilitySystem owner)
 	{
 		abilityCount = 2;
 		activeVeils = new List<HiddenVeil>();
-		//hiddenStatusEffect = new HiddenStatusEffect();
+		hiddenStatusEffect = new HiddenStatusEffect();
 	}
 
 	public override void Use(AbilitySystem owner)
@@ -41,11 +41,41 @@ public class HiddenVeilAbility : CharacterAbility
 		{
 			GameObject newVeilObject = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
 			HiddenVeil hiddenVeil = newVeilObject.GetComponentInChildren<HiddenVeil>();
-			//hiddenVeil.SetStatusEffect(hiddenStatusEffect);
+			
 			hiddenVeil.radius = veilRadius;
-
-			activeVeils.Add(hiddenVeil);
+			hiddenVeil.SetVeilEnterCallback(OnEnterVeil);
+			hiddenVeil.SetVeilExitCallback(OnExitVeil);			
 		}
 
+	}
+
+	/// <summary>
+	/// Called by the hidden veil object when an entity enters it
+	/// </summary>
+	/// <param name="entity"></param>
+	public void OnEnterVeil(ControllableEntity entity, HiddenVeil veil)
+	{
+		if (!entity.entityVisibility.activeVeils.Contains(veil))
+		{
+			entity.entityVisibility.activeVeils.Add(veil);
+		}
+		
+		if (!entity.HasStatusEffect(hiddenStatusEffect))
+		{
+			entity.AddStatusEffect(hiddenStatusEffect);			
+		}			
+	}
+
+	/// <summary>
+	/// Called by the hidden veil when an entity leaves it
+	/// </summary>
+	/// <param name="entity"></param>
+	public void OnExitVeil(ControllableEntity entity, HiddenVeil veil)
+	{
+		entity.entityVisibility.activeVeils.Remove(veil);
+		if (entity.HasStatusEffect(hiddenStatusEffect) && entity.entityVisibility.activeVeils.Count == 0)
+		{
+			entity.RemoveStatusEffect(hiddenStatusEffect);
+		}
 	}
 }

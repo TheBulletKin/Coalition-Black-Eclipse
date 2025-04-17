@@ -101,4 +101,9 @@ public class ControllableEntity : MonoBehaviour
 		activeStatusEffects.Clear();
 	}
 
+	public bool HasStatusEffect(IStatusEffect effect)
+	{
+		return activeStatusEffects.Contains(effect);
+	}
+
 }

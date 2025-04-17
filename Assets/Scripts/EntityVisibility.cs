@@ -9,13 +9,20 @@ public class EntityVisibility : MonoBehaviour
 	private float hiddenDuration;
 	private float hiddenTimer;
 	private bool isDuration = false;
-	public bool firingBreaksConcealment = true;
+	public bool firingBreaksConcealment = true;	
+
 
 	public Action durationCompleteCallback;
+
+	//Used to apply
+	public ControllableEntity entity;
+
+	[SerializeField] public List<HiddenVeil> activeVeils = new List<HiddenVeil>();
 
 	private void Start()
 	{
 		visibilityModifier = 1.0f;
+		entity = GetComponent<ControllableEntity>();
 	}
 
 	private void Update()
@@ -27,9 +34,7 @@ public class EntityVisibility : MonoBehaviour
 			{
 				CancelDuration(1);
 			}
-		}
-
-
+		}		
 	}
 
 	public float GetVisibilityMod()
@@ -83,4 +88,5 @@ public class EntityVisibility : MonoBehaviour
 
 		durationCompleteCallback?.Invoke();
 	}
+
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,8 +8,10 @@ public class HiddenVeil : MonoBehaviour
 {
 	private HiddenStatusEffect hiddenStatusEffect = new HiddenStatusEffect();
 	private List<ShootingSystem> teammatesInVeil = new List<ShootingSystem>();
-	private Dictionary<ControllableEntity, HiddenStatusEffect> appliedEffects = new Dictionary<ControllableEntity, HiddenStatusEffect>();
 	public float radius;
+
+	private Action<ControllableEntity, HiddenVeil> OnVeilEnter;
+	private Action<ControllableEntity, HiddenVeil> OnVeilExit;
 
 	private void Start()
 	{
@@ -20,11 +23,10 @@ public class HiddenVeil : MonoBehaviour
 		{
 			if (collider.gameObject.CompareTag("Teammate"))
 			{
-				if (collider.gameObject.GetComponent<ControllableEntity>()) //Check to confirm the object is a controllable entity
-				{
-					//This would be more efficient if it scanned with a layermask first rather than getting
-					//  All these components and then deciding
-					OnTriggerEnter(collider);
+				ControllableEntity entity = collider.gameObject.GetComponent<ControllableEntity>();
+				if (entity) 
+				{ 					
+					OnVeilEnter?.Invoke(entity, this);
 				}
 
 			}
@@ -37,15 +39,14 @@ public class HiddenVeil : MonoBehaviour
 		if (other.gameObject.CompareTag("Teammate"))
 		{
 			//Temporarily uses controllable entity as that holds status effects. Change this later for enemies
-			ControllableEntity entity = other.GetComponent<ControllableEntity>();
-			ShootingSystem shootingSystem = other.gameObject.GetComponent<ShootingSystem>();
-
-			if (entity != null && !appliedEffects.ContainsKey(entity))
+			ControllableEntity entity = other.gameObject.GetComponent<ControllableEntity>();
+			if (entity)
 			{
-				entity.AddStatusEffect(hiddenStatusEffect);
-				appliedEffects.Add(entity, hiddenStatusEffect);
+				OnVeilEnter?.Invoke(entity, this);
 			}
 
+
+			ShootingSystem shootingSystem = other.gameObject.GetComponent<ShootingSystem>();
 
 			if (shootingSystem != null && !teammatesInVeil.Contains(shootingSystem))
 			{
@@ -61,16 +62,15 @@ public class HiddenVeil : MonoBehaviour
 
 		if (other.gameObject.CompareTag("Teammate"))
 		{
-			ControllableEntity entity = other.GetComponent<ControllableEntity>();
-			ShootingSystem shootingSystem = other.GetComponent<ShootingSystem>();
-
-			if (entity != null && appliedEffects.ContainsKey(entity))
+			ControllableEntity entity = other.gameObject.GetComponent<ControllableEntity>();
+			if (entity)
 			{
-				entity.RemoveStatusEffect(appliedEffects[entity]);
-				appliedEffects.Remove(entity);
+
+				OnVeilExit?.Invoke(entity, this);
 			}
 
-
+			ShootingSystem shootingSystem = other.GetComponent<ShootingSystem>();
+				
 			if (shootingSystem != null && teammatesInVeil.Contains(shootingSystem))
 			{
 				shootingSystem.OnWeaponFired -= ClearVeil;
@@ -87,16 +87,13 @@ public class HiddenVeil : MonoBehaviour
 		foreach (ShootingSystem teammate in teammatesInVeil)
 		{
 			teammate.OnWeaponFired -= ClearVeil;
+			
+			ControllableEntity entity = teammate.GetComponent<ControllableEntity>();
+			if (entity != null)
+			{
+				OnVeilExit?.Invoke(entity, this);
+			}
 		}
-
-		List<ControllableEntity> entitiesToRemove = new List<ControllableEntity>(appliedEffects.Keys);
-
-		foreach (ControllableEntity entity in entitiesToRemove)
-		{
-			entity.RemoveStatusEffect(appliedEffects[entity]);
-			appliedEffects.Remove(entity);
-		}
-
 		Destroy(gameObject.transform.parent.gameObject);
 	}
 
@@ -109,6 +106,16 @@ public class HiddenVeil : MonoBehaviour
 	{
 		Gizmos.color = new Color(0f, 1f, 1f, 0.4f);
 		Gizmos.DrawWireSphere(transform.position, radius);
+	}
+
+	public void SetVeilEnterCallback(Action<ControllableEntity, HiddenVeil> callback)
+	{
+		OnVeilEnter = callback;
+	}
+
+	public void SetVeilExitCallback(Action<ControllableEntity, HiddenVeil> callback)
+	{
+		OnVeilExit = callback;
 	}
 
 
