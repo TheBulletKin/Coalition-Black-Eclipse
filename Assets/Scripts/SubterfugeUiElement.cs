@@ -14,7 +14,7 @@ public class SubterfugeUiElement : UiElement, IGadgetUiElement
 	{
 		if (!gameObject.activeInHierarchy || !uiElement.activeInHierarchy) return;
 
-		if (visibility != null && visibility.GetVisibilityMod() < 1)
+		if (visibility != null && visibility.isDuration)
 		{
 			float remaining = visibility.GetHiddenTimeRemaining();
 			float total = visibility.GetHiddenDuration();

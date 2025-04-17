@@ -8,7 +8,7 @@ public class EntityVisibility : MonoBehaviour
 	[SerializeField] private float visibilityModifier;
 	private float hiddenDuration;
 	private float hiddenTimer;
-	private bool isDuration = false;
+	public bool isDuration = false;
 	public bool firingBreaksConcealment = true;	
 
 
