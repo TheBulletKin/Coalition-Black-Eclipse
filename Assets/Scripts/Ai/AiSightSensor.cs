@@ -109,8 +109,11 @@ public class AiSightSensor : MonoBehaviour
 		RaycastHit hit;
 		if (currentTarget != null && isEngagingEnemy && TargetInLineOfSight(out hit) && TargetInWeaponRange())
 		{
-
-			shootingSystem.Fire(currentTarget.transform);
+			if (shootingSystem.CanFire())
+			{
+				shootingSystem.Fire(currentTarget.transform);
+			}
+			
 			/*
 			fireTimer += deltaTime;
 			if(fireTimer >= fireCooldown)

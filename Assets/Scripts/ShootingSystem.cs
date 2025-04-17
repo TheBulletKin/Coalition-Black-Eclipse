@@ -156,8 +156,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			return;
 		}
 
-		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
-		
+
 		if (weaponConfig.isShotgun)
 		{
 			for (int i = 0; i < weaponConfig.pelletsPerShot; i++)
@@ -170,7 +169,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			CastBulletRay(weaponConfig.weaponDamage);
 		}
 
-		
+
 		//Begin recovery and deduce ammo
 		isFireRecovery = true;
 
@@ -183,7 +182,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
-		
+
 		if (weaponConfig.gunfireSound != null && weaponConfig.emitsSound == true)
 		{
 			SoundEmitterHandler.instance.EmitAudibleSound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
@@ -235,15 +234,32 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		else
 		{
 			Vector3 fallbackPoint = mainCam.transform.position + fireDirection * weaponConfig.weaponRange;
-			CreateTracer(bulletOriginPos.transform.position, fallbackPoint);			
+			CreateTracer(bulletOriginPos.transform.position, fallbackPoint);
 		}
 
 
 	}
 
-	
 
+	public void RequestFire()
+	{
+		if (CanFire())
+		{
+			Fire();
+		}
+	}
 
+	public bool CanFire()
+	{
+		if (isReloading || currentAmmo <= 0 || isFireRecovery)
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
 
 
 	/// <summary>
@@ -253,8 +269,6 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	/// <returns>True if hit an enemy</returns>
 	public void Fire(Transform targetTransform)
 	{
-		if (isReloading || currentAmmo <= 0 || isFireRecovery) return;
-
 
 		if (Physics.Raycast(cameraPos.transform.position, targetTransform.position - cameraPos.position, out RaycastHit hit, weaponConfig.weaponRange, hittableLayers))
 		{
@@ -283,7 +297,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
 		if (weaponConfig.gunfireSound != null && weaponConfig.emitsSound == true)
-		{			
+		{
 			SoundEmitterHandler.instance.EmitAudibleSound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
 			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
@@ -293,7 +307,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
 
-		
+
 	}
 
 	private void CreateTracer(Vector3 startPos, Vector3 endPos)
@@ -309,7 +323,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Destroy(tracer, trail.time);
 		}
 	}
-	
+
 
 	private void Reload()
 	{
@@ -365,14 +379,14 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	public void DisableControl()
 	{
 		inPlayerControl = false;
-		InputManager.Instance.OnFirePressed -= Fire;
+		InputManager.Instance.OnFirePressed -= RequestFire;
 		InputManager.Instance.OnReloadPressed -= Reload;
 	}
 
 	public void EnableControl()
 	{
 		inPlayerControl = true;
-		InputManager.Instance.OnFirePressed += Fire;
+		InputManager.Instance.OnFirePressed += RequestFire;
 		InputManager.Instance.OnReloadPressed += Reload;
 
 
@@ -390,6 +404,34 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
 
 		movementSpreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve);
+	}
+
+	public float GetAimTime(Vector3 target, Vector3 forward)
+	{
+		Vector3 directionToTarget = (target - transform.position).normalized;
+		float angleToTarget = Vector3.Angle(forward, directionToTarget);
+		float halfFiringAngle = weaponConfig.firingAngle * 0.5f;
+		float centreAngleRange = weaponConfig.optimalAimCone * 0.5f;
+
+		//Outside the vision cone
+		if (angleToTarget > halfFiringAngle)
+		{
+			return 0f;
+		}
+
+		//In the sweet spot
+		if (angleToTarget <= centreAngleRange)
+		{
+			return weaponConfig.aimTimeAtCentre;
+		}
+
+		//Determine aim time
+		float outerRange = halfFiringAngle - centreAngleRange;
+		float distanceFromCentre = angleToTarget - centreAngleRange;
+
+		float t = distanceFromCentre / outerRange;
+		return Mathf.Lerp(weaponConfig.aimTimeAtCentre, weaponConfig.aimTimeAtEdge, t);
+
 	}
 
 	private void OnDrawGizmosSelected()

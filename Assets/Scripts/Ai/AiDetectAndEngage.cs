@@ -21,7 +21,12 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private float detectionIncreaseRate = 5f;
 	[SerializeField] private float detectionDecreaseRate = 2f;
 	[SerializeField] private float detectionThreshold = 100f;
-	
+
+	[SerializeField] private bool isAiming = false;
+	[SerializeField] private float aimTimer = 0f;
+	[SerializeField] private float aimDuration = 0.2f;
+	[SerializeField] private Transform targettedEnemy;
+
 
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
@@ -55,18 +60,30 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 		if (enemiesSeen.Count >= 1)
 		{
-			
+			//If the weapon has finished it's fire recovery, start aiming at and engaging
 			Health entityToTarget = GetClosestEnemySeen();
-			if (entityToTarget != null)
+			if (entityToTarget == null)
 			{
-				EngageTarget(entityToTarget.transform);
-				
+				targettedEnemy = null;
+			}
+
+			if (entityToTarget != null && shootingSystem.CanFire())
+			{
+				EngageTarget(entityToTarget.transform);				
 			}
 		}
-		
 
-
-
+		//Count down the aim timer and fire when ready
+		if (isAiming)
+		{
+			aimTimer += Time.deltaTime;
+			if (aimTimer >= aimDuration)
+			{
+				shootingSystem.Fire(targettedEnemy);
+				aimTimer = 0;
+				isAiming = false;				
+			}
+		}
 	}
 
 
@@ -178,7 +195,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 			Vector3 forwardDirection = transform.forward;
 			float angle = Vector3.Angle(forwardDirection, directionToTarget.normalized);
 
-			if (angle >= shootingSystem.weaponConfig.firingAngle)
+			if (angle >= shootingSystem.weaponConfig.firingAngle * 0.5f)
 			{
 				if (enemiesSeen[i] == null)
 				{
@@ -234,13 +251,14 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	}
 
 	/// <summary>
-	/// Fire on the target, raycasting then dealing damage
+	/// Begin aiming at the target before firing
 	/// </summary>
 	/// <param name="targetTransform"></param>
 	private void EngageTarget(Transform targetTransform)
 	{
-
-		shootingSystem.Fire(targetTransform);
+		isAiming = true;
+		targettedEnemy = targetTransform;
+		aimDuration = shootingSystem.GetAimTime(targetTransform.position, transform.forward);	
 
 	}
 
@@ -258,6 +276,13 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		Quaternion rightRayRotation = Quaternion.AngleAxis(shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
 		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
+
+		Gizmos.color = Color.green;
+		Vector3 forward2 = transform.forward * shootingSystem.weaponConfig.weaponRange;
+		Quaternion leftRayRotation2 = Quaternion.AngleAxis(-shootingSystem.weaponConfig.optimalAimCone / 2, Vector3.up);
+		Quaternion rightRayRotation2 = Quaternion.AngleAxis(shootingSystem.weaponConfig.optimalAimCone / 2, Vector3.up);
+		Gizmos.DrawRay(transform.position, leftRayRotation2 * forward2);
+		Gizmos.DrawRay(transform.position, rightRayRotation2 * forward2);
 	}
 
 	private void OnEnemyDeath(Health deadEntity)
