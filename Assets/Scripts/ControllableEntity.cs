@@ -21,6 +21,9 @@ public class ControllableEntity : MonoBehaviour
 	[SerializeField] public Health health { get; private set; }
 	[SerializeField] public AiDetectAndEngage aiDetection { get; private set; }
 
+
+	private List<IStatusEffect> activeStatusEffects = new List<IStatusEffect>();
+
 	private void Awake()
 	{
 		toggleableComponents = GetComponents<IToggleable>();
@@ -47,6 +50,7 @@ public class ControllableEntity : MonoBehaviour
 			item.EnableControl();
 		}
 		agent.enabled = false;
+		isControlledByPlayer = true;
 	}
 
 	public void LoseControl()
@@ -60,12 +64,41 @@ public class ControllableEntity : MonoBehaviour
 			item.DisableControl();
 		}
 		agent.enabled = true;
+		isControlledByPlayer = false;
 	}
 
 	public void HandleDeath()
 	{
 		//Previously didn't unsubscribe to the fire and shoot methods when dead. This is a temp fix.
 		shootingSystem.DisableControl();
+	}
+
+	public void AddStatusEffect(IStatusEffect effect)
+	{
+		activeStatusEffects.Add(effect);
+		effect.ApplyEffect(this);
+		GameEvents.OnStatusEffectActivated?.Invoke(effect, this);
+	}
+
+	public void RemoveStatusEffect(IStatusEffect effect)
+	{
+		if (activeStatusEffects.Contains(effect))
+		{
+			effect.RemoveEffect(this);
+			activeStatusEffects.Remove(effect);
+			GameEvents.OnStatusEffectDeactivated?.Invoke(effect, this);
+		}
+	}
+
+	public void ClearAllStatusEffects()
+	{
+		foreach (var effect in activeStatusEffects)
+		{
+			effect.RemoveEffect(this);
+			GameEvents.OnStatusEffectDeactivated?.Invoke(effect, this);
+		}
+
+		activeStatusEffects.Clear();
 	}
 
 }

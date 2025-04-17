@@ -65,6 +65,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	public void DisableControl()
 	{
 		shootingSystem.OnWeaponFired -= UpdateAmmoCounts;
+		shootingSystem.OnUpdateAmmo -= UpdateAmmoCounts;
 	}
 
 	public void EnableControl()
@@ -76,6 +77,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	{
 		playerEntity = newPlayer;
 		shootingSystem = newPlayer.gameObject.GetComponent<ShootingSystem>();
+		shootingSystem.OnUpdateAmmo += UpdateAmmoCounts;
 		shootingSystem.OnWeaponFired += UpdateAmmoCounts;
 
 		abilitySystem = newPlayer.gameObject.GetComponent<AbilitySystem>();

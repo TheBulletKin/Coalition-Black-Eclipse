@@ -11,6 +11,7 @@ public class CharacterSwitcher : MonoBehaviour
 	public Camera playerCamera;
 	public CameraController camController;
 	public PlayerUiImanager uiManager;
+	public GadgetUiManager gadgetUiManager;
 	public CameraStateSwitcher cameraStateSwitcher;
 	public int currentlyControlledTeammate;
 
@@ -68,6 +69,9 @@ public class CharacterSwitcher : MonoBehaviour
 
 		//Change ammo UI to match selected player
 		uiManager.changePlayerTarget(teammate);
+
+		//Change status effects and gadets to match selected player
+		gadgetUiManager.ChangeVisibleUiElements(teammate);
 
 		//Change the target for map / player view switching
 		cameraStateSwitcher.SwitchTarget(teammate);			

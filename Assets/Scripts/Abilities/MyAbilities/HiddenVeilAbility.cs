@@ -7,14 +7,16 @@ public class HiddenVeilAbility : CharacterAbility
 {
 	[SerializeField] private int abilityCount = 2;
 	[SerializeField] private float placementRange = 10f;
+	[SerializeField] private float veilRadius = 5f;
 	[SerializeField] private GameObject proxSensorPrefab;
 	[SerializeField] private List<HiddenVeil> activeVeils;
+	//private HiddenStatusEffect hiddenStatusEffect;
 
 	public override void Init(AbilitySystem owner)
 	{
 		abilityCount = 2;
 		activeVeils = new List<HiddenVeil>();
-
+		//hiddenStatusEffect = new HiddenStatusEffect();
 	}
 
 	public override void Use(AbilitySystem owner)
@@ -37,8 +39,12 @@ public class HiddenVeilAbility : CharacterAbility
 
 		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && abilityCount > 0)
 		{
-			GameObject newVeil = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
-			activeVeils.Add(newVeil.GetComponent<HiddenVeil>());
+			GameObject newVeilObject = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
+			HiddenVeil hiddenVeil = newVeilObject.GetComponentInChildren<HiddenVeil>();
+			//hiddenVeil.SetStatusEffect(hiddenStatusEffect);
+			hiddenVeil.radius = veilRadius;
+
+			activeVeils.Add(hiddenVeil);
 		}
 
 	}

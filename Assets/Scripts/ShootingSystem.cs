@@ -43,6 +43,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 	public event Action<ShootingSystem, int, int> OnWeaponFired;
+	public event Action<ShootingSystem, int, int> OnUpdateAmmo;
 
 
 	void Start()
@@ -345,7 +346,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		if (inPlayerControl)
 		{
-			OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
+			//Call ammo update event only. Calling fire was causing issues when switching characters
+			OnUpdateAmmo?.Invoke(this, currentAmmo, reserveAmmo);
 		}
 
 	}

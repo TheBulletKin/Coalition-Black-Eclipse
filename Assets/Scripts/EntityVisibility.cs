@@ -37,7 +37,7 @@ public class EntityVisibility : MonoBehaviour
 		return visibilityModifier;
 	}
 
-	public void ChangeVisibilityModifier(float newVis)
+	public void SetVisibilityModifier(float newVis)
 	{
 		visibilityModifier = newVis;
 	}
@@ -47,7 +47,7 @@ public class EntityVisibility : MonoBehaviour
 		hiddenTimer = 0;
 		hiddenDuration = duration;
 		isDuration = true;
-		ChangeVisibilityModifier(visValue);
+		SetVisibilityModifier(visValue);
 	}
 
 	public void SetDurationCompletionCallback(Action callback)

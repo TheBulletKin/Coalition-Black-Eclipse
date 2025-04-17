@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GadgetUiManager : MonoBehaviour
 {
 	[SerializeField] private GameObject sensorMarkerPrefab;
 	[SerializeField] private GameObject anchorMarkerPrefab;
 	[SerializeField] private GameObject subterfugeUiPrefab;
+	[SerializeField] private GameObject statusEffectUiPrefab;
 	[SerializeField] private RectTransform gadgetMarkerContainer;
 	[SerializeField] private RectTransform statusEffectContainer;
 	[SerializeField] private float offScreenElementRadiusPercentage = 0.75f;
@@ -19,9 +22,9 @@ public class GadgetUiManager : MonoBehaviour
 	[SerializeField] private float distanceBeforeDownscaling = 10f;
 
 	private List<UiElement> gadgetUiElements = new List<UiElement>();
+	private List<StatusEffectUiElement> statusUiElements = new List<StatusEffectUiElement>();
 
 	private Dictionary<IGadget, IGadgetUiElement> gadgetToUi = new Dictionary<IGadget, IGadgetUiElement>();
-
 
 	public IGadgetUiElement CreateMarker(IGadget gadget)
 	{
@@ -80,8 +83,8 @@ public class GadgetUiManager : MonoBehaviour
 			}
 
 			return null;
-			
-			
+
+
 		}
 		else
 		{
@@ -121,6 +124,8 @@ public class GadgetUiManager : MonoBehaviour
 		GameEvents.OnGadgetActivated += HandleGadgetActivated;
 		GameEvents.OnGadgetDeactivated += HandleGadgetDeactivated;
 		GameEvents.OnGadgetDestroyed += HandleGadgetDestroyed;
+		GameEvents.OnStatusEffectActivated += HandleStatusEffectActivated;
+		GameEvents.OnStatusEffectDeactivated += HandleStatusEffectDeactivated;
 	}
 
 	private void OnDisable()
@@ -129,6 +134,8 @@ public class GadgetUiManager : MonoBehaviour
 		GameEvents.OnGadgetActivated -= HandleGadgetActivated;
 		GameEvents.OnGadgetDeactivated -= HandleGadgetDeactivated;
 		GameEvents.OnGadgetDestroyed -= HandleGadgetDestroyed;
+		GameEvents.OnStatusEffectActivated -= HandleStatusEffectActivated;
+		GameEvents.OnStatusEffectDeactivated -= HandleStatusEffectDeactivated;
 	}
 
 
@@ -161,7 +168,7 @@ public class GadgetUiManager : MonoBehaviour
 				Destroy(element.gameObject);
 				gadgetUiElements.Remove(uiElement as UiElement);
 				gadgetToUi.Remove(gadget);
-			}			
+			}
 		}
 
 	}
@@ -191,4 +198,63 @@ public class GadgetUiManager : MonoBehaviour
 		}
 
 	}
+
+	private void HandleStatusEffectActivated(IStatusEffect effect, ControllableEntity appliedEntity)
+	{
+		GameObject uiObject = Instantiate(statusEffectUiPrefab, statusEffectContainer);
+		StatusEffectUiElement statusUiElement = uiObject.GetComponent<StatusEffectUiElement>();
+		statusUiElement.text.text = effect.GetStatusName();
+		//Temp to force layout element assignment
+		statusUiElement.layoutElement = statusUiElement.GetComponent<LayoutElement>();
+		/* If the entity recieving the effect isn't the player, it shouldnt show on their screen
+		 */
+		if (appliedEntity.isControlledByPlayer)
+		{
+			statusUiElement.SetVisibilityState(true);
+			statusUiElement.layoutElement.ignoreLayout = false;
+		}
+		else
+		{
+			statusUiElement.SetVisibilityState(false);
+			statusUiElement.layoutElement.ignoreLayout = true;
+		}		
+		statusUiElement.relatedEntity = appliedEntity;
+
+
+		statusUiElements.Add(statusUiElement);
+	}
+
+	private void HandleStatusEffectDeactivated(IStatusEffect effect, ControllableEntity appliedEntity)
+	{
+		//used to use a dictionary. Didn't work because it only allowed one effect. Now using a loop		
+		for (int i = statusUiElements.Count - 1; i >= 0; i--)
+		{
+			StatusEffectUiElement statusUiElement = statusUiElements[i];
+
+			if (statusUiElement.relatedEntity == appliedEntity)
+			{
+				statusUiElements.RemoveAt(i);
+				Destroy(statusUiElement.gameObject);
+			}
+		}
+	}
+
+	public void ChangeVisibleUiElements(ControllableEntity newPlayerEntity)
+	{
+		foreach (StatusEffectUiElement statusEffectUiElement in statusUiElements)
+		{
+			if (statusEffectUiElement.relatedEntity != newPlayerEntity)
+			{
+				statusEffectUiElement.SetVisibilityState(false);
+				statusEffectUiElement.layoutElement.ignoreLayout = true;
+			}
+			else //When the status ui element is for the current player entity
+			{
+				statusEffectUiElement.layoutElement.ignoreLayout = false;
+				statusEffectUiElement.SetVisibilityState(true);
+			}
+		}
+	}
+
+
 }

@@ -9,9 +9,7 @@ public static class GameEvents
 	public static Action<IGadget> OnGadgetDestroyed;
 	public static Action<IGadget> OnGadgetActivated;
 	public static Action<IGadget> OnGadgetDeactivated;
+	public static Action<IStatusEffect, ControllableEntity> OnStatusEffectActivated;
+	public static Action<IStatusEffect, ControllableEntity> OnStatusEffectDeactivated;
 
-	public static void TriggerGadgetPlaced(IGadget gadget)
-	{
-		OnGadgetPlaced?.Invoke(gadget);
-	}
 }

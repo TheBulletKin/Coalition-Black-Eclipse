@@ -169,7 +169,6 @@ GameObject:
   - component: {fileID: 3339947618540181137}
   - component: {fileID: 1919731550340908967}
   - component: {fileID: 8101612026855224660}
-  - component: {fileID: 5041572629650936404}
   - component: {fileID: 2896691083433027274}
   - component: {fileID: 7308835580565390624}
   - component: {fileID: 2683116435835587893}
@@ -356,6 +355,7 @@ MonoBehaviour:
   isAtWaypoint: 0
   waypointTimer: 0
   lookRotationSpeed: 135
+  initialPosition: {x: 0, y: 0, z: 0}
   currentPoint: {fileID: 0}
 --- !u!114 &8101612026855224660
 MonoBehaviour:
@@ -369,24 +369,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71075c53deaa70847a975aaeab4bd167, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <currentTarget>k__BackingField: {fileID: 0}
   shootingSystem: {fileID: 3339947618540181137}
   visibleEntities: []
   <detectionValue>k__BackingField: 0
   visionConfig: {fileID: 11400000, guid: 3dd0e0077d97e684ea89ee701083f785, type: 2}
   isEngagingEnemy: 0
---- !u!114 &5041572629650936404
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6073673368753034052}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c99a1a5d358b44c47b6005b0f19621e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stepDistance: 2
 --- !u!114 &2896691083433027274
 MonoBehaviour:
   m_ObjectHideFlags: 0
