@@ -7,9 +7,13 @@ public class SubterfugeUiElement : UiElement, IGadgetUiElement
 {
 	[SerializeField] private Image disguiseTimerFill;
 	public EntityVisibility visibility;
+	public ControllableEntity entity;
+	public LayoutElement layoutElement;
 
 	private void Update()
 	{
+		if (!gameObject.activeInHierarchy || !uiElement.activeInHierarchy) return;
+
 		if (visibility != null && visibility.GetVisibilityMod() < 1)
 		{
 			float remaining = visibility.GetHiddenTimeRemaining();

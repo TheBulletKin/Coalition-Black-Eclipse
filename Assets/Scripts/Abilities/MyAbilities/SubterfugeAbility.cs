@@ -14,9 +14,10 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 	public int availableUses = 1;
 	public int abilityUses = 1;
 
-	public Transform GadgetTransform => affectedEntity.transform;
+	public Transform GadgetTransform => entityVisibility.transform;
 
-	public EntityVisibility affectedEntity;
+	public EntityVisibility entityVisibility;
+	public ControllableEntity entity;
 
 	public float disguiseDuration;
 
@@ -24,7 +25,8 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 	{
 		isDisguised = false;
 		availableUses = abilityUses;
-		affectedEntity = null;
+		entityVisibility = null;
+		entity = null;
 	}
 
 
@@ -34,13 +36,18 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 		 * Will get the entity visibility component and start a duration on that
 		 */
 
-		if (affectedEntity == null)
+		if (entityVisibility == null)
 		{
-			affectedEntity = owner.gameObject.GetComponent<EntityVisibility>();
+			entityVisibility = owner.gameObject.GetComponent<EntityVisibility>();
+		}
+
+		if (entity == null)
+		{
+			entity = owner.gameObject.GetComponent<ControllableEntity>();
 		}
 
 
-		if (affectedEntity == null)
+		if (entityVisibility == null)
 		{
 			Debug.LogWarning("SubterfugeAbility: Affected entity is null");
 			return;
@@ -53,9 +60,9 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 			return;
 		}
 
-		if (affectedEntity.IsHidden())
+		if (entityVisibility.IsHidden())
 		{
-			Debug.LogWarning(affectedEntity.name + " is already disguised");
+			Debug.LogWarning(entityVisibility.name + " is already disguised");
 			return;
 		}
 
@@ -86,15 +93,15 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 
 	private void TriggerDisguise(AbilitySystem owner)
 	{
-		affectedEntity = owner.gameObject.GetComponent<EntityVisibility>();
+		entityVisibility = owner.gameObject.GetComponent<EntityVisibility>();
 
-		if (affectedEntity != null)
+		if (entityVisibility != null)
 		{
 			isDisguised = !isDisguised;
 			float newVis = isDisguised ? 0.0f : 1.0f;
 
-			affectedEntity.HideForDuration(disguiseDuration, 0);
-			affectedEntity.SetDurationCompletionCallback(OnDisguiseDurationFinished);
+			entityVisibility.HideForDuration(disguiseDuration, 0);
+			entityVisibility.SetDurationCompletionCallback(OnDisguiseDurationFinished);
 
 			//broadcast so ui gadget manager can create Ui elements
 			GameEvents.OnGadgetPlaced(this);

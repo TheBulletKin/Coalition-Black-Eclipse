@@ -74,7 +74,9 @@ public class GadgetUiManager : MonoBehaviour
 
 				subterfugeUiElement.SetVisibilityState(true);
 				subterfugeUiElement.SetWorldSpaceTracking(false);
-				subterfugeUiElement.visibility = subterfuge.affectedEntity;
+				subterfugeUiElement.visibility = subterfuge.entityVisibility;
+				subterfugeUiElement.entity = subterfuge.entity;
+				subterfugeUiElement.layoutElement = subterfugeUiElement.GetComponent<LayoutElement>();
 
 				gadgetUiElements.Add(subterfugeUiElement);
 				gadgetToUi.Add(gadget, subterfugeUiElement);
@@ -241,6 +243,24 @@ public class GadgetUiManager : MonoBehaviour
 
 	public void ChangeVisibleUiElements(ControllableEntity newPlayerEntity)
 	{
+		foreach (UiElement uiElement in gadgetUiElements)
+		{
+			if (uiElement is SubterfugeUiElement subterfugeElement)
+			{
+				if (subterfugeElement.entity != newPlayerEntity)
+				{
+					subterfugeElement.SetVisibilityState(false);
+					subterfugeElement.layoutElement.ignoreLayout = true;
+				}
+				else //When the status ui element is for the current player entity
+				{
+					subterfugeElement.layoutElement.ignoreLayout = false;
+					subterfugeElement.SetVisibilityState(false);
+				}
+			}
+		}
+
+
 		foreach (StatusEffectUiElement statusEffectUiElement in statusUiElements)
 		{
 			if (statusEffectUiElement.relatedEntity != newPlayerEntity)
