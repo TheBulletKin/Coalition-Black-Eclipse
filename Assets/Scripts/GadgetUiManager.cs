@@ -276,5 +276,12 @@ public class GadgetUiManager : MonoBehaviour
 		}
 	}
 
+	private void OnDestroy()
+	{
+		gadgetUiElements.Clear();
+		gadgetToUi.Clear();
+		statusUiElements.Clear();
+	}
+
 
 }

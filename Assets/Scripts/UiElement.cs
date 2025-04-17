@@ -40,7 +40,12 @@ public class UiElement : MonoBehaviour
 		if (trackWorldPosition && worldTarget != null)
 		{
 			Vector3 worldPos = worldTarget.position + worldPositionOffset;
-			Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+			Vector3 screenPos = Vector3.zero;
+			if (Camera.main)
+			{
+				screenPos = Camera.main.WorldToScreenPoint(worldPos);
+			}
+			
 			Vector3 screenCenter = new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
 
 			if (scalesWithDistance && uiElementRectTransform != null)

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,14 +8,12 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance { get; private set; }
 	[SerializeField] private GameState gameState;
-	[SerializeField] private EndReason endReason;
-
-	[SerializeField] private GameObject victoryMessage;
+	[SerializeField] private EndReason endReason = EndReason.IN_PROGRESS;	
 
 	// Start is called before the first frame update
 	void Start()
-    {
-        
+    {		
+		
     }
 
     // Update is called once per frame
@@ -45,19 +44,24 @@ public class GameManager : MonoBehaviour
 		{
 			case EndReason.OBJECTIVE_COMPLETE:
 				Debug.Log("Game finished, objectives complete");
-				victoryMessage.SetActive(true);
+				SceneManager.LoadScene("GameOverScene");
 				break;
 			case EndReason.TIME_ENDED:
 				break;
 			case EndReason.ALL_TEAM_DEAD:
 				Debug.Log("Game over, all teammates died");
 				SceneManager.LoadScene("GameOverScene");
-				Cursor.lockState = CursorLockMode.Confined;
+				
 				break;
 			case EndReason.MANUAL_CLOSE:
 				break;
 			default:
 				break;
 		}
+	}
+
+	public EndReason getEndReason()
+	{
+		return endReason;
 	}
 }

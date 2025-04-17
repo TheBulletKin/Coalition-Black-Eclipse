@@ -69,7 +69,7 @@ public class EntityManager : MonoBehaviour
 			}
 
 			//Automatically switch to random character. (Will set up what happens when all are dead later)
-			if (controllableEntity.teammateID == characterSwitcher.currentlyControlledTeammate)
+			if (playerTeammates.Count > 0 && controllableEntity.teammateID == characterSwitcher.currentlyControlledTeammate)
 			{
 
 				int divertedCharacterIndex = Random.Range(0, playerTeammates.Count);

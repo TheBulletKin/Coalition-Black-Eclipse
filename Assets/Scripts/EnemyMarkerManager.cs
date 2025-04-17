@@ -79,4 +79,10 @@ public class EnemyMarkerManager : MonoBehaviour
 
 		markerToRemove.DestroyUiElement();
 	}
+
+	private void OnDestroy()
+	{
+		markers.Clear();
+		enemyToMarker.Clear();
+	}
 }

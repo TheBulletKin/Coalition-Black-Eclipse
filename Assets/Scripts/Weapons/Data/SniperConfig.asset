@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 3
   weaponName: Sniper
-  weaponDamage: 100
+  weaponDamage: 110
   weaponRange: 62.8
   firingAngle: 56.8
   maxAmmo: 4
@@ -24,7 +24,7 @@ MonoBehaviour:
   spreadGainPerShot: 35
   isShotgun: 0
   pelletsPerShot: 1
-  aimTimeAtEdge: 2.5
+  aimTimeAtEdge: 3.2
   aimTimeAtCentre: 0.1
   optimalAimCone: 13.13
   rotationInfluence: 55

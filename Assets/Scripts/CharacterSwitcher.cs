@@ -55,6 +55,7 @@ public class CharacterSwitcher : MonoBehaviour
 			{
 				entity.LoseControl();
 				entity.characterModel.SetActive(true);
+				entity.isControlledByPlayer = false;
 				//Debug.Log(entity.gameObject.name + " lost control");
 			}
 		}

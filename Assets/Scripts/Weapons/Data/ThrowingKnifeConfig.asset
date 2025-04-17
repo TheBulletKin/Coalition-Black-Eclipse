@@ -24,6 +24,9 @@ MonoBehaviour:
   spreadGainPerShot: 1
   isShotgun: 0
   pelletsPerShot: 1
+  aimTimeAtEdge: 0.5
+  aimTimeAtCentre: 0
+  optimalAimCone: 0
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 1
   rotationSpreadMax: 1

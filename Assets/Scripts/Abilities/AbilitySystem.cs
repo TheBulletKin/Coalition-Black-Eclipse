@@ -126,9 +126,16 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 		InputManager.Instance.OnAbilityChangePressed -= SetActiveAbility;
 	}
 
+	private void OnDestroy()
+	{
+		InputManager.Instance.OnUseItemPressed -= PersonalUseItem;
+		InputManager.Instance.OnAbilityChangePressed -= SetActiveAbility;
+	}
+
 	public void EnableControl()
 	{
 		isPlayerControlled = true;
+		SetActiveAbility(2);
 		InputManager.Instance.OnUseItemPressed += PersonalUseItem;
 		InputManager.Instance.OnAbilityChangePressed += SetActiveAbility;
 	}
