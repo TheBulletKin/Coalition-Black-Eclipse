@@ -119,6 +119,15 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 		playerCamera = Camera.main;
 	}
 
+	private void OnApplicationFocus(bool focus)
+	{
+		if (focus)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
+	}
+
 	private void Start()
 	{
 		

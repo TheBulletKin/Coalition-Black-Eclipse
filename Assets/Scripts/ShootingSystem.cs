@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class ShootingSystem : MonoBehaviour, IToggleable
 {
@@ -34,6 +36,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private float smoothedAngleDiff = 0f;
 	[SerializeField] private float angleSmoothingFactor = 0.1f;
 	[SerializeField] private GameObject bulletOriginPos;
+	[SerializeField] private GameObject audibleSoundPos;
 	[SerializeField] private GameObject tracerPrefab;
 
 	[SerializeField] private GameSoundSingle defaultGunshotSound;
@@ -180,15 +183,16 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		}
 
 		OnWeaponFired?.Invoke(this, currentAmmo, reserveAmmo);
-		//Temporary. Tightly coupled isn't good
-		if (weaponConfig.gunfireSound != null)
+		
+		if (weaponConfig.gunfireSound != null && weaponConfig.emitsSound == true)
 		{
-			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
-
+			SoundEmitterHandler.instance.EmitAudibleSound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
 		else
 		{
-			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitAudibleSound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
 	}
 
@@ -233,6 +237,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Vector3 fallbackPoint = mainCam.transform.position + fireDirection * weaponConfig.weaponRange;
 			CreateTracer(bulletOriginPos.transform.position, fallbackPoint);			
 		}
+
+
 	}
 
 	
@@ -276,15 +282,18 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 
 
 		//WeaponFired?.Invoke(currentAmmo, reserveAmmo);
-		if (weaponConfig.gunfireSound != null)
-		{
-			AudioManager.instance.PlaySound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
-
+		if (weaponConfig.gunfireSound != null && weaponConfig.emitsSound == true)
+		{			
+			SoundEmitterHandler.instance.EmitAudibleSound(weaponConfig.gunfireSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
 		else
 		{
-			AudioManager.instance.PlaySound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitAudibleSound(defaultGunshotSound, MixerBus.GUNSHOT, bulletOriginPos.transform.position, null);
+			SoundEmitterHandler.instance.EmitDetectableSound(weaponConfig.gunfireAudibleSound, audibleSoundPos.transform.position);
 		}
+
+		
 	}
 
 	private void CreateTracer(Vector3 startPos, Vector3 endPos)
@@ -300,6 +309,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			Destroy(tracer, trail.time);
 		}
 	}
+	
 
 	private void Reload()
 	{
@@ -380,5 +390,16 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
 
 		movementSpreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve);
+	}
+
+	private void OnDrawGizmosSelected()
+	{
+		if (weaponConfig != null)
+		{
+			Gizmos.color = Color.green;
+
+			// Draw a wire sphere at the audible sound position with the configured radius
+			Gizmos.DrawWireSphere(transform.position, weaponConfig.gunfireAudibleSound.soundRadius);
+		}
 	}
 }

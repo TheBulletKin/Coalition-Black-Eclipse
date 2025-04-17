@@ -15,8 +15,8 @@ MonoBehaviour:
   weaponType: 1
   weaponName: Shotgun
   weaponDamage: 100
-  weaponRange: 24
-  firingAngle: 60
+  weaponRange: 14.2
+  firingAngle: 79.7
   maxAmmo: 4
   fireRate: 58
   isAutomatic: 0
@@ -55,3 +55,14 @@ MonoBehaviour:
   rotationCurveMultiplier: 1
   maxRotationSpeed: 1
   gunfireSound: {fileID: 11400000, guid: fb09a4b3148c7ed47a308175b0d30856, type: 2}
+  emitsSound: 1
+  gunfireAudibleSound:
+    soundPos: {x: 0, y: 0, z: 0}
+    soundRadius: 14.6
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 512

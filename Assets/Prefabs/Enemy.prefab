@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &459159529122718061
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4108138110453133056}
+  m_Layer: 0
+  m_Name: SoundOrigin
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4108138110453133056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 459159529122718061}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.382, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3252170368383179556}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1150371606643504378
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,6 +232,7 @@ Transform:
   - {fileID: 1421040660376422130}
   - {fileID: 2465579280474507363}
   - {fileID: 3926464105755094546}
+  - {fileID: 4108138110453133056}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2334067431229685453
@@ -335,6 +367,7 @@ MonoBehaviour:
   rotationSpeed: 0
   angleSmoothingFactor: 0.1
   bulletOriginPos: {fileID: 1150371606643504378}
+  audibleSoundPos: {fileID: 459159529122718061}
   tracerPrefab: {fileID: 7055721893435273854, guid: fc76bdf82f6124a42958a78901d2a776,
     type: 3}
   defaultGunshotSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c,
@@ -393,6 +426,18 @@ MonoBehaviour:
   isPieingTarget: 0
   lookRotationDuration: 1
   stepDistance: 2
+  emitsDetectableSound: 0
+  detectableFootstepSound:
+    soundPos: {x: 0, y: 0, z: 0}
+    soundRadius: 0
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 0
+  emitsAudibleSound: 1
 --- !u!114 &7308835580565390624
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,13 +6,14 @@ using static Unity.VisualScripting.Member;
 using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "CoinTossAbility", menuName = "Abilities/Coin Toss")]
-public class CoinTossAbility : CharacterAbility, ISoundEmitter
+public class CoinTossAbility : CharacterAbility
 {
 	[SerializeField] private int coinCount = 5;
 	[SerializeField] private GameObject coinProjectile;
 	[SerializeField] private float launchForce = 20f;
 	[SerializeField] private Sound emittedSound;
-	
+
+
 
 	public override void Init(AbilitySystem owner)
 	{
@@ -59,21 +60,8 @@ public class CoinTossAbility : CharacterAbility, ISoundEmitter
 
 	private void CreateDistraction(Vector3 position, Vector3 normal)
 	{
-		emittedSound.soundPos = position;
-		
-		EmitSound(emittedSound);
+		SoundEmitterHandler.instance.EmitDetectableSound(emittedSound, position);
 	}
 
-	public void EmitSound(Sound sound)
-	{
-		Collider[] colliders = Physics.OverlapSphere(sound.soundPos, sound.soundRadius, sound.hearableLayers);
-		foreach (var col in colliders)
-		{
-			AiSoundSensor soundSensor = col.GetComponentInParent<AiSoundSensor>();
-			if (soundSensor != null)
-			{
-				soundSensor.TestSound(sound);
-			}
-		}
-	}
+	
 }

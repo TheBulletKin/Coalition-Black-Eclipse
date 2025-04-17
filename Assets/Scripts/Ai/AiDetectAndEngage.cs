@@ -5,8 +5,8 @@ using UnityEngine;
 public class AiDetectAndEngage : MonoBehaviour, IToggleable
 {
 	public ShootingSystem shootingSystem;
-	[SerializeField] private float detectionRange = 10f;
-	[SerializeField] private float detectionAngle = 45f;
+	
+	
 	[SerializeField] private float engagementMaxRange;
 	[SerializeField] private float engagementOptimalRange;
 
@@ -21,6 +21,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	[SerializeField] private float detectionIncreaseRate = 5f;
 	[SerializeField] private float detectionDecreaseRate = 2f;
 	[SerializeField] private float detectionThreshold = 100f;
+	
 
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;

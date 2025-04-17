@@ -24,6 +24,12 @@ public class AIMovement : MonoBehaviour
 	public float stepDistance = 2f;	
 	private float distanceMoved = 0f;
 	private Vector3 lastPosition;
+	[Tooltip("Whether it emits a sound that ai entities can detect")]
+	[SerializeField] private bool emitsDetectableSound;
+	public Sound detectableFootstepSound;
+	[Tooltip("Whether it emits a sound that the player can hear")]
+	[SerializeField] private bool emitsAudibleSound;
+
 
 	private void Start()
 	{
@@ -70,7 +76,8 @@ public class AIMovement : MonoBehaviour
 
 		if (distanceMoved >= stepDistance)
 		{
-			AudioManager.instance.PlaySound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z), null);
+			CreateSound(new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z));
+			
 			distanceMoved = 0f;
 		}
 
@@ -90,6 +97,22 @@ public class AIMovement : MonoBehaviour
 			transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
 		}
 	}
+
+	private void CreateSound(Vector3 position)
+	{
+		if (emitsAudibleSound)
+		{
+			SoundEmitterHandler.instance.EmitAudibleSound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, position , null);
+		}
+
+
+		if (emitsDetectableSound)
+		{
+			SoundEmitterHandler.instance.EmitDetectableSound(detectableFootstepSound, position);
+		}
+	}
+
+	
 
 
 }

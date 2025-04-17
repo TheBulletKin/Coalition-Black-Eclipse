@@ -16,12 +16,14 @@ MonoBehaviour:
   weaponName: Sniper
   weaponDamage: 80
   weaponRange: 62.8
-  firingAngle: 34.23
+  firingAngle: 20.7
   maxAmmo: 4
   fireRate: 75
   isAutomatic: 0
   reloadDuration: 2.5
   spreadGainPerShot: 35
+  isShotgun: 0
+  pelletsPerShot: 1
   rotationInfluence: 55
   rotationalSpreadDecreaseSpeed: 30
   rotationSpreadMax: 64
@@ -53,3 +55,14 @@ MonoBehaviour:
   rotationCurveMultiplier: 3
   maxRotationSpeed: 45
   gunfireSound: {fileID: 11400000, guid: 280cfeb3aca50e045acec9905b396ba9, type: 2}
+  emitsSound: 1
+  gunfireAudibleSound:
+    soundPos: {x: 0, y: 0, z: 0}
+    soundRadius: 60
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 512

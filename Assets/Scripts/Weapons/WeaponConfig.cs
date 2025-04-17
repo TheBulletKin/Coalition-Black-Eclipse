@@ -38,6 +38,8 @@ public class WeaponConfig : ScriptableObject
 
 	[Header("Sounds")]
 	public GameSoundSingle gunfireSound;
+	public bool emitsSound;
+	public Sound gunfireAudibleSound;
     
     
 }

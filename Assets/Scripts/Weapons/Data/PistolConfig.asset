@@ -20,9 +20,14 @@ MonoBehaviour:
   maxAmmo: 12
   fireRate: 300
   isAutomatic: 0
-  maxRotationAngle: 90
+  reloadDuration: 1.5
+  spreadGainPerShot: 1
+  isShotgun: 0
+  pelletsPerShot: 1
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 1
+  rotationSpreadMax: 1
+  minRotSpeedForSpread: 1
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -47,3 +52,17 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  rotationCurveMultiplier: 1
+  maxRotationSpeed: 1
+  gunfireSound: {fileID: 0}
+  emitsSound: 1
+  gunfireAudibleSound:
+    soundPos: {x: 0, y: 0, z: 0}
+    soundRadius: 0
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 512
