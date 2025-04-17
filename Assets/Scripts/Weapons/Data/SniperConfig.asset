@@ -14,16 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 3
   weaponName: Sniper
-  weaponDamage: 80
+  weaponDamage: 100
   weaponRange: 62.8
-  firingAngle: 20.7
+  firingAngle: 56.8
   maxAmmo: 4
-  fireRate: 75
+  fireRate: 60
   isAutomatic: 0
   reloadDuration: 2.5
   spreadGainPerShot: 35
   isShotgun: 0
   pelletsPerShot: 1
+  aimTimeAtEdge: 2.5
+  aimTimeAtCentre: 0.1
+  optimalAimCone: 13.13
   rotationInfluence: 55
   rotationalSpreadDecreaseSpeed: 30
   rotationSpreadMax: 64
@@ -58,7 +61,7 @@ MonoBehaviour:
   emitsSound: 1
   gunfireAudibleSound:
     soundPos: {x: 0, y: 0, z: 0}
-    soundRadius: 60
+    soundRadius: 25.2
     isOccluded: 0
     occludedLayers:
       serializedVersion: 2
