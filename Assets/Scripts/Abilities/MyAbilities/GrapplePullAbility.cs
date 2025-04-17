@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GrapplePullAbility", menuName = "Abilities/Grapple Pull")]
 public class GrapplePullAbility : CharacterAbility
 {
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 
 	}

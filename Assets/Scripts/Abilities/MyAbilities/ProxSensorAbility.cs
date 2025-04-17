@@ -14,7 +14,7 @@ public class ProxSensorAbility : CharacterAbility
 	[SerializeField] private GameObject sensorProjectilePrefab;
 	[SerializeField] private List<ProximitySensorObject> activeSensors;
 
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		gadgetCount = startGadgetCount;
 		activeSensors = new List<ProximitySensorObject>();

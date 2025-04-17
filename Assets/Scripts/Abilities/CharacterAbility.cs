@@ -18,5 +18,5 @@ public abstract class CharacterAbility : ScriptableObject
 	public abstract void Use(AbilitySystem owner, RaycastHit targetPos);
 	//When targeting a precomputed position
 	public abstract void Use(AbilitySystem owner, Vector3 targetVecPos);
-	public abstract void Init();
+	public abstract void Init(AbilitySystem owner);	
 }

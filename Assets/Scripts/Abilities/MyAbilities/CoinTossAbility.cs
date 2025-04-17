@@ -14,7 +14,7 @@ public class CoinTossAbility : CharacterAbility, ISoundEmitter
 	[SerializeField] private Sound emittedSound;
 	
 
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		coinCount = 5;
 	}

@@ -25,7 +25,7 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 		foreach (CharacterAbility ability in abilities)
 		{
-			ability.Init();
+			ability.Init(this);
 		}
 	}
 

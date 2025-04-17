@@ -10,7 +10,7 @@ public class HiddenVeilAbility : CharacterAbility
 	[SerializeField] private GameObject proxSensorPrefab;
 	[SerializeField] private List<HiddenVeil> activeVeils;
 
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		abilityCount = 2;
 		activeVeils = new List<HiddenVeil>();

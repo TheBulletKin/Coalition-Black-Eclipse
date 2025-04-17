@@ -16,7 +16,7 @@ public class DaggerBlinkAbility : CharacterAbility
 	private GameObject placedDagger;
 
 
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		gadgetCount = 1;
 		teleportPosition = Vector3.zero;

@@ -126,6 +126,11 @@ public class UiElement : MonoBehaviour
 		this.tracksWhileOffScreen = tracksOffScreen;
 	}
 
+	public void SetWorldSpaceTracking(bool state)
+	{
+		trackWorldPosition = state;		
+	}
+
 	/// <summary>
 	/// Change the visibility of the ui element outside of it's own class
 	/// </summary>

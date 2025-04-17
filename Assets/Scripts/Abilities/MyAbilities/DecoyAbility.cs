@@ -7,7 +7,7 @@ public class DecoyAbility : CharacterAbility
 {
 	[SerializeField] private GameObject decoyPrefab;
 	[SerializeField] private int abilityCount = 2;
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		abilityCount = 2;
 	}

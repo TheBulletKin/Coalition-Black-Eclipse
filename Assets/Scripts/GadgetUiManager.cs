@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GadgetUiManager : MonoBehaviour
 {
 	[SerializeField] private GameObject sensorMarkerPrefab;
 	[SerializeField] private GameObject anchorMarkerPrefab;
+	[SerializeField] private GameObject subterfugeUiPrefab;
 	[SerializeField] private RectTransform gadgetMarkerContainer;
+	[SerializeField] private RectTransform statusEffectContainer;
 	[SerializeField] private float offScreenElementRadiusPercentage = 0.75f;
 	private float floatingUiElementRadius;
 	[SerializeField] private float offScreenElementScale = 0.5f;
@@ -58,6 +61,28 @@ public class GadgetUiManager : MonoBehaviour
 			gadgetToUi.Add(gadget, sensorUiElement);
 			return sensorUiElement;
 		}
+		else if (gadget is SubterfugeAbility subterfuge)
+		{
+			if (!gadgetToUi.ContainsKey(subterfuge))
+			{
+				GameObject subterfugeUiObject = Instantiate(subterfugeUiPrefab, statusEffectContainer.transform.position, statusEffectContainer.transform.rotation, statusEffectContainer);
+
+				SubterfugeUiElement subterfugeUiElement = subterfugeUiObject.GetComponent<SubterfugeUiElement>();
+
+				subterfugeUiElement.SetVisibilityState(true);
+				subterfugeUiElement.SetWorldSpaceTracking(false);
+				subterfugeUiElement.visibility = subterfuge.affectedEntity;
+
+				gadgetUiElements.Add(subterfugeUiElement);
+				gadgetToUi.Add(gadget, subterfugeUiElement);
+
+				return subterfugeUiElement;
+			}
+
+			return null;
+			
+			
+		}
 		else
 		{
 			return null;
@@ -83,6 +108,10 @@ public class GadgetUiManager : MonoBehaviour
 			{
 
 			}
+			else if (element is SubterfugeUiElement subterfuge)
+			{
+
+			}
 		}
 	}
 
@@ -103,7 +132,8 @@ public class GadgetUiManager : MonoBehaviour
 	}
 
 
-
+	//---- Global events
+	//All these methods are fired in response to placing and destroying gadgets in other scripts
 	private void HandleGadgetPlaced(IGadget gadget)
 	{
 		CreateMarker(gadget);
@@ -122,7 +152,18 @@ public class GadgetUiManager : MonoBehaviour
 
 	private void HandleGadgetDestroyed(IGadget gadget)
 	{
-		gadgetToUi[gadget].OnGadgetDestroyed(gadget);
+		if (gadgetToUi.TryGetValue(gadget, out IGadgetUiElement uiElement))
+		{
+			//Type casting from interface to concrete class
+			UiElement element = uiElement as UiElement;
+			if (element != null)
+			{
+				Destroy(element.gameObject);
+				gadgetUiElements.Remove(uiElement as UiElement);
+				gadgetToUi.Remove(gadget);
+			}			
+		}
+
 	}
 
 	private void HandleScreenEnter(UiElement element)

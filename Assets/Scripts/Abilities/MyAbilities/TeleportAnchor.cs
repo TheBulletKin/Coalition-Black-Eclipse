@@ -15,7 +15,7 @@ public class TeleportAnchor : CharacterAbility
 	public bool anchorActive = false;
 	public Vector3 teleportPosition;
 
-	public override void Init()
+	public override void Init(AbilitySystem owner)
 	{
 		gadgetCount = 1;
 		teleportPosition = Vector3.zero;
