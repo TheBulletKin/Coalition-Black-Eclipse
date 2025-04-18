@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "GrapplePullAbility", menuName = "Abilities/Grapple Pull")]
@@ -22,7 +23,13 @@ public class GrapplePullAbility : CharacterAbility
 		if (target != null)
 		{
 			if (target.CompareTag("Enemy"))
-				target.transform.position = owner.GetCastposition() + (owner.GetAimDirection() * 2.0f);
+			{
+				Vector3 newPosition = owner.GetCastposition() + (owner.GetAimDirection() * 4.0f);
+				
+				//Was getting the body hitbox, set it to the parent for the time being
+				target.transform.parent.transform.position = newPosition;
+			}
+
 		}
 	}
 

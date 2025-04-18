@@ -36,7 +36,10 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	{
 		if (isPlayerControlled)
 		{
-			GetUseTargetDetails();
+			GetUseTargetDetails(playerCamera.transform.position, playerCamera.transform.forward);
+		} else 
+		{
+			GetUseTargetDetails(transform.position, targetVecPos - transform.position);
 		}
 
 		if (abilityIndex < abilities.Count)
@@ -85,11 +88,10 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	/// <summary>
 	/// Updates targetted gameobject, raycastHit pos and vector3 target position
 	/// </summary>
-	private void GetUseTargetDetails()
-	{
-		Ray fireRay = playerCamera.ScreenPointToRay(Input.mousePosition);
+	private void GetUseTargetDetails(Vector3 origin, Vector3 direction)
+	{		
 
-		if (Physics.Raycast(playerCamera.transform.position, playerCamera.transform.forward, out RaycastHit hit, 70f, hittableLayers))
+		if (Physics.Raycast(origin, direction, out RaycastHit hit, 70f, hittableLayers))
 		{			
 			UpdateTargetDetails(hit.collider.gameObject, hit, hit.point);
 		}
@@ -116,12 +118,28 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 	public Vector3 GetAimDirection()
 	{
-		return playerCamera.transform.forward;
+		if (isPlayerControlled)
+		{
+			return playerCamera.transform.forward;
+		}
+		else
+		{
+			return transform.forward;
+		}
+		
 	}
 
 	public Vector3 GetCastposition()
 	{
-		return playerCamera.transform.position;
+		if (isPlayerControlled)
+		{
+			return playerCamera.transform.position;
+		}
+		else
+		{
+			return transform.position;
+		}
+		
 	}
 
 	public void DisableControl()

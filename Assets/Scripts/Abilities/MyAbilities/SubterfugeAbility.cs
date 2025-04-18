@@ -100,11 +100,13 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 			entityVisibility.HideForDuration(disguiseDuration, 0);
 			entityVisibility.SetDurationCompletionCallback(OnDisguiseDurationFinished);
 
+			currentAbilityCount--;
+
 			//broadcast so ui gadget manager can create Ui elements
 			GameEvents.OnGadgetPlaced(this);
 			GameEvents.OnGadgetActivated(this);
 
-			currentAbilityCount -= 1;
+			
 		}
 		else
 		{
