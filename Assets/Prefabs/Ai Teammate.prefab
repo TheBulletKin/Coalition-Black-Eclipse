@@ -332,8 +332,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shootingSystem: {fileID: 5671389215264514013}
-  detectionRange: 23.25
-  detectionAngle: 45
   engagementMaxRange: 0
   engagementOptimalRange: 0
   fireTimer: 0
@@ -344,6 +342,10 @@ MonoBehaviour:
   detectionIncreaseRate: 5
   detectionDecreaseRate: 2
   detectionThreshold: 100
+  isAiming: 0
+  aimTimer: 0
+  aimDuration: 0.2
+  targettedEnemy: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -485,9 +487,6 @@ MonoBehaviour:
   currentAmmo: 0
   reserveAmmo: 15
   heldObjectLaunchForce: 15
-  baseSpreadAngle: 20
-  movementSpreadMultiplier: 1
-  movementMultiplierWeighting: 0.25
   currentBaseSpread: 1
   crosshairConvergeanceRange: 20
   speedSpreadCurve:
@@ -505,6 +504,16 @@ MonoBehaviour:
   audibleSoundPos: {fileID: 5297238919138544847}
   tracerPrefab: {fileID: 7055721893435273854, guid: fc76bdf82f6124a42958a78901d2a776,
     type: 3}
+  impactSound:
+    soundPos: {x: 0, y: 0, z: 0}
+    soundRadius: 5
+    isOccluded: 0
+    occludedLayers:
+      serializedVersion: 2
+      m_Bits: 0
+    hearableLayers:
+      serializedVersion: 2
+      m_Bits: 512
   defaultGunshotSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c,
     type: 2}
 --- !u!114 &4284256450557001990

@@ -36,6 +36,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private GameObject bulletOriginPos;
 	[SerializeField] private GameObject audibleSoundPos;
 	[SerializeField] private GameObject tracerPrefab;
+	[SerializeField] private Sound impactSound;
 
 	[SerializeField] private GameSoundSingle defaultGunshotSound;
 
@@ -219,6 +220,13 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			if (damageable != null)
 			{
 				damageable.TakeDamage(damage);
+
+				//Temp to have the ai turn in the direction of impact
+
+				Vector3 directionToCamera = (mainCam.transform.position - hit.point).normalized;
+				Vector3 adjustedSoundPosition = hit.point + directionToCamera * 4f;
+				SoundEmitterHandler.instance.EmitDetectableSound(impactSound, adjustedSoundPosition);
+
 			}
 
 			GameObject impactMarker = GameObject.CreatePrimitive(PrimitiveType.Cube);
