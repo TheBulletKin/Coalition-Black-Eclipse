@@ -27,10 +27,13 @@ MonoBehaviour:
   aimTimeAtEdge: 3.2
   aimTimeAtCentre: 0.1
   optimalAimCone: 13.13
-  rotationInfluence: 55
+  baseSpreadAngle: 0.9
+  movementSpreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
+  rotationInfluence: 31.1
   rotationalSpreadDecreaseSpeed: 30
-  rotationSpreadMax: 64
-  minRotSpeedForSpread: 25
+  rotationSpreadMax: 55.4
+  minRotSpeedForSpread: 25.7
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
