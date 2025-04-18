@@ -22,10 +22,8 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	private bool isHoldingObject;
 	[SerializeField] private float heldObjectLaunchForce = 15f;
 	[Tooltip("Angle of spread from the camera")]
-	[Range(0f, 45f)]
-	[SerializeField] public float baseSpreadAngle = 20f;
-	[SerializeField] public float movementSpreadMultiplier = 1f;
-	[SerializeField] private float movementMultiplierWeighting = 0.25f;
+	
+	
 	[SerializeField] public float currentBaseSpread = 1.0f;
 	[SerializeField] public float crosshairConvergeanceRange = 20.0f;
 	[SerializeField] private AnimationCurve speedSpreadCurve;
@@ -120,7 +118,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			rotationSpread = Mathf.Clamp(rotationSpread, 0f, weaponConfig.rotationSpreadMax);
 
 			//Apply both movement and aim spread
-			float totalAngle = (baseSpreadAngle * movementSpreadMultiplier) + (baseSpreadAngle * rotationSpread);
+			float totalAngle = (weaponConfig.baseSpreadAngle * weaponConfig.movementSpreadMultiplier) + (weaponConfig.baseSpreadAngle * rotationSpread);
 			float spreadRadians = totalAngle * Mathf.Deg2Rad;
 
 			//Determine the final spread from screen centre
@@ -403,7 +401,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	{
 		float evaluatedCurve = speedSpreadCurve.Evaluate(velocity.magnitude / maxSpeed);
 
-		movementSpreadMultiplier = 1 + (velocity.magnitude * movementMultiplierWeighting * evaluatedCurve);
+		weaponConfig.movementSpreadMultiplier = 1 + (velocity.magnitude * weaponConfig.movementMultiplierWeighting * evaluatedCurve);
 	}
 
 	public float GetAimTime(Vector3 target, Vector3 forward)

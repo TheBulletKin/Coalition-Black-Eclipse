@@ -22,6 +22,11 @@ public class WeaponConfig : ScriptableObject
 	public float aimTimeAtEdge;
 	public float aimTimeAtCentre;
 	public float optimalAimCone;
+	[Range(0f, 45f)]
+	[SerializeField] public float baseSpreadAngle = 20f;
+	[SerializeField] public float movementSpreadMultiplier = 1f;
+	[SerializeField] public float movementMultiplierWeighting = 0.25f;
+	
 
 	[Header("Rotational Spread Values")]
 	[Tooltip("How much of an effect rotation speed has on spread")]

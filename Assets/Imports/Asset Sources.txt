@@ -14,6 +14,7 @@ pixel grass - https://sketchfab.com/3d-models/dead-bushes-psx-minecraft-valheim-
 Stylised bush - https://sketchfab.com/3d-models/small-stylised-bush-a83fd7049a784ca6bc0095e7323451d0
 dry grass -https://sketchfab.com/3d-models/grass-bushes-game-ready-asset-aa1fa43af9bf4228adfddb54ea123ad1
 G3A3 - https://sketchfab.com/3d-models/low-poly-g3a3-a9b125f1c09c4c56b6ff607ffc10f905
+Silenced pistol - https://sketchfab.com/3d-models/low-poly-sw-model-39-hushpuppy-b26e4ef77f1547c2b594213e03cf633f
 
 Textures ----
 Camo textures - https://assetstore.unity.com/packages/2d/textures-materials/camouflage-texture-pack-308905
@@ -30,4 +31,4 @@ shotgun fire - https://pixabay.com/sound-effects/shotgun-firing-3-14483/
 revolver fire - https://pixabay.com/sound-effects/single-gunshot-53-101733/
 throwing knife throw - https://pixabay.com/sound-effects/knife-slice-41231/
 battle rifle - https://pixabay.com/sound-effects/battle-rifle-42734/
-G3A3 - https://sketchfab.com/3d-models/low-poly-g3a3-a9b125f1c09c4c56b6ff607ffc10f905
+pistol shot - https://pixabay.com/sound-effects/9mm-pistol-shot-6349/

@@ -27,6 +27,9 @@ MonoBehaviour:
   aimTimeAtEdge: 5
   aimTimeAtCentre: 0.2
   optimalAimCone: 22.89
+  baseSpreadAngle: 20
+  movementSpreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
   rotationInfluence: 1
   rotationalSpreadDecreaseSpeed: 100
   rotationSpreadMax: 1

@@ -15,37 +15,43 @@ MonoBehaviour:
   weaponType: 2
   weaponName: Pistol
   weaponDamage: 40
-  weaponRange: 20
-  firingAngle: 60
+  weaponRange: 47.3
+  firingAngle: 71.2
   maxAmmo: 12
-  fireRate: 300
+  fireRate: 180
   isAutomatic: 0
-  reloadDuration: 1.5
-  spreadGainPerShot: 1
+  reloadDuration: 1.2
+  spreadGainPerShot: 2
   isShotgun: 0
   pelletsPerShot: 1
-  rotationInfluence: 1
-  rotationalSpreadDecreaseSpeed: 1
-  rotationSpreadMax: 1
-  minRotSpeedForSpread: 1
+  aimTimeAtEdge: 0.5
+  aimTimeAtCentre: 0
+  optimalAimCone: 20.36
+  baseSpreadAngle: 4.5
+  movementSpreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
+  rotationInfluence: 6
+  rotationalSpreadDecreaseSpeed: 5
+  rotationSpreadMax: 3.99
+  minRotSpeedForSpread: 35
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
       time: 1
       value: 1
-      inSlope: 1
-      outSlope: 1
-      tangentMode: 34
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
       weightedMode: 0
       inWeight: 0
       outWeight: 0
@@ -53,12 +59,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationCurveMultiplier: 1
-  maxRotationSpeed: 1
-  gunfireSound: {fileID: 0}
+  maxRotationSpeed: 80
+  gunfireSound: {fileID: 11400000, guid: 8134f7f34e646ac4bb83517095b54177, type: 2}
   emitsSound: 1
   gunfireAudibleSound:
     soundPos: {x: 0, y: 0, z: 0}
-    soundRadius: 0
+    soundRadius: 5
     isOccluded: 0
     occludedLayers:
       serializedVersion: 2
