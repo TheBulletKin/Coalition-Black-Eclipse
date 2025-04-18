@@ -7,15 +7,17 @@ public class ProximitySensorUiElement : UiElement, IGadgetUiElement
 {    
     public Image sensorIcon;
 	public ProximitySensorObject sensorObject;
+	public Color defaultInnerColour;
+	public Color alertInnerColour;
 
 	public void OnGadgetActivated(IGadget gadget)
 	{
-		sensorIcon.color = Color.red;
+		sensorIcon.color = alertInnerColour;
 	}
 
 	public void OnGadgetDeactivated(IGadget gadget)
 	{
-		sensorIcon.color = Color.white;
+		sensorIcon.color = defaultInnerColour;
 	}
 
 	public void OnGadgetDestroyed(IGadget gadget)
@@ -26,6 +28,6 @@ public class ProximitySensorUiElement : UiElement, IGadgetUiElement
 	public void OnGadgetPlaced(IGadget gadget)
 	{
 		EnableUiElement();
-		sensorIcon.color = Color.white;
+		sensorIcon.color = defaultInnerColour;
 	}
 }
