@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 907f8e5a564361b44a37aa2067bfda8c, type: 3}
   m_Name: GrapplePullAbility
   m_EditorClassIdentifier: 
-  aiCastAbilityType: 0
-  playerCastAbilityType: 0
+  aiCastAbilityType: 1
+  playerCastAbilityType: 1
   abilityIcon: {fileID: 0}
   abilityName: Grapple
+  hasCountLimit: 0
+  countLimit: 0
+  currentAbilityCount: 0

@@ -14,7 +14,10 @@ public class CoinProjectile : MonoBehaviour, IGadget
 		onLandedCallback = callback;
 	}
 
-
+	private void Start()
+	{		
+		Destroy(gameObject, 6.0f);
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{

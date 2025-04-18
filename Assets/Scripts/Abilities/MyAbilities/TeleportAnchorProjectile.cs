@@ -13,7 +13,10 @@ public class TeleportAnchorProjectile : MonoBehaviour
 		onLandedCallback = callback;
 	}
 
-
+	private void Start()
+	{		
+		Destroy(gameObject, 6.0f);
+	}
 
 	private void OnCollisionEnter(Collision collision)
 	{

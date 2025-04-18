@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DaggerBlinkProjectile : MonoBehaviour
@@ -13,6 +14,10 @@ public class DaggerBlinkProjectile : MonoBehaviour
 		onLandedCallback = callback;
 	}
 
+	private void Start()
+	{		
+		Destroy(gameObject, 6.0f);
+	}
 
 
 	private void OnCollisionEnter(Collision collision)
