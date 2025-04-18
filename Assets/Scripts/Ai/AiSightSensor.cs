@@ -28,7 +28,11 @@ public class AiSightSensor : MonoBehaviour
 	private void Awake()
 	{
 		detectionValue = 0.0f;
-		
+
+		//Uses weapon's angle stats instead of specific vision config stats for now
+		//visionConfig.detectionAngle = shootingSystem.weaponConfig.firingAngle;
+		//visionConfig.preferredAngle = shootingSystem.weaponConfig.optimalAimCone;
+
 	}
 
 	private void Update()
@@ -44,8 +48,7 @@ public class AiSightSensor : MonoBehaviour
 			{
 				if (Ping(target)) //If at least one enemy is visible, will continue and change the detection value
 				{
-					enemyIsInVisibleRange = true;
-					break;
+					enemyIsInVisibleRange = true;					
 				}
 			}
 
@@ -53,8 +56,7 @@ public class AiSightSensor : MonoBehaviour
 			{
 				if (Ping(decoy)) //If at least one decoy is visible, will continue and change the detection value
 				{
-					enemyIsInVisibleRange = true;
-					break;
+					enemyIsInVisibleRange = true;					
 				}
 			}
 
@@ -107,13 +109,13 @@ public class AiSightSensor : MonoBehaviour
 
 
 		RaycastHit hit;
-		if (currentTarget != null && isEngagingEnemy && TargetInLineOfSight(out hit) && TargetInWeaponRange())
+		if (currentTarget != null && isEngagingEnemy && TargetInLineOfSight(currentTarget, out hit) && TargetInWeaponRange())
 		{
 			if (shootingSystem.CanFire())
 			{
 				shootingSystem.Fire(currentTarget.transform);
 			}
-			
+
 			/*
 			fireTimer += deltaTime;
 			if(fireTimer >= fireCooldown)
@@ -124,7 +126,7 @@ public class AiSightSensor : MonoBehaviour
 			}*/
 		}
 
-	
+
 
 		if (currentTarget == null)
 		{
@@ -146,11 +148,8 @@ public class AiSightSensor : MonoBehaviour
 	}
 
 	public bool TestVisibility(Health target)
-	{			
-		if (TargetInVisionCone(target.transform.position))
-		{
-
-		} else
+	{
+		if (!TargetInVisionCone(target.transform.position))
 		{
 			if (visibleEntities.Contains(target))
 			{
@@ -158,16 +157,13 @@ public class AiSightSensor : MonoBehaviour
 				visibleEntities.Remove(target);
 			}
 			return false;
-		}		
+		}
+		
 
 		RaycastHit hit;
 
 		//LOS check - Out lets it alter the variable above. Similar to ref but doesn't need to be initialized.
-		if (TargetInLineOfSight(out hit))
-		{
-
-		}
-		else
+		if (!TargetInLineOfSight(target, out hit))
 		{
 			if (visibleEntities.Contains(target))
 			{
@@ -176,6 +172,7 @@ public class AiSightSensor : MonoBehaviour
 			}
 			return false;
 		}
+
 
 		//When visible
 		if (hit.collider.tag == "Teammate")
@@ -199,43 +196,44 @@ public class AiSightSensor : MonoBehaviour
 
 		return false;
 	}
-	
-	//One test to see if any teammate is in view
-	
+		
 
-	public bool TargetInLineOfSight(out RaycastHit outHit)
+	/// <summary>
+	/// Line of sight, object occluding check
+	/// </summary>
+	/// <param name="target"></param>
+	/// <param name="outHit"></param>
+	/// <returns></returns>
+	public bool TargetInLineOfSight(Health target, out RaycastHit outHit)
 	{
 		//As it casts a ray from the current location to the targetted teammate,
 		//I just need to get the first object hit and compare tags
-		//Ignore the enemy itself and hit everything else.
-		if (Physics.Raycast(ray, out RaycastHit Hit, visionConfig.detectionAngle, visionConfig.ignoreMask))
+		//Ignore the enemy itself and hit everything else.		
+
+		Vector3 origin = transform.position; 
+		Vector3 direction = (target.transform.position - origin).normalized;
+
+		if (Physics.Raycast(origin, direction, out RaycastHit hit, shootingSystem.weaponConfig.weaponRange, visionConfig.ignoreMask))
 		{
-			if (Hit.collider.tag == "Teammate")
+			if (hit.collider.CompareTag("Teammate"))
 			{
-				outHit = Hit;
+				outHit = hit;
 				return true;
 			}
-			else
-			{
-				outHit = new RaycastHit();
-				return false;
-			}
 		}
-		else
-		{
-			outHit = new RaycastHit();
-			return false;
-		}
+
+		outHit = new RaycastHit();
+		return false;
 	}
 
 	public bool TargetInVisionCone(Vector3 target)
 	{
-		return TargetInCone(target, visionConfig.detectionAngle);
+		return TargetInCone(target, shootingSystem.weaponConfig.firingAngle);
 	}
 
 	public bool TargetInPreferredVisionCone(Vector3 target)
 	{
-		return TargetInCone(target, visionConfig.preferredAngle);
+		return TargetInCone(target, shootingSystem.weaponConfig.optimalAimCone);
 	}
 
 	private bool TargetInCone(Vector3 target, float coneAngle)
@@ -330,19 +328,19 @@ public class AiSightSensor : MonoBehaviour
 
 
 	private void OnDrawGizmosSelected()
-	{		
-		
-		
+	{
+
+
 		Gizmos.color = Color.blue;
 		Gizmos.DrawWireSphere(transform.position, visionConfig.maxDetectionDistance);
 		Gizmos.DrawWireSphere(transform.position, visionConfig.closeDetectionFalloffDistance);
 
 		Gizmos.color = Color.red;
 		Vector3 forward = transform.forward * visionConfig.maxDetectionDistance;
-		Quaternion leftRayRotation = Quaternion.AngleAxis(-visionConfig.detectionAngle / 2, Vector3.up);
-		Quaternion rightRayRotation = Quaternion.AngleAxis(visionConfig.detectionAngle / 2, Vector3.up);
+		Quaternion leftRayRotation = Quaternion.AngleAxis(-shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
+		Quaternion rightRayRotation = Quaternion.AngleAxis(shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
 		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
 	}
-	
+
 }

@@ -74,7 +74,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 		}
 
 		//Count down the aim timer and fire when ready
-		if (isAiming)
+		if (isAiming && targettedEnemy != null)
 		{
 			aimTimer += Time.deltaTime;
 			if (aimTimer >= aimDuration)
@@ -288,6 +288,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 	private void OnEnemyDeath(Health deadEntity)
 	{
 		enemiesSeen.Remove(deadEntity);
+		targettedEnemy = null;
 		Debug.Log("Removed entity from list");
 	}
 

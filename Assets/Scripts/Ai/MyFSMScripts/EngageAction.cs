@@ -14,7 +14,10 @@ public class EngageAction : FSMAction
 	{
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();
 		AiSightSensor sightSensor = stateMachine.aiBrain.sightSensor;
+		AiSoundSensor soundSensor = stateMachine.aiBrain.soundSensor;
 		AIMovement aiMovement = stateMachine.aiBrain.aiMovement;
+
+		soundSensor.hasHeardSound = false;
 
 		if (sightSensor.currentTarget)
 		{
@@ -33,7 +36,7 @@ public class EngageAction : FSMAction
 			else //Is in weapon range
 			{
 				RaycastHit hit;
-				if (!sightSensor.TargetInLineOfSight(out hit)) //Isn't within line of sight
+				if (!sightSensor.TargetInLineOfSight(sightSensor.currentTarget, out hit)) //Isn't within line of sight
 				{
 					aiMovement.MoveTo(engageTarget.position);
 					aiMovement.SetLooking(false);

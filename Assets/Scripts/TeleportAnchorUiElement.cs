@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class TeleportAnchorUiElement : UiElement, IGadgetUiElement
 {	
-	public TeleportAnchorObject teleportAnchorObject;
+	public TeleportAnchorObject teleportAnchorObject;	
 
 	public void OnGadgetActivated(IGadget gadget)
 	{

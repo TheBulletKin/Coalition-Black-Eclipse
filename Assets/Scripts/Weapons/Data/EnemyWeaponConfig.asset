@@ -16,7 +16,7 @@ MonoBehaviour:
   weaponName: G3A3 Rifle
   weaponDamage: 1
   weaponRange: 43
-  firingAngle: 60
+  firingAngle: 103.3
   maxAmmo: 1
   fireRate: 60
   isAutomatic: 0
@@ -24,9 +24,9 @@ MonoBehaviour:
   spreadGainPerShot: 1
   isShotgun: 0
   pelletsPerShot: 1
-  aimTimeAtEdge: 0
+  aimTimeAtEdge: 3
   aimTimeAtCentre: 0
-  optimalAimCone: 0
+  optimalAimCone: 21.93
   rotationInfluence: 0
   rotationalSpreadDecreaseSpeed: 1
   rotationSpreadMax: 1
