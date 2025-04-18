@@ -90,7 +90,7 @@ public class AiSightSensor : MonoBehaviour
 				if (detectionValue >= visionConfig.detectionThreshold)
 				{
 					entityIsDetected = true;
-					currentTarget = visibleEntities[0];
+					currentTarget = GetClosestEnemySeen();
 				}
 			}
 			else
