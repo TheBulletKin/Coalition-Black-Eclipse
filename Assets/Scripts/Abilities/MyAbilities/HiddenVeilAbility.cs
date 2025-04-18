@@ -4,9 +4,8 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "HiddenVeilAbility", menuName = "Abilities/Hidden Veil")]
 public class HiddenVeilAbility : CharacterAbility
-{
-	[SerializeField] private int abilityCount = 2;
-	[SerializeField] private float placementRange = 10f;
+{	
+	[SerializeField] private float placementRange = 20f;
 	[SerializeField] private float veilRadius = 5f;
 	[SerializeField] private GameObject proxSensorPrefab;
 	[SerializeField] private List<HiddenVeil> activeVeils;
@@ -14,7 +13,7 @@ public class HiddenVeilAbility : CharacterAbility
 
 	public override void Init(AbilitySystem owner)
 	{
-		abilityCount = 2;
+		base.Init(owner);
 		activeVeils = new List<HiddenVeil>();
 		hiddenStatusEffect = new HiddenStatusEffect();
 	}
@@ -37,14 +36,18 @@ public class HiddenVeilAbility : CharacterAbility
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
 
-		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && abilityCount > 0)
+		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && currentAbilityCount > 0)
 		{
 			GameObject newVeilObject = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
 			HiddenVeil hiddenVeil = newVeilObject.GetComponentInChildren<HiddenVeil>();
 			
 			hiddenVeil.radius = veilRadius;
 			hiddenVeil.SetVeilEnterCallback(OnEnterVeil);
-			hiddenVeil.SetVeilExitCallback(OnExitVeil);			
+			hiddenVeil.SetVeilExitCallback(OnExitVeil);
+
+			currentAbilityCount--;
+
+			GameEvents.OnGadgetPlaced?.Invoke(hiddenVeil);
 		}
 
 	}

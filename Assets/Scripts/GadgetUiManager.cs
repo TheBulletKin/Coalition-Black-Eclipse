@@ -146,7 +146,15 @@ public class GadgetUiManager : MonoBehaviour
 	private void HandleGadgetPlaced(IGadget gadget)
 	{
 		CreateMarker(gadget);
-		gadgetToUi[gadget].OnGadgetPlaced(gadget);
+		
+
+		gadgetToUi.TryGetValue(gadget, out IGadgetUiElement uiElement);
+
+		if (uiElement != null)
+		{
+			gadgetToUi[gadget].OnGadgetPlaced(gadget);
+		}
+
 	}
 
 	private void HandleGadgetActivated(IGadget gadget)
@@ -219,7 +227,7 @@ public class GadgetUiManager : MonoBehaviour
 		{
 			statusUiElement.SetVisibilityState(false);
 			statusUiElement.layoutElement.ignoreLayout = true;
-		}		
+		}
 		statusUiElement.relatedEntity = appliedEntity;
 
 

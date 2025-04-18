@@ -16,7 +16,9 @@ MonoBehaviour:
   playerCastAbilityType: 0
   abilityIcon: {fileID: 0}
   abilityName: Coin Toss
-  coinCount: 5
+  hasCountLimit: 1
+  countLimit: 5
+  currentAbilityCount: 0
   coinProjectile: {fileID: 6495869608783633811, guid: 145c4491a5e6bdf42a8f39fcd8b22204,
     type: 3}
   launchForce: 20

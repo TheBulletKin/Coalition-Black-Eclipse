@@ -16,8 +16,11 @@ MonoBehaviour:
   playerCastAbilityType: 3
   abilityIcon: {fileID: 0}
   abilityName: Hidden Veil
-  abilityCount: 2
+  hasCountLimit: 1
+  countLimit: 5
+  currentAbilityCount: 0
   placementRange: 10
+  veilRadius: 5
   proxSensorPrefab: {fileID: 6495869608783633811, guid: 68d3f2599a427fc4dab9ef034c566596,
     type: 3}
   activeVeils: []

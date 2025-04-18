@@ -16,7 +16,7 @@ public class ControllableEntity : MonoBehaviour
 	[SerializeField] public AIMovement aiMovement { get; private set; }
 	[SerializeField] public AiCommandListener commandListener { get; private set; }
 	[SerializeField] public EntityVisibility entityVisibility { get; private set; }
-	[SerializeField] public ShootingSystem shootingSystem { get; private set; }
+	[SerializeField] public ShootingSystem shootingSystem { get; private set; }	
 	[SerializeField] public AbilitySystem abilitySystem { get; private set; }
 	[SerializeField] public Health health { get; private set; }
 	[SerializeField] public AiDetectAndEngage aiDetection { get; private set; }

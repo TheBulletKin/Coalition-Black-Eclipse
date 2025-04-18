@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DaggerBlinkAbility", menuName = "Abilities/Dagger Blink")]
-public class DaggerBlinkAbility : CharacterAbility
+public class DaggerBlinkAbility : CharacterAbility, IGadget
 {
 	public GameObject daggerPrefab;
 	public GameObject daggerProjectile;
 	[SerializeField] private float travelDuration = 1.5f;
 	[SerializeField] private float arcHeight = 5f;
-	[SerializeField] private float launchForce = 40f;
-	public float gadgetCount = 1;
+	[SerializeField] private float launchForce = 40f;	
 	public bool daggerActive = false;
 	public Vector3 teleportPosition;
 	private GameObject placedDagger;
 
+	public Transform GadgetTransform => placedDagger.transform;
 
 	public override void Init(AbilitySystem owner)
 	{
-		gadgetCount = 1;
+		base.Init(owner);
 		teleportPosition = Vector3.zero;
 		daggerActive = false;
 	}
@@ -36,7 +36,7 @@ public class DaggerBlinkAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner)
 	{
-		if (gadgetCount > 0)
+		if (currentAbilityCount > 0)
 		{
 			//Currently gets the components it needs through getComponent on the newly created projectile
 			GameObject projectile = Instantiate(daggerProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -52,8 +52,10 @@ public class DaggerBlinkAbility : CharacterAbility
 			{
 				projectileScript.SetAnchorCallback(CreateDagger);
 			}
-			gadgetCount--;
+			currentAbilityCount--;
 			daggerActive = false;
+
+			GameEvents.OnGadgetPlaced?.Invoke(this);
 		}
 		else if (daggerActive == true)
 		{
@@ -61,9 +63,10 @@ public class DaggerBlinkAbility : CharacterAbility
 			cont.enabled = false;
 			owner.transform.position = teleportPosition;
 			cont.enabled = true;
-			gadgetCount++;
+			currentAbilityCount++;
 			Destroy(placedDagger);
 			placedDagger = null;
+			GameEvents.OnGadgetPlaced?.Invoke(this);
 
 		}
 	}
@@ -80,7 +83,7 @@ public class DaggerBlinkAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		if (gadgetCount > 0)
+		if (currentAbilityCount > 0)
 		{
 
 			if (daggerPrefab != null)
@@ -91,7 +94,7 @@ public class DaggerBlinkAbility : CharacterAbility
 				teleportPosition = placedDagger.transform.position + Vector3.up * 1.5f;
 			}
 
-			gadgetCount--;
+			currentAbilityCount--;
 		}
 		else if (daggerActive == true)
 		{
@@ -99,7 +102,7 @@ public class DaggerBlinkAbility : CharacterAbility
 			cont.enabled = false;
 			owner.transform.position = teleportPosition;
 			cont.enabled = true;
-			gadgetCount++;
+			currentAbilityCount++;
 			Destroy(placedDagger);
 			placedDagger = null;
 

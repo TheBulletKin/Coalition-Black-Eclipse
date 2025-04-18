@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,8 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 	public bool isPlayerControlled = false;
 	//Temporary to send the issuer the currently selected ability
 	PlayerCommandIssuer commandIssuer;
+
+	public event Action<int, int> OnAbilitySelected;
 
 	private void Start()
 	{
@@ -98,12 +101,14 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 	private void SetActiveAbility(int abilityIndex)
 	{
+		int lastAbilityIndex = currentAbilityIndex;
 		currentAbilityIndex = abilityIndex - 2;
 
 		//Temporary. Assume last changed ability is next ability to cast
 		if (isPlayerControlled)
 		{
 			commandIssuer.currentAbilityIndex = currentAbilityIndex;
+			OnAbilitySelected?.Invoke(currentAbilityIndex, lastAbilityIndex);
 		}
 		
 		

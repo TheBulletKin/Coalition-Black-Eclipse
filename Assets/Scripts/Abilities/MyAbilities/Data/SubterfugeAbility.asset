@@ -16,7 +16,9 @@ MonoBehaviour:
   playerCastAbilityType: 0
   abilityIcon: {fileID: 0}
   abilityName: Subterfuge
-  availableUses: 0
-  abilityUses: 3
-  affectedEntity: {fileID: 0}
-  disguiseDuration: 5
+  hasCountLimit: 1
+  countLimit: 3
+  currentAbilityCount: 0
+  entityVisibility: {fileID: 0}
+  entity: {fileID: 0}
+  disguiseDuration: 7

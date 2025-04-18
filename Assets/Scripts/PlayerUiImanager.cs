@@ -14,6 +14,8 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	[SerializeField] private AbilitySystem abilitySystem;
 	[SerializeField] private RectTransform abilityHotbarContainer;
 	[SerializeField] private List<AbilityHotbarUiSlot> abilitySlots;
+	public Color hotbarSelectedColour;
+	public int currentlySelectedHotbar;
 
 
 	private void Start()
@@ -24,6 +26,10 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 			return;
 		}
 
+		//GameEvents.OnGadgetActivated += UpdateAbilityHotbar;
+		GameEvents.OnGadgetPlaced += UpdateAbilityHotbar;
+
+		SelectHotbarSlot(0, 0);
 	}
 
 	private void Update()
@@ -31,7 +37,17 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		crosshair.UpdateSpreadVisual(shootingSystem.currentBaseSpread);
 	}
 
-	private void UpdateAbilityHotbar()
+	private void SelectHotbarSlot(int newIndex, int oldIndex)
+	{
+		abilitySlots[oldIndex].ToggleHotbarSelection(false, hotbarSelectedColour);
+		abilitySlots[oldIndex].isSelected = false;
+		abilitySlots[newIndex].ToggleHotbarSelection(true, hotbarSelectedColour);
+		abilitySlots[newIndex].isSelected = true;
+		currentlySelectedHotbar = newIndex;
+
+	}
+
+	private void UpdateAbilityHotbar(IGadget gadget)
 	{
 		int currentIndex = 0;
 		foreach (AbilityHotbarUiSlot slot in abilitySlots)
@@ -40,6 +56,11 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 			{
 				slot.gameObject.SetActive(true);
 				slot.ChangeHotbarSlotDetails(abilitySystem.abilities[currentIndex]);
+				if (slot.isSelected)
+				{
+					SelectHotbarSlot(abilitySystem.currentAbilityIndex, currentlySelectedHotbar);
+				}
+
 			}
 			else //When no ability exists for the current index
 			{
@@ -76,12 +97,20 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	public void changePlayerTarget(ControllableEntity newPlayer)
 	{
 		playerEntity = newPlayer;
-		shootingSystem = newPlayer.gameObject.GetComponent<ShootingSystem>();
+		shootingSystem = newPlayer.shootingSystem;
 		shootingSystem.OnUpdateAmmo += UpdateAmmoCounts;
 		shootingSystem.OnWeaponFired += UpdateAmmoCounts;
 
-		abilitySystem = newPlayer.gameObject.GetComponent<AbilitySystem>();
-		UpdateAbilityHotbar();
+		//Ability system casts an event when a new ability is selected
+
+		if (abilitySystem)
+		{
+			abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
+		}
+		abilitySystem = newPlayer.abilitySystem;
+		abilitySystem.OnAbilitySelected += SelectHotbarSlot;
+		UpdateAbilityHotbar(null);
+
 
 	}
 }

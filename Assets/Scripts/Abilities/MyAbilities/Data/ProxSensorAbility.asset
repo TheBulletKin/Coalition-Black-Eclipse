@@ -16,8 +16,9 @@ MonoBehaviour:
   playerCastAbilityType: 0
   abilityIcon: {fileID: 0}
   abilityName: Proximity Sensor
-  gadgetCount: 5
-  startGadgetCount: 5
+  hasCountLimit: 1
+  countLimit: 5
+  currentAbilityCount: 0
   placementRange: 30
   launchForce: 13
   sensorObjectPrefab: {fileID: 6495869608783633811, guid: 6ffed8adacac9ef4e96a1b225fd611b6,

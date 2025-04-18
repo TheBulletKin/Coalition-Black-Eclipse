@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class HiddenVeil : MonoBehaviour
+public class HiddenVeil : MonoBehaviour, IGadget
 {
 	private HiddenStatusEffect hiddenStatusEffect = new HiddenStatusEffect();
 	private List<ShootingSystem> teammatesInVeil = new List<ShootingSystem>();
@@ -12,6 +12,8 @@ public class HiddenVeil : MonoBehaviour
 
 	private Action<ControllableEntity, HiddenVeil> OnVeilEnter;
 	private Action<ControllableEntity, HiddenVeil> OnVeilExit;
+
+	public Transform GadgetTransform => transform;
 
 	private void Start()
 	{

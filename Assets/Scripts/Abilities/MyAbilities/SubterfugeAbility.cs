@@ -11,9 +11,6 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 	public bool IsDisguised => isDisguised;
 	private bool isDisguised = false;
 
-	public int availableUses = 1;
-	public int abilityUses = 1;
-
 	public Transform GadgetTransform => entityVisibility.transform;
 
 	public EntityVisibility entityVisibility;
@@ -23,8 +20,8 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 
 	public override void Init(AbilitySystem owner)
 	{
-		isDisguised = false;
-		availableUses = abilityUses;
+		base.Init(owner);
+		isDisguised = false;		
 		entityVisibility = null;
 		entity = null;
 	}
@@ -54,7 +51,7 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 		}
 
 
-		if (availableUses <= 0)
+		if (currentAbilityCount <= 0)
 		{
 			Debug.LogWarning("SubterfugeAbility: All disguise abilities used up");
 			return;
@@ -107,7 +104,7 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 			GameEvents.OnGadgetPlaced(this);
 			GameEvents.OnGadgetActivated(this);
 
-			availableUses -= 1;
+			currentAbilityCount -= 1;
 		}
 		else
 		{

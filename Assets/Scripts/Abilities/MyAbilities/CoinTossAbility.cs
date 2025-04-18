@@ -7,8 +7,7 @@ using UnityEngine.UIElements;
 
 [CreateAssetMenu(fileName = "CoinTossAbility", menuName = "Abilities/Coin Toss")]
 public class CoinTossAbility : CharacterAbility
-{
-	[SerializeField] private int coinCount = 5;
+{	
 	[SerializeField] private GameObject coinProjectile;
 	[SerializeField] private float launchForce = 20f;
 	[SerializeField] private Sound emittedSound;
@@ -17,13 +16,13 @@ public class CoinTossAbility : CharacterAbility
 
 	public override void Init(AbilitySystem owner)
 	{
-		coinCount = 5;
+		base.Init(owner);
 	}
 
 
 	public override void Use(AbilitySystem owner)
 	{
-		if (coinCount > 0)
+		if (currentAbilityCount > 0)
 		{
 
 			GameObject projectile = Instantiate(coinProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -39,7 +38,7 @@ public class CoinTossAbility : CharacterAbility
 			{
 				projectileScript.SetAnchorCallback(CreateDistraction);
 			}
-			coinCount--;
+			currentAbilityCount--;
 		}
 	}
 

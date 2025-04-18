@@ -7,6 +7,7 @@ public class DaggerBlinkProjectile : MonoBehaviour
 {
 	private Action<Vector3, Vector3> onLandedCallback;
 
+
 	public void SetAnchorCallback(Action<Vector3, Vector3> callback)
 	{
 		onLandedCallback = callback;
@@ -18,6 +19,7 @@ public class DaggerBlinkProjectile : MonoBehaviour
 	{
 		ContactPoint contact = collision.contacts[0];
 		onLandedCallback?.Invoke(contact.point, contact.normal);
+
 
 		Destroy(gameObject);
 	}

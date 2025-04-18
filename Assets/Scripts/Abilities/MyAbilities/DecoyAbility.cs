@@ -6,10 +6,9 @@ using UnityEngine;
 public class DecoyAbility : CharacterAbility
 {
 	[SerializeField] private GameObject decoyPrefab;
-	[SerializeField] private int abilityCount = 2;
 	public override void Init(AbilitySystem owner)
 	{
-		abilityCount = 2;
+		base.Init(owner);
 	}
 
 	public override void Use(AbilitySystem owner)
@@ -30,8 +29,13 @@ public class DecoyAbility : CharacterAbility
 	}
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
-	{		
-		GameObject newDecoy = Instantiate(decoyPrefab, targetVecPos, Quaternion.identity);
-		EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
+	{
+		if (currentAbilityCount > 0)
+		{
+			GameObject newDecoy = Instantiate(decoyPrefab, targetVecPos, Quaternion.identity);
+			EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
+			currentAbilityCount--;
+		}
+
 	}
 }

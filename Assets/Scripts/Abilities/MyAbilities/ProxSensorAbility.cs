@@ -5,9 +5,7 @@ using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "ProxSensorAbility", menuName = "Abilities/Prox Sensor")]
 public class ProxSensorAbility : CharacterAbility
-{
-    [SerializeField] private int gadgetCount = 2;
-	[SerializeField] private int startGadgetCount = 5;
+{   
 	[SerializeField] private float placementRange = 5f;
 	[SerializeField] private float launchForce = 20f;
 	[SerializeField] private GameObject sensorObjectPrefab;
@@ -16,14 +14,14 @@ public class ProxSensorAbility : CharacterAbility
 
 	public override void Init(AbilitySystem owner)
 	{
-		gadgetCount = startGadgetCount;
+		base.Init(owner);
 		activeSensors = new List<ProximitySensorObject>();
 		
 	}	
 
 	public override void Use(AbilitySystem owner)
 	{
-		if (gadgetCount > 0)
+		if (currentAbilityCount > 0)
 		{
 
 			GameObject projectile = Instantiate(sensorProjectilePrefab, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -39,7 +37,7 @@ public class ProxSensorAbility : CharacterAbility
 			{
 				projectileScript.SetSensorCallback(CreateProximitySensor);
 			}
-			gadgetCount--;
+			currentAbilityCount--;
 		}
 	}
 
@@ -55,7 +53,7 @@ public class ProxSensorAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && gadgetCount > 0)
+		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && currentAbilityCount > 0)
 		{		
 			CreateProximitySensor(targetVecPos, Vector3.up);
 		}

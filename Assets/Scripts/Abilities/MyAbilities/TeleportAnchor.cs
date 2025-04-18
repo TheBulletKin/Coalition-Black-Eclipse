@@ -10,14 +10,13 @@ public class TeleportAnchor : CharacterAbility
 	public TeleportAnchorObject anchorObject;
 	[SerializeField] private float travelDuration = 1.5f;
 	[SerializeField] private float arcHeight = 5f;
-	[SerializeField] private float launchForce = 20f;
-	public float gadgetCount = 1;
+	[SerializeField] private float launchForce = 20f;	
 	public bool anchorActive = false;
 	public Vector3 teleportPosition;
 
 	public override void Init(AbilitySystem owner)
 	{
-		gadgetCount = 1;
+		base.Init(owner);		
 		teleportPosition = Vector3.zero;
 		anchorActive = false;
 	}	
@@ -46,7 +45,7 @@ public class TeleportAnchor : CharacterAbility
 	}
 	public override void Use(AbilitySystem owner)
 	{
-		if (gadgetCount > 0)
+		if (currentAbilityCount > 0)
 		{
 
 			GameObject projectile = Instantiate(anchorProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -62,7 +61,7 @@ public class TeleportAnchor : CharacterAbility
 			{
 				projectileScript.SetAnchorCallback(CreateAnchor);
 			}
-			gadgetCount--;
+			currentAbilityCount--;
 		}
 		else if (anchorActive == true)
 		{
@@ -82,7 +81,7 @@ public class TeleportAnchor : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		if (gadgetCount > 0)
+		if (currentAbilityCount > 0)
 		{
 
 			if (anchorPrefab != null)
@@ -90,7 +89,7 @@ public class TeleportAnchor : CharacterAbility
 				CreateAnchor(targetVecPos, Vector3.up);
 			}
 			
-			gadgetCount--;
+			currentAbilityCount--;
 		}
 		else if (anchorActive == true)
 		{

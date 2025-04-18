@@ -16,6 +16,8 @@ MonoBehaviour:
   playerCastAbilityType: 2
   abilityIcon: {fileID: 0}
   abilityName: Decoy
+  hasCountLimit: 1
+  countLimit: 4
+  currentAbilityCount: 0
   decoyPrefab: {fileID: 2342537618159628209, guid: 0cffff6f8a37b5f418e5326d7179f283,
     type: 3}
-  abilityCount: 2
