@@ -6,7 +6,7 @@ public class InvestigateLimitReachedDecision : Decision
 	public override bool Decide(BaseStateMachine stateMachine)
 	{
 		AiSoundSensor soundSensor = stateMachine.aiBrain.soundSensor;
-		if (soundSensor.timeSinceSoundHeard >= soundSensor.investigateTimeLimit)
+		if (soundSensor.timeSinceSoundHeard >= soundSensor.hearingConfig.investigateTimeLimit)
 		{
 			soundSensor.ForgetSound();
 			return true;

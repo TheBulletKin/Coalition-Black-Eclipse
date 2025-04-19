@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c932283685ef4cd4daa9b5cb1de3be28, type: 3}
   m_Name: InvestigateAction
   m_EditorClassIdentifier: 
-  destinationThreshold: 5
+  destinationThreshold: 4

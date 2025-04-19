@@ -29,6 +29,7 @@ public class InvestigateAction : FSMAction
 			else if (distanceToTarget <= destinationThreshold)
 			{
 				navMeshAgent.ResetPath();
+				soundSensor.ReachedSoundPos();
 			}
 
 

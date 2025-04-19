@@ -29,6 +29,8 @@ public class TeleportAnchor : CharacterAbility
 			anchor.transform.up = normal;
 			anchorObject = anchor.GetComponent<TeleportAnchorObject>();
 			anchorActive = true;
+			//Set here to allow for picking up the object again with interact
+			anchorObject.relatedAbility = this;
 			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;		
 
 			GameEvents.OnGadgetPlaced?.Invoke(anchorObject);

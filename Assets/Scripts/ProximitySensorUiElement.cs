@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class ProximitySensorUiElement : UiElement, IGadgetUiElement
 {    
     public Image sensorIcon;
-	public ProximitySensorObject sensorObject;
+	public ProximitySensorTrigger sensorObject;
 	public Color defaultInnerColour;
 	public Color alertInnerColour;
 

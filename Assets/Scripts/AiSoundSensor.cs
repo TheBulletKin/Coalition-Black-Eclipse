@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class AiSoundSensor : MonoBehaviour
 {
-	[SerializeField] private AiHearingConfig hearingConfig;
+	[SerializeField] public AiHearingConfig hearingConfig;
 	public bool hasHeardSound;
+	public bool isInvestigatingSound;
 	public Sound soundHeard;
-	public float timeSinceSoundHeard = 0f;
-	public float investigateTimeLimit = 5f;
+	public float timeSinceSoundHeard = 0f;	
 
 	private void Update()
 	{
-		if (hasHeardSound)
+		if (isInvestigatingSound)
 		{
 			timeSinceSoundHeard += Time.deltaTime;
 		}
@@ -41,6 +41,11 @@ public class AiSoundSensor : MonoBehaviour
 		}
 
 		ReactToSound(sound);
+	}	
+
+	public void ReachedSoundPos()
+	{
+		isInvestigatingSound = true;
 	}
 
 	public void ReactToSound(Sound sound)
@@ -52,6 +57,7 @@ public class AiSoundSensor : MonoBehaviour
 	public void ForgetSound()
 	{
 		hasHeardSound = false;
+		isInvestigatingSound = false;
 		soundHeard = default;
 	}
 }

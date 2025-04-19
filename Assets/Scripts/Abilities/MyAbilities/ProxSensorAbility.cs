@@ -67,8 +67,9 @@ public class ProxSensorAbility : CharacterAbility
 			proximitySensor.transform.up = normal;
 			ProximitySensorObject sensorObject = proximitySensor.GetComponent<ProximitySensorObject>();
 			activeSensors.Add(sensorObject);
+			sensorObject.relatedAbility = this;
 
-			GameEvents.OnGadgetPlaced?.Invoke(sensorObject);
+			GameEvents.OnGadgetPlaced?.Invoke(sensorObject.trigger);
 		}
 	}
 }

@@ -46,7 +46,7 @@ public class GadgetUiManager : MonoBehaviour
 			gadgetToUi.Add(gadget, anchorUiElement);
 			return anchorUiElement;
 		}
-		else if (gadget is ProximitySensorObject sensorObject)
+		else if (gadget is ProximitySensorTrigger sensorObject)
 		{
 			GameObject proximitySensorUiObject = Instantiate(sensorMarkerPrefab, gadgetMarkerContainer.transform.position, gadgetMarkerContainer.transform.rotation, gadgetMarkerContainer);
 
@@ -179,6 +179,10 @@ public class GadgetUiManager : MonoBehaviour
 				gadgetUiElements.Remove(uiElement as UiElement);
 				gadgetToUi.Remove(gadget);
 			}
+		}
+		else
+		{
+			Debug.LogError("Gadget being destroyed isn't in gadgetToUi dictionary");
 		}
 
 	}

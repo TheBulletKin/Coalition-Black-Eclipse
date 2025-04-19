@@ -6,4 +6,5 @@ using UnityEngine;
 public class AiHearingConfig : ScriptableObject
 {
     public float hearingRadius = 20f;
+	public float investigateTimeLimit = 5f;
 }
