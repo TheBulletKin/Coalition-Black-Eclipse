@@ -1660,36 +1660,38 @@ MonoBehaviour:
 
     When moving around, use slow walk (shift) and
     aim slowly with the mouse to maintain accuracy. You want to make sure you are
-    as accurate as possible if an enemy enters your crosshair.
+    as accurate as possible if an enemy enters your crosshair. Be sure to be aware
+    of places enemies can appear from your side. Use cover to block line of sight,
+    set up teammates to cover you or use abilities to give yourself the upper hand.
 
 
-    Tip 2: Use gadgets
-    to observe the level first
+    Tip
+    2: Use gadgets to observe the level first
 
-    Use subterfuge and the hidden veil abilities
-    to look ahead and see where enemies are before attacking, this will help you
-    plan your next move.
-
-
-    Tip 3: Be mindful of your weapon''s range
-
-    Each
-    weapon has a maximum possible range. Make sure that any space you are moving
-    into won''t have an enemy beyond your effective range.
+    Use subterfuge and the hidden
+    veil abilities to look ahead and see where enemies are before attacking, this
+    will help you plan your next move.
 
 
-    Tip 4: Aim for headshots
+    Tip 3: Be mindful of your weapon''s
+    range
 
-    Hitting
-    the ''head'' of an enemy will deal 2x damage.
+    Each weapon has a maximum possible range. Make sure that any space
+    you are moving into won''t have an enemy beyond your effective range.
 
 
-    Tip 5: Watch your flanks
+    Tip
+    4: Aim for headshots
 
-    Because
-    of the accuracy penalty when aiming fast, be sure to be aware of places enemies
-    can appear from your side. Use cover to block line of sight, set up teammates
-    to cover you or use abilities to give yourself the upper hand.'
+    Hitting the ''head'' of an enemy will deal 2x damage.
+
+
+    Tip
+    5: Mind your sound
+
+    Every gun emits sound. The sniper makes the loudest sound,
+    the knife makes the quietest sound. Be careful not to alert nearby enemies, unless
+    you intend to use it against them...'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1716,8 +1718,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 31.26
+  m_fontSizeBase: 31.26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
