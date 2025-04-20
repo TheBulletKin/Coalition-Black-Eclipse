@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -40,6 +41,8 @@ public class PlayerCommandIssuer : MonoBehaviour
 		//Go codes
 		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
 
+		InputManager.Instance.OnCommandCancelPressed += CancelAllCommands;
+
 
 	}
 
@@ -56,6 +59,8 @@ public class PlayerCommandIssuer : MonoBehaviour
 		InputManager.Instance.OnAiGroupSelectedPressed -= ChangeCurrentGroup;
 		//Go codes
 		InputManager.Instance.OnGoCodePressed -= ExecuteCommands;
+
+		InputManager.Instance.OnCommandCancelPressed -= CancelAllCommands;
 	}
 
 	private Vector3 TryGetSelectedPosition()
@@ -266,5 +271,17 @@ public class PlayerCommandIssuer : MonoBehaviour
 	private void UpdateCameraState(CameraStates state)
 	{
 		cameraState = state;
+	}
+
+	public void CancelAllCommands()
+	{
+		foreach (AiCommandListener teammate in aiTeammates)
+		{
+			if (aiTeammates[currentGroupOrTeammateIndex] == teammate)
+			{
+				teammate.CancelCommands();
+
+			}
+		}
 	}
 }

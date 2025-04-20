@@ -70,6 +70,7 @@ public class InputManager : MonoBehaviour
 	public event Action OnReloadPressed;
 	public event Action OnUseItemPressed;
 	public event Action<int> OnAbilityChangePressed;
+	public event Action OnCommandCancelPressed;
 
 
 	private void Awake()
@@ -163,6 +164,9 @@ public class InputManager : MonoBehaviour
 		//Change ability
 		controls.FPS.SelectAbility.performed += AbilitySelectPerformed;
 
+		//Cancel command
+		controls.FPS.CancelAllCommands.performed += CancelCommandPerformed;
+
 	}
 
 	public void UnsubscribeFPSInputMaps()
@@ -202,6 +206,9 @@ public class InputManager : MonoBehaviour
 
 		//Change ability
 		controls.FPS.SelectAbility.performed -= AbilitySelectPerformed;
+
+		//Cancel command
+		controls.FPS.CancelAllCommands.performed -= CancelCommandPerformed;
 	}
 
 	public void SubscribeTopDownInputMaps()
@@ -222,6 +229,9 @@ public class InputManager : MonoBehaviour
 		//Change ability
 		controls.MapView.SelectAbility.performed += AbilitySelectPerformed;
 
+		//Cancel command
+		controls.MapView.CancelAllCommands.performed += CancelCommandPerformed;
+
 	}
 
 
@@ -241,7 +251,16 @@ public class InputManager : MonoBehaviour
 		controls.MapView.ExecuteGoCode.performed -= ActivateGoCodePerformed;
 
 		//Change ability
-		controls.MapView.SelectAbility.performed += AbilitySelectPerformed;
+		controls.MapView.SelectAbility.performed -= AbilitySelectPerformed;
+
+		//Cancel command
+		controls.MapView.CancelAllCommands.performed -= CancelCommandPerformed;
+	}
+
+	//---- Command cancel
+	private void CancelCommandPerformed(InputAction.CallbackContext context)
+	{
+		OnCommandCancelPressed?.Invoke();
 	}
 
 	//----- Command creation

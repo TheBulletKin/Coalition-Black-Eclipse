@@ -61,6 +61,7 @@ public class MoveCommand : ICommand
 
 	public void Cancel(MonoBehaviour executor)
 	{
+		aiMovement.StopMovement();
 		executor.StopCoroutine(currentCoroutine);
 	}
 }

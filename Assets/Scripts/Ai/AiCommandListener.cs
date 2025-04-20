@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
@@ -226,5 +227,30 @@ public class AiCommandListener : MonoBehaviour, IToggleable
 	public void EnableControl()
 	{
 		enabled = false;
+	}
+
+	public void CancelCommands()
+	{
+		foreach (KeyValuePair<ICommand, GameObject> commandWaypoint in commandToWaypoint)
+		{
+			Destroy(commandWaypoint.Value);
+		}
+
+		commandToWaypoint.Clear();
+
+		foreach (KeyValuePair<ICommand, LineRenderer> commandLineRenderer in commandToLineRenderer)
+		{
+			Destroy(commandLineRenderer.Value.gameObject);
+		}
+
+		commandToLineRenderer.Clear();
+
+		if (currentExecutingCommand != null)
+		{
+			currentExecutingCommand.Cancel(this);
+		}
+
+		canRunNextCommand = true;
+		commands.Clear();
 	}
 }

@@ -47,6 +47,14 @@ public class AIMovement : MonoBehaviour
 		}
 	}
 
+	public void StopMovement()
+	{
+		if (agent != null)
+		{
+			agent.ResetPath();
+		}
+	}
+
 	public void SetLooking(bool state)
 	{
 		isPieingTarget = state;

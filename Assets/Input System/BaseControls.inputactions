@@ -159,7 +159,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "CancelAllCommands",
                     "type": "Button",
                     "id": "ac562ba3-f329-4a85-885f-fed3ffbffae8",
                     "expectedControlType": "",
@@ -920,11 +920,11 @@
                 {
                     "name": "",
                     "id": "5e20a2f7-9221-46fc-9eed-8f0812decdfe",
-                    "path": "",
+                    "path": "<Keyboard>/x",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "CancelAllCommands",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1001,6 +1001,15 @@
                     "name": "QueueCommand",
                     "type": "Button",
                     "id": "8ae06d28-5947-4554-b6c0-6fd5bc5b32ea",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "CancelAllCommands",
+                    "type": "Button",
+                    "id": "e2f145d5-1024-4fdd-8530-1a3d5e8fd79b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -1621,6 +1630,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Exit Map",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "624328fa-7a54-486d-ad8a-bb5866ce0b97",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CancelAllCommands",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

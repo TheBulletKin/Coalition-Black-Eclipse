@@ -181,7 +181,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""CancelAllCommands"",
                     ""type"": ""Button"",
                     ""id"": ""ac562ba3-f329-4a85-885f-fed3ffbffae8"",
                     ""expectedControlType"": """",
@@ -942,11 +942,11 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5e20a2f7-9221-46fc-9eed-8f0812decdfe"",
-                    ""path"": """",
+                    ""path"": ""<Keyboard>/x"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""CancelAllCommands"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1023,6 +1023,15 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""name"": ""QueueCommand"",
                     ""type"": ""Button"",
                     ""id"": ""8ae06d28-5947-4554-b6c0-6fd5bc5b32ea"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""CancelAllCommands"",
+                    ""type"": ""Button"",
+                    ""id"": ""e2f145d5-1024-4fdd-8530-1a3d5e8fd79b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1645,6 +1654,17 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
                     ""action"": ""Exit Map"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""624328fa-7a54-486d-ad8a-bb5866ce0b97"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""CancelAllCommands"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1670,7 +1690,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_FPS_Fire = m_FPS.FindAction("Fire", throwIfNotFound: true);
         m_FPS_Reload = m_FPS.FindAction("Reload", throwIfNotFound: true);
         m_FPS_UseItem = m_FPS.FindAction("UseItem", throwIfNotFound: true);
-        m_FPS_Newaction = m_FPS.FindAction("New action", throwIfNotFound: true);
+        m_FPS_CancelAllCommands = m_FPS.FindAction("CancelAllCommands", throwIfNotFound: true);
         // MapView
         m_MapView = asset.FindActionMap("MapView", throwIfNotFound: true);
         m_MapView_MapMove = m_MapView.FindAction("MapMove", throwIfNotFound: true);
@@ -1681,6 +1701,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         m_MapView_SelectAiGroup = m_MapView.FindAction("SelectAiGroup", throwIfNotFound: true);
         m_MapView_InstantCommand = m_MapView.FindAction("InstantCommand", throwIfNotFound: true);
         m_MapView_QueueCommand = m_MapView.FindAction("QueueCommand", throwIfNotFound: true);
+        m_MapView_CancelAllCommands = m_MapView.FindAction("CancelAllCommands", throwIfNotFound: true);
     }
 
     ~@BaseControls()
@@ -1765,7 +1786,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_FPS_Fire;
     private readonly InputAction m_FPS_Reload;
     private readonly InputAction m_FPS_UseItem;
-    private readonly InputAction m_FPS_Newaction;
+    private readonly InputAction m_FPS_CancelAllCommands;
     public struct FPSActions
     {
         private @BaseControls m_Wrapper;
@@ -1787,7 +1808,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_FPS_Fire;
         public InputAction @Reload => m_Wrapper.m_FPS_Reload;
         public InputAction @UseItem => m_Wrapper.m_FPS_UseItem;
-        public InputAction @Newaction => m_Wrapper.m_FPS_Newaction;
+        public InputAction @CancelAllCommands => m_Wrapper.m_FPS_CancelAllCommands;
         public InputActionMap Get() { return m_Wrapper.m_FPS; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1848,9 +1869,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @UseItem.started += instance.OnUseItem;
             @UseItem.performed += instance.OnUseItem;
             @UseItem.canceled += instance.OnUseItem;
-            @Newaction.started += instance.OnNewaction;
-            @Newaction.performed += instance.OnNewaction;
-            @Newaction.canceled += instance.OnNewaction;
+            @CancelAllCommands.started += instance.OnCancelAllCommands;
+            @CancelAllCommands.performed += instance.OnCancelAllCommands;
+            @CancelAllCommands.canceled += instance.OnCancelAllCommands;
         }
 
         private void UnregisterCallbacks(IFPSActions instance)
@@ -1906,9 +1927,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @UseItem.started -= instance.OnUseItem;
             @UseItem.performed -= instance.OnUseItem;
             @UseItem.canceled -= instance.OnUseItem;
-            @Newaction.started -= instance.OnNewaction;
-            @Newaction.performed -= instance.OnNewaction;
-            @Newaction.canceled -= instance.OnNewaction;
+            @CancelAllCommands.started -= instance.OnCancelAllCommands;
+            @CancelAllCommands.performed -= instance.OnCancelAllCommands;
+            @CancelAllCommands.canceled -= instance.OnCancelAllCommands;
         }
 
         public void RemoveCallbacks(IFPSActions instance)
@@ -1938,6 +1959,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_MapView_SelectAiGroup;
     private readonly InputAction m_MapView_InstantCommand;
     private readonly InputAction m_MapView_QueueCommand;
+    private readonly InputAction m_MapView_CancelAllCommands;
     public struct MapViewActions
     {
         private @BaseControls m_Wrapper;
@@ -1950,6 +1972,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         public InputAction @SelectAiGroup => m_Wrapper.m_MapView_SelectAiGroup;
         public InputAction @InstantCommand => m_Wrapper.m_MapView_InstantCommand;
         public InputAction @QueueCommand => m_Wrapper.m_MapView_QueueCommand;
+        public InputAction @CancelAllCommands => m_Wrapper.m_MapView_CancelAllCommands;
         public InputActionMap Get() { return m_Wrapper.m_MapView; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1983,6 +2006,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueCommand.started += instance.OnQueueCommand;
             @QueueCommand.performed += instance.OnQueueCommand;
             @QueueCommand.canceled += instance.OnQueueCommand;
+            @CancelAllCommands.started += instance.OnCancelAllCommands;
+            @CancelAllCommands.performed += instance.OnCancelAllCommands;
+            @CancelAllCommands.canceled += instance.OnCancelAllCommands;
         }
 
         private void UnregisterCallbacks(IMapViewActions instance)
@@ -2011,6 +2037,9 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
             @QueueCommand.started -= instance.OnQueueCommand;
             @QueueCommand.performed -= instance.OnQueueCommand;
             @QueueCommand.canceled -= instance.OnQueueCommand;
+            @CancelAllCommands.started -= instance.OnCancelAllCommands;
+            @CancelAllCommands.performed -= instance.OnCancelAllCommands;
+            @CancelAllCommands.canceled -= instance.OnCancelAllCommands;
         }
 
         public void RemoveCallbacks(IMapViewActions instance)
@@ -2047,7 +2076,7 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnUseItem(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnCancelAllCommands(InputAction.CallbackContext context);
     }
     public interface IMapViewActions
     {
@@ -2059,5 +2088,6 @@ public partial class @BaseControls: IInputActionCollection2, IDisposable
         void OnSelectAiGroup(InputAction.CallbackContext context);
         void OnInstantCommand(InputAction.CallbackContext context);
         void OnQueueCommand(InputAction.CallbackContext context);
+        void OnCancelAllCommands(InputAction.CallbackContext context);
     }
 }
