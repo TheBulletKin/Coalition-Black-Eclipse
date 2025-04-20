@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 3
   weaponName: Sniper
-  weaponDamage: 110
+  weaponDamage: 80
   weaponRange: 62.8
   firingAngle: 56.8
   maxAmmo: 4

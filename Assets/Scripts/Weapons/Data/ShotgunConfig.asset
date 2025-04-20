@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   weaponName: Shotgun
-  weaponDamage: 100
+  weaponDamage: 80
   weaponRange: 14.2
   firingAngle: 79.7
   maxAmmo: 4

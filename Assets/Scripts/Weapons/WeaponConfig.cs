@@ -8,6 +8,7 @@ public class WeaponConfig : ScriptableObject
     public string weaponName;
 
 	[Header("Main Stats")]
+	[Tooltip("Weapon damage (2X When used by AI")]
     public int weaponDamage;
     public float weaponRange;
     public float firingAngle = 60;

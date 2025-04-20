@@ -281,7 +281,15 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			IDamagable damageable = hit.collider.GetComponent<IDamagable>();
 			if (damageable != null)
 			{
-				damageable.TakeDamage(weaponConfig.weaponDamage);
+				if (inPlayerControl)
+				{
+					damageable.TakeDamage(weaponConfig.weaponDamage);
+				}
+				else //For now, make it so that ai deal 2x damage. Players can headshot, allies can't. This will balance it for now but I'll need to consider another approach later
+				{
+					damageable.TakeDamage(weaponConfig.weaponDamage * 2);
+				}
+				
 			}
 			CreateTracer(bulletOriginPos.transform.position, hit.point);
 		}
