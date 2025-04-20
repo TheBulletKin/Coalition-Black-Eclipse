@@ -1427,6 +1427,39 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "Move",
+                    "id": "f19683fc-8b07-413e-810d-fcce9e968fc3",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "cea4b0bb-9685-44b1-8d5b-3699a3d40ad0",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "779d41d5-52fd-41bd-ba3d-bbc9cdb00f6c",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "Look",
                     "id": "e3f6c568-b453-4530-8834-8f56b39f3df6",
                     "path": "OneModifier",
@@ -1452,6 +1485,39 @@
                     "name": "binding",
                     "id": "ae926e21-6b02-47b4-9727-d497acd63064",
                     "path": "<Keyboard>/v",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "Look",
+                    "id": "7db695ea-b8a9-4711-943d-28110f50a011",
+                    "path": "OneModifier",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "modifier",
+                    "id": "aa65c97e-b14e-401c-bb16-c961f9e20c09",
+                    "path": "<Keyboard>/leftShift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QueueCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "binding",
+                    "id": "067af968-ddb3-40fd-8058-3c4863145902",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -1518,6 +1584,28 @@
                     "name": "",
                     "id": "fef2a93c-5de0-4869-9b3a-15664b990fa7",
                     "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InstantCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "010f9ff1-dd64-4757-a6a4-5802cc8b4ada",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "InstantCommand",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6d64e419-418b-47a6-affd-47c364208cd8",
+                    "path": "<Mouse>/rightButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

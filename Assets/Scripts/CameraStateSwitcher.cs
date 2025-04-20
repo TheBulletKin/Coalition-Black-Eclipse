@@ -12,6 +12,7 @@ public class CameraStateSwitcher : MonoBehaviour
     public Transform topDownCameraPos;
 	public Camera camera;
 	public float mapCamDistance = 25f;
+	private bool isMapView = false;
 
 	public PlayerMovementController movementController;
 	public CameraController cameraController;
@@ -24,11 +25,28 @@ public class CameraStateSwitcher : MonoBehaviour
 		prevCameraAngle = Camera.main.transform.rotation;
 	}
 
+	private void Update()
+	{
+		if (isMapView)
+		{
+			Cursor.lockState = CursorLockMode.Confined;
+			Cursor.visible = true;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
+		
+	}
+
 	private void SwitchToMap()
 	{
 		//Toggle movement
 		movementController.canMove = false;
 		cameraController.canLookAround = false;
+
+		isMapView = true;
 
 		
 		
@@ -71,7 +89,7 @@ public class CameraStateSwitcher : MonoBehaviour
 		//Return to previous rotation
 		camera.transform.rotation = prevCameraAngle;
 
-		
+		isMapView = false;
 
 		//Lock cursor again
 		Cursor.lockState = CursorLockMode.Locked;

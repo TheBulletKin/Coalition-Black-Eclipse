@@ -260,8 +260,12 @@ public class InputManager : MonoBehaviour
 		switch (context.control.name)
 		{
 			case "b":
-				return CommandType.MOVE;		
+				return CommandType.MOVE;
+			case "leftButton":
+				return CommandType.MOVE;
 			case "v":
+				return CommandType.LOOK;
+			case "rightButton":
 				return CommandType.LOOK;
 			case "c":
 				return CommandType.ABILITY;
