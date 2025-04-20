@@ -14,6 +14,9 @@ public class AiVisionConfig : ScriptableObject
 	public float maxDetectionDistance = 40f;
 	public float closeDetectionFalloffDistance = 10f;
 	public float detectionRateModifier;
+	public float detectionModifierAtCentre;
+	public float detectionModifierAtEdge;
+	public float detectionOptimalSector;
 
 	public LayerMask ignoreMask;
 }

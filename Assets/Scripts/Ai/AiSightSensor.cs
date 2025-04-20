@@ -13,6 +13,7 @@ public class AiSightSensor : MonoBehaviour
 	public List<Health> visibleEntities;
 	private float pingInteval = 0.25f;
 	private float pingTimer = 0.0f;
+	
 	[Tooltip("How detected the player is, from 0 to 1")]
 	[field: SerializeField]
 	public float detectionValue { get; private set; }
@@ -63,7 +64,7 @@ public class AiSightSensor : MonoBehaviour
 
 			if (enemyIsInVisibleRange)
 			{
-				float distanceToVisible = (visibleEntities[0].transform.position - transform.position).magnitude;
+				float distanceToVisible = (GetClosestEnemySeen().transform.position - transform.position).magnitude;
 
 				//Within 10 metres, maximum gain
 				//Beyond 30 meters, no gain
@@ -82,7 +83,7 @@ public class AiSightSensor : MonoBehaviour
 					visionConfig.detectionRateModifier = Mathf.Lerp(1f, 0f,
 					(distanceToVisible - visionConfig.closeDetectionFalloffDistance) / (visionConfig.maxDetectionDistance - visionConfig.closeDetectionFalloffDistance));
 					//Want distance / max distance but normalised to ignore the 10 units close falloff.
-					detectionValue += visionConfig.detectionIncreaseRate * deltaTime * visionConfig.detectionRateModifier;
+					detectionValue += visionConfig.detectionIncreaseRate * deltaTime * visionConfig.detectionRateModifier * GetVisionConeWidthModifier(GetClosestEnemySeen().transform.position, transform.forward);
 					detectionValue = Mathf.Clamp(detectionValue, 0, visionConfig.detectionThreshold);
 				}
 
@@ -264,6 +265,33 @@ public class AiSightSensor : MonoBehaviour
 		Debug.Log("Removed entity from list");
 	}
 
+	private float GetVisionConeWidthModifier(Vector3 target, Vector3 forward)
+	{
+		Vector3 directionToTarget = (target - transform.position).normalized;
+		float angleToTarget = Vector3.Angle(forward, directionToTarget);
+		float halfFiringAngle = shootingSystem.weaponConfig.firingAngle * 0.5f;
+		float centreAngleRange = visionConfig.detectionOptimalSector * 0.5f;
+
+		//Outside the vision cone
+		if (angleToTarget > halfFiringAngle)
+		{
+			return 0f;
+		}
+
+		//In the sweet spot
+		if (angleToTarget <= centreAngleRange)
+		{
+			return visionConfig.detectionModifierAtCentre;
+		}
+
+		//Determine aim time
+		float outerRange = halfFiringAngle - centreAngleRange;
+		float distanceFromCentre = angleToTarget - centreAngleRange;
+
+		float t = distanceFromCentre / outerRange;
+		return Mathf.Lerp(visionConfig.detectionModifierAtCentre,visionConfig.detectionModifierAtEdge, t);
+	}
+
 	public bool TargetInWeaponRange()
 	{
 		if ((currentTarget.transform.position - transform.position).magnitude <= shootingSystem.weaponConfig.weaponRange - 5f) //5 as some room before needing to move again
@@ -341,6 +369,20 @@ public class AiSightSensor : MonoBehaviour
 		Quaternion rightRayRotation = Quaternion.AngleAxis(shootingSystem.weaponConfig.firingAngle / 2, Vector3.up);
 		Gizmos.DrawRay(transform.position, leftRayRotation * forward);
 		Gizmos.DrawRay(transform.position, rightRayRotation * forward);
+
+		Gizmos.color = Color.green;
+		Vector3 forward2 = transform.forward * shootingSystem.weaponConfig.weaponRange;
+		Quaternion leftRayRotation2 = Quaternion.AngleAxis(-shootingSystem.weaponConfig.optimalAimCone / 2, Vector3.up);
+		Quaternion rightRayRotation2 = Quaternion.AngleAxis(shootingSystem.weaponConfig.optimalAimCone / 2, Vector3.up);
+		Gizmos.DrawRay(transform.position, leftRayRotation2 * forward2);
+		Gizmos.DrawRay(transform.position, rightRayRotation2 * forward2);
+
+		Gizmos.color = Color.yellow;
+		Vector3 forward3 = transform.forward * shootingSystem.weaponConfig.weaponRange;
+		Quaternion leftRayRotation3 = Quaternion.AngleAxis(-visionConfig.detectionOptimalSector / 2, Vector3.up);
+		Quaternion rightRayRotation3 = Quaternion.AngleAxis(visionConfig.detectionOptimalSector / 2, Vector3.up);
+		Gizmos.DrawRay(transform.position, leftRayRotation3 * forward3);
+		Gizmos.DrawRay(transform.position, rightRayRotation3 * forward3);
 	}
 
 }
