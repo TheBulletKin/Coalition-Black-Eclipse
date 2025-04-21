@@ -88,8 +88,9 @@ public class InputManager : MonoBehaviour
 
 	private void OnEnable()
 	{
-		controls.Enable();
+		controls.FPS.Enable();
 		SubscribeFPSInputMaps();
+		UnsubscribeTopDownInputMaps();
 	}
 
 	private void OnDestroy()
