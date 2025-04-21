@@ -56,6 +56,7 @@ public class ProxSensorAbility : CharacterAbility
 		if (Vector3.Distance(owner.transform.position, targetVecPos) <= placementRange && currentAbilityCount > 0)
 		{		
 			CreateProximitySensor(targetVecPos, Vector3.up);
+			currentAbilityCount--;
 		}
 	}
 

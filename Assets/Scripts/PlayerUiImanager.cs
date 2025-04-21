@@ -16,7 +16,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	[SerializeField] private AbilitySystem abilitySystem;
 	[SerializeField] private RectTransform abilityHotbarContainer;
 	[SerializeField] private List<AbilityHotbarUiSlot> abilitySlots;
-	[SerializeField] private CameraStateSwitcher cameraStateSwitcher;	
+	[SerializeField] private CameraStateSwitcher cameraStateSwitcher;
 	public Color hotbarSelectedColour;
 	public int currentlySelectedHotbar;
 
@@ -112,40 +112,48 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		}
 		else
 		{
-			playerEntity = newPlayer;			
+			playerEntity = newPlayer;
 		}
 
 		switch (cameraStateSwitcher.currentState)
 		{
 			case CameraStates.FPS:
-				ChangeTarget(playerEntity);
+				ChangeTarget(playerEntity, true);
 				break;
 			case CameraStates.TOPDOWN:
 				if (playerEntityHolder != null)
 				{
-					ChangeTarget(playerEntityHolder);
+					ChangeTarget(playerEntityHolder, false);
 				}
 				break;
 			default:
 				break;
-		}		
+		}
 	}
 
-	private void ChangeTarget(ControllableEntity newEntity)
+	private void ChangeTarget(ControllableEntity newEntity, bool flag)
 	{
-		shootingSystem = newEntity.shootingSystem;
-		shootingSystem.OnUpdateAmmo += UpdateAmmoCounts;
-		shootingSystem.OnWeaponFired += UpdateAmmoCounts;
-
-		//Ability system casts an event when a new ability is selected
-
-		if (abilitySystem)
+		if (flag)
 		{
-			abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
+			if (abilitySystem)
+			{
+				abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
+			}
 		}
+
+		shootingSystem = newEntity.shootingSystem;
 		abilitySystem = newEntity.abilitySystem;
-		abilitySystem.OnAbilitySelected += SelectHotbarSlot;
-		UpdateAbilityHotbar(null);		
+		
+		//If the target change is done to view abilities on other entities, keep it so that hotbar changes come from changes to the controlled character rather than the target
+		if (flag)
+		{
+			shootingSystem.OnUpdateAmmo += UpdateAmmoCounts;
+			shootingSystem.OnWeaponFired += UpdateAmmoCounts;
+
+			abilitySystem.OnAbilitySelected += SelectHotbarSlot;
+		}
+
+		UpdateAbilityHotbar(null);
 	}
 
 	private void ChangeTargetBasedOnState(CameraStates cameraState)
@@ -153,12 +161,12 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		switch (cameraState)
 		{
 			case CameraStates.FPS:
-				ChangeTarget(playerEntity);
+				ChangeTarget(playerEntity, true);
 				break;
 			case CameraStates.TOPDOWN:
 				if (playerEntityHolder != null)
 				{
-					ChangeTarget(playerEntityHolder);
+					ChangeTarget(playerEntityHolder, false);
 				}
 
 				break;
