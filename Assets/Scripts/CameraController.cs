@@ -32,11 +32,8 @@ public class CameraController : MonoBehaviour
 
 	private void Start()
 	{
-
-
 		playerStartLocalRotation = Vector3.zero;
 		cameraStartLocalPosition = transform.localPosition;
-
 	}
 
 	private void Update()

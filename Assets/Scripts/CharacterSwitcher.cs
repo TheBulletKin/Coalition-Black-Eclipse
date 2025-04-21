@@ -5,9 +5,10 @@ using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
-public class CharacterSwitcher : MonoBehaviour
+public class CharacterSwitcher : MonoBehaviour, IInitialisable
 {
-	
+	public static CharacterSwitcher Instance { get; private set; }
+
 	public Camera playerCamera;
 	public CameraController camController;
 	public PlayerUiImanager playerUiManager;
@@ -15,16 +16,32 @@ public class CharacterSwitcher : MonoBehaviour
 	public CameraStateSwitcher cameraStateSwitcher;
 	public int currentlyControlledTeammate;
 
+	
 
-	void Start()
+	/// <summary>
+	/// Requires: InputManager, PlayerUiManager, gadgetUiManager, cameraStateSwitcher
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
+
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+
 		InputManager.Instance.OnAiSwitchPressed += FindCharacter;
-		playerCamera = Camera.main;		
+		playerCamera = Camera.main;
 
 		FindCharacter(1);
-		
+
 
 	}
+
 
 	//Checks to make sure that character exists before switching
 	public void FindCharacter(int teammateId)

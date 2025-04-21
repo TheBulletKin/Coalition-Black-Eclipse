@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AiDetectAndEngage : MonoBehaviour, IToggleable
+public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 {
 	public ShootingSystem shootingSystem;
 	
@@ -36,10 +36,15 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable
 
 	[SerializeField] private List<Health> enemiesSeen;
 
-	private void Start()
+	/// <summary>
+	/// Requires: InputManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
 		CreatePieSlice();
-	}
+
+	}	
 
 	private void Update()
 	{

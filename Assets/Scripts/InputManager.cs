@@ -1,9 +1,10 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public class InputManager : MonoBehaviour
+public class InputManager : MonoBehaviour, IInitialisable
 {
 	/* In order to access user inputs, read from this class.
 	 * Add button states here and have this as a level of abstraction, using the new input system.
@@ -72,8 +73,9 @@ public class InputManager : MonoBehaviour
 	public event Action<int> OnAbilityChangePressed;
 	public event Action OnCommandCancelPressed;
 
+	
 
-	private void Awake()
+	public void Initialize()
 	{
 		if (instance == null)
 		{
@@ -84,13 +86,11 @@ public class InputManager : MonoBehaviour
 			Destroy(gameObject);
 		}
 		controls = new BaseControls();
-	}
 
-	private void OnEnable()
-	{
 		controls.FPS.Enable();
 		SubscribeFPSInputMaps();
 		UnsubscribeTopDownInputMaps();
+
 	}
 
 	private void OnDisable()
@@ -463,5 +463,7 @@ public class InputManager : MonoBehaviour
 		lookAxis = controls.FPS.MouseAim.ReadValue<Vector2>();
 		moveAxis = controls.FPS.Move.ReadValue<Vector2>();
 	}
+
+	
 }
 

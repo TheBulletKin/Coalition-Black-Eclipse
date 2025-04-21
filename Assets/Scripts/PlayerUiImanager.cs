@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class PlayerUiImanager : MonoBehaviour, IToggleable
+public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 {
+	public static PlayerUiImanager Instance { get; private set; }
+
 	[SerializeField] private ControllableEntity playerEntity;
 	[SerializeField] private ControllableEntity playerEntityHolder;
 	[SerializeField] private ControllableEntity commandedEntity;
@@ -21,12 +23,28 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	public int currentlySelectedHotbar;
 
 
-	private void Start()
-	{
+
+
+	/// <summary>
+	/// Requires: camera state switcher
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
+	{		
+
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+
 		if (currentAmmoText == null || reserveAmmoText == null)
 		{
 			Debug.LogError("Assign all UI elements in the UIManager");
-			return;
+			
 		}
 
 		//GameEvents.OnGadgetActivated += UpdateAbilityHotbar;
@@ -35,6 +53,8 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		CameraStateSwitcher.OnCameraStateChanged += ChangeTargetBasedOnState;
 
 		SelectHotbarSlot(0, 0);
+
+		
 	}
 
 	private void Update()
@@ -139,6 +159,8 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 			{
 				abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
 			}
+
+			
 		}
 
 		shootingSystem = newEntity.shootingSystem;
@@ -175,4 +197,5 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		}
 	}
 
+	
 }

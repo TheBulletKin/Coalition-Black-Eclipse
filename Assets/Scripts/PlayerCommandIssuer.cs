@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
@@ -8,7 +9,7 @@ using UnityEngine.InputSystem;
 /// <summary>
 /// Class responsible for assigning commands to Ai teammates and telling them when to begin executing tasks and how.
 /// </summary>
-public class PlayerCommandIssuer : MonoBehaviour
+public class PlayerCommandIssuer : MonoBehaviour, IInitialisable
 {
 	[SerializeField] private List<AiCommandListener> aiTeammates;
 	public float interactionRange = 3f;
@@ -24,12 +25,17 @@ public class PlayerCommandIssuer : MonoBehaviour
 
 	public Action<int, bool> OnTeammateOrGroupChanged;
 
-
-
 	public CameraStates cameraState;
 
-	private void Start()
-	{
+	
+
+	/// <summary>
+	/// Requires: InputManager, cameraStateSwitcher
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize(){
+		
+
 		CameraStateSwitcher.OnCameraStateChanged += UpdateCameraState;
 
 		//Command Creation
@@ -42,7 +48,6 @@ public class PlayerCommandIssuer : MonoBehaviour
 		InputManager.Instance.OnGoCodePressed += ExecuteCommands;
 
 		InputManager.Instance.OnCommandCancelPressed += CancelAllCommands;
-
 
 	}
 

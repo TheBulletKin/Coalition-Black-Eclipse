@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class EnemyMarkerManager : MonoBehaviour
+public class EnemyMarkerManager : MonoBehaviour, IInitialisable
 {
 	[SerializeField] private GameObject enemyMarkerPrefab;
 	[SerializeField] private RectTransform markersContainer;
@@ -15,8 +15,14 @@ public class EnemyMarkerManager : MonoBehaviour
 	//Even though the marker element holds a reference, a dictionary saves performance when deleting the ui element
 	private Dictionary<EnemyEntity, EnemyMarkerUiElement> enemyToMarker = new Dictionary<EnemyEntity, EnemyMarkerUiElement>();
 
-	private void Start()
+
+	/// <summary>
+	/// Requires: EnemyManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
+
 		foreach (EnemyEntity entity in enemyManager.enemies)
 		{
 			//used to subscribe to enemy kill event
@@ -39,6 +45,8 @@ public class EnemyMarkerManager : MonoBehaviour
 		}
 
 	}
+
+	
 
 	private void ActivateMarkerForEnemy(EnemyEntity entity)
 	{

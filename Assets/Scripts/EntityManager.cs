@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EntityManager : MonoBehaviour
+public class EntityManager : MonoBehaviour, IInitialisable
 {
 	public static EntityManager Instance { get; private set; }
 
@@ -15,13 +15,16 @@ public class EntityManager : MonoBehaviour
 
 
 
+	/// <summary>
+	/// Requires: CharacterSwitcher, TeammateUiManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
+	{	
 
-
-	private void Start()
-	{
 		if (Instance == null)
 		{
-			Instance = this;			
+			Instance = this;
 		}
 		else
 		{
@@ -33,14 +36,16 @@ public class EntityManager : MonoBehaviour
 		ControllableEntity[] foundTeammates = FindObjectsByType<ControllableEntity>(FindObjectsSortMode.InstanceID);
 		foreach (ControllableEntity teammate in foundTeammates)
 		{
+			teammate.Initialize();
 			Instance.playerTeammates.Add(teammate);
 			teammate.health.OnEntityDeath += EntityDeathResponse;
+			
 		}
-
-		characterSwitcher = FindObjectOfType<CharacterSwitcher>();
+		
 		teammateUiManager = FindObjectOfType<TeammateUiManager>();
 
 	}
+
 
 	public void AddNewDecoy(Decoy decoy)
 	{
@@ -65,6 +70,11 @@ public class EntityManager : MonoBehaviour
 			{
 				GameManager.Instance.FinishGame(EndReason.ALL_TEAM_DEAD);
 				return;
+			}
+
+			if (characterSwitcher == null)
+			{
+				characterSwitcher = FindObjectOfType<CharacterSwitcher>();
 			}
 
 			//Automatically switch to random character. (Will set up what happens when all are dead later)

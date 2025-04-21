@@ -2,9 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
-public class AbilitySystem : MonoBehaviour, IToggleable
+
+public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 {
 	public List<CharacterAbility> abilities;
 	public int currentAbilityIndex;
@@ -19,9 +19,13 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 	public event Action<int, int> OnAbilitySelected;
 
-	private void Start()
+	
+	/// <summary>
+	/// Requires: PlayerCommandIssuer
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
-
 		commandIssuer = FindAnyObjectByType<PlayerCommandIssuer>();
 		playerCamera = Camera.main;
 		isPlayerControlled = false;
@@ -31,6 +35,8 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 			ability.Init(this);
 		}
 	}
+
+	
 
 	public void CastAbility(int abilityIndex)
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class ControllableEntity : MonoBehaviour
+public class ControllableEntity : MonoBehaviour, IInitialisable
 {
 	public bool isControlledByPlayer = false;
 	public int teammateID;
@@ -24,7 +24,12 @@ public class ControllableEntity : MonoBehaviour
 
 	private List<IStatusEffect> activeStatusEffects = new List<IStatusEffect>();
 
-	private void Awake()
+	
+	/// <summary>
+	/// Requires: InputManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
 		toggleableComponents = GetComponents<IToggleable>();
 		agent = GetComponent<NavMeshAgent>();
@@ -33,9 +38,10 @@ public class ControllableEntity : MonoBehaviour
 		entityVisibility = GetComponent<EntityVisibility>();
 		shootingSystem = GetComponent<ShootingSystem>();
 		abilitySystem = GetComponent<AbilitySystem>();
+		abilitySystem.Initialize();
 		health = GetComponent<Health>();
 		aiDetection = GetComponent<AiDetectAndEngage>();
-
+		aiDetection.Initialize();
 
 	}
 

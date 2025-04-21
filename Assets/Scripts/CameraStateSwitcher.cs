@@ -20,11 +20,18 @@ public class CameraStateSwitcher : MonoBehaviour
 
 	public static event Action<CameraStates> OnCameraStateChanged;
 
-	private void Start()
+
+	/// <summary>
+	/// Requires: InputManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
 		InputManager.Instance.OnMapViewEnterPressed += SwitchToMap;
 		prevCameraAngle = Camera.main.transform.rotation;
+
 	}
+
 
 	private void Update()
 	{

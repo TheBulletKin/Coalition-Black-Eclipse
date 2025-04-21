@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
+
 using UnityEngine;
 
-public class TeammateUiManager : MonoBehaviour
+public class TeammateUiManager : MonoBehaviour, IInitialisable
 {
 	[SerializeField] private PlayerCommandIssuer player;
 	private Dictionary<AiCommandListener, UiTeammateCard> teammateToUiCard = new Dictionary<AiCommandListener, UiTeammateCard>();
@@ -25,8 +24,15 @@ public class TeammateUiManager : MonoBehaviour
 
 	private List<UiElement> teammateWorldMarkerElements = new List<UiElement>();
 
-	private void Start()
+	
+
+	/// <summary>
+	/// Requires: PlayerCommandIssuer, PlayerUiManager
+	/// </summary>
+	/// <returns></returns>
+	public void Initialize()
 	{
+
 		//When off screen, ui elements will form a ring around the screen centre. This sets that radius based on screen size
 		floatingUiElementRadius = Mathf.Min(Screen.width, Screen.height) * offScreenElementRadiusPercentage;
 
@@ -44,7 +50,7 @@ public class TeammateUiManager : MonoBehaviour
 				teammateCard.teamIndexText.text = (aiTeammates.IndexOf(ai) + 1).ToString();
 				teammateCard.nameText.text = ai.teammateName;
 
-				teammateCard.SetVisibilityState(true);				
+				teammateCard.SetVisibilityState(true);
 
 				teammateToUiCard.Add(ai, teammateCard);
 
@@ -74,9 +80,9 @@ public class TeammateUiManager : MonoBehaviour
 			Debug.LogError("Ai Teammates currently null on Start");
 		}
 
-		
-
 	}
+
+	
 
 	/// <summary>
 	/// Disables all cards and enables the ui elements for teammates matching the index passed in

@@ -8,7 +8,19 @@ public class GameManager : MonoBehaviour
 {
 	public static GameManager Instance { get; private set; }
 	[SerializeField] private GameState gameState;
-	[SerializeField] private EndReason endReason = EndReason.IN_PROGRESS;	
+	[SerializeField] private EndReason endReason = EndReason.IN_PROGRESS;
+
+	[Header("Bootstrap classes")]
+	[SerializeField] private InputManager inputManager;
+	[SerializeField] private EnemyManager enemyManager;
+	[SerializeField] private EntityManager entityManager;
+	[SerializeField] private CameraStateSwitcher camStateSwitcher;
+	[SerializeField] private PlayerCommandIssuer commandIssuer;
+	[SerializeField] private EnemyMarkerManager enemyMarkerManager;
+	[SerializeField] private CharacterSwitcher characterSwitcher;
+	[SerializeField] private TeammateUiManager teammateUiManager;
+	[SerializeField] private PlayerUiImanager playerUiImanager;
+		
 
 	// Start is called before the first frame update
 	void Start()
@@ -22,6 +34,37 @@ public class GameManager : MonoBehaviour
         
     }
 
+	private void InitializeGame()
+	{
+		/* 
+		 * InputManager
+		 * CameraStateSwitcher
+		 * PlayerCommandIssuer
+		 * EntityManager - (PlayerCommandIssuer, TeammateUiManager)
+		 *		ControllableEntity
+		 * PlayerUiManager - 
+		 * TeammateUiManager - (PlayerCommandIssuer, PlayerUiManager)
+		 * CharacterSwitcher - (InputManager, EntityManager, playerUiManager, cameraStateSwitcher)
+		 * Enemy Manager 
+		 * EnemyMarkerManager - (EnemyManager)
+		 */
+
+
+		inputManager.Initialize();
+		camStateSwitcher.Initialize();
+		commandIssuer.Initialize();
+		entityManager.Initialize();
+		characterSwitcher.Initialize();
+		playerUiImanager.Initialize();
+		teammateUiManager.Initialize();
+		
+		enemyManager.Initialize();
+		enemyMarkerManager.Initialize();
+
+		gameState = GameState.RUNNING;
+		Debug.Log("Game Initialized.");
+	}
+
 	private void Awake()
 	{
 		if (Instance == null)
@@ -31,9 +74,10 @@ public class GameManager : MonoBehaviour
 		else
 		{
 			Destroy(gameObject);
-		}
+			return;
+		}		
 
-		gameState = GameState.RUNNING;
+		InitializeGame();
 	}
 
 	public void FinishGame(EndReason reason)
