@@ -129,7 +129,10 @@ public class AIMovement : MonoBehaviour, IToggleable
 	{
 		isPieingTarget = false;
 		isPlayerControlled = false;
-
+		if (agent)
+		{
+			agent.updateRotation = true;
+		}
 	}
 
 	public void EnableControl()
