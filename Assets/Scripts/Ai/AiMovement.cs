@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AIMovement : MonoBehaviour
+public class AIMovement : MonoBehaviour, IToggleable
 {
 	private NavMeshAgent agent;
 
@@ -19,9 +19,10 @@ public class AIMovement : MonoBehaviour
 	public Vector3 lookTarget;
 	public bool isPieingTarget = false;
 	public float lookRotationDuration = 1f;
+	private bool isPlayerControlled = false;
 
 	[Header("Footstep settings")]
-	public float stepDistance = 2f;	
+	public float stepDistance = 2f;
 	private float distanceMoved = 0f;
 	private Vector3 lastPosition;
 	[Tooltip("Whether it emits a sound that ai entities can detect")]
@@ -67,7 +68,7 @@ public class AIMovement : MonoBehaviour
 			agent.updateRotation = true;
 		}
 	}
-	
+
 	public void SetLooking(Vector3 targetPosition)
 	{
 		lookTarget = targetPosition;
@@ -77,19 +78,23 @@ public class AIMovement : MonoBehaviour
 
 	private void Update()
 	{
-		HandleLook();
-
-		float moved = Vector3.Distance(transform.position, lastPosition);
-		distanceMoved += moved;
-
-		if (distanceMoved >= stepDistance)
+		if (!isPlayerControlled)
 		{
-			CreateSound(new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z));
-			
-			distanceMoved = 0f;
+			HandleLook();
+
+			float moved = Vector3.Distance(transform.position, lastPosition);
+			distanceMoved += moved;
+
+			if (distanceMoved >= stepDistance)
+			{
+				CreateSound(new Vector3(transform.position.x, transform.position.y - 0.7f, transform.position.z));
+
+				distanceMoved = 0f;
+			}
+
+			lastPosition = transform.position;
 		}
 
-		lastPosition = transform.position;
 
 	}
 
@@ -110,7 +115,7 @@ public class AIMovement : MonoBehaviour
 	{
 		if (emitsAudibleSound)
 		{
-			SoundEmitterHandler.instance.EmitAudibleSound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, position , null);
+			SoundEmitterHandler.instance.EmitAudibleSound(SoundType.FOOTSTEP, MixerBus.FOOTSTEP_PLAYER, position, null);
 		}
 
 
@@ -120,7 +125,19 @@ public class AIMovement : MonoBehaviour
 		}
 	}
 
-	
+	public void DisableControl()
+	{
+		isPieingTarget = false;
+		isPlayerControlled = false;
 
+	}
 
+	public void EnableControl()
+	{
+		if (isPieingTarget)
+		{
+			agent.updateRotation = false;
+		}
+		isPlayerControlled = true;
+	}
 }

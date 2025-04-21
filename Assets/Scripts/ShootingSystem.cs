@@ -37,6 +37,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 	[SerializeField] private GameObject audibleSoundPos;
 	[SerializeField] private GameObject tracerPrefab;
 	[SerializeField] private Sound impactSound;
+	[SerializeField] private Material impactDecalMat;
 
 	[SerializeField] private GameSoundSingle defaultGunshotSound;
 
@@ -57,6 +58,7 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 		UpdateAmmo(currentAmmo, reserveAmmo);
 		playerMovementController = GetComponent<PlayerMovementController>();
 		lastFrameRotation = transform.rotation;
+		
 	}
 
 	// Update is called once per frame
@@ -233,6 +235,11 @@ public class ShootingSystem : MonoBehaviour, IToggleable
 			impactMarker.transform.position = hit.point;
 			impactMarker.transform.localScale = Vector3.one * 0.1f;
 			impactMarker.GetComponent<Collider>().enabled = false;
+			Renderer markerRenderer = impactMarker.GetComponent<Renderer>();
+			if (markerRenderer != null && impactDecalMat != null)
+			{
+				markerRenderer.material = impactDecalMat;
+			}
 			Destroy(impactMarker, 2f);
 
 			CreateTracer(bulletOriginPos.transform.position, hit.point);

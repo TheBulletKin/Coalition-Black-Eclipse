@@ -514,6 +514,7 @@ MonoBehaviour:
     hearableLayers:
       serializedVersion: 2
       m_Bits: 512
+  impactDecalMat: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   defaultGunshotSound: {fileID: 11400000, guid: b0aff71f635c3ee4d9a8d9fa3330641c,
     type: 2}
 --- !u!114 &4284256450557001990

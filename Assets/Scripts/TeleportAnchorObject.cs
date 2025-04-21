@@ -10,6 +10,8 @@ public class TeleportAnchorObject : MonoBehaviour, IGadget, IInteractable
 	public void Interact(GameObject instigator)
 	{
 		relatedAbility.currentAbilityCount = 1;
+		relatedAbility.anchorActive = false;
+		relatedAbility.teleportPosition = default;
 
 		GameEvents.OnGadgetDestroyed(this);
 		Destroy(gameObject);

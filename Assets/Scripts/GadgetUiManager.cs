@@ -26,6 +26,8 @@ public class GadgetUiManager : MonoBehaviour
 
 	private Dictionary<IGadget, IGadgetUiElement> gadgetToUi = new Dictionary<IGadget, IGadgetUiElement>();
 
+
+
 	public IGadgetUiElement CreateMarker(IGadget gadget)
 	{
 		if (gadget is TeleportAnchorObject anchorObject)

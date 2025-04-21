@@ -19,10 +19,10 @@ public class CharacterSwitcher : MonoBehaviour
 	void Start()
 	{
 		InputManager.Instance.OnAiSwitchPressed += FindCharacter;
-		playerCamera = Camera.main;
-		
+		playerCamera = Camera.main;		
 
 		FindCharacter(1);
+		
 
 	}
 
@@ -75,9 +75,13 @@ public class CharacterSwitcher : MonoBehaviour
 		gadgetUiManager.ChangeVisibleUiElements(teammate);
 
 		//Change the target for map / player view switching
-		cameraStateSwitcher.SwitchTarget(teammate);			
+		cameraStateSwitcher.SwitchTarget(teammate);
+
+		teammate.aiMovement.EnableControl();
 		
 		teammate.TakeControl();
+
+		teammate.isControlledByPlayer = true;
 
 		currentlyControlledTeammate = teammate.teammateID;
 	}
