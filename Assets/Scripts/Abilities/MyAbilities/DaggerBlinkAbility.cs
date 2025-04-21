@@ -9,7 +9,7 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 	public GameObject daggerProjectile;
 	[SerializeField] private float travelDuration = 1.5f;
 	[SerializeField] private float arcHeight = 5f;
-	[SerializeField] private float launchForce = 40f;	
+	[SerializeField] private float launchForce = 40f;
 	public bool daggerActive = false;
 	public bool daggerThrown = false;
 	public Vector3 teleportPosition;
@@ -65,7 +65,7 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
 			cont.enabled = false;
 			owner.transform.position = teleportPosition;
-			cont.enabled = true;			
+			cont.enabled = true;
 			Destroy(placedDagger);
 			placedDagger = null;
 			daggerActive = false;
@@ -86,17 +86,18 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		if (currentAbilityCount > 0)
+		if (daggerActive == false)
 		{
-
-			if (daggerPrefab != null)
+			if (currentAbilityCount > 0)
 			{
-				placedDagger = Instantiate(daggerPrefab, targetVecPos, Quaternion.identity);
-				placedDagger.transform.up = Vector3.up;				
-				teleportPosition = placedDagger.transform.position + Vector3.up * 1.5f;
-			}
 
-			currentAbilityCount--;
+				CreateDagger(targetVecPos, Vector3.up);
+
+
+				currentAbilityCount--;
+
+				GameEvents.OnGadgetPlaced?.Invoke(this);
+			}
 		}
 		else if (daggerActive == true)
 		{
@@ -104,10 +105,11 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 			cont.enabled = false;
 			owner.transform.position = teleportPosition;
 			cont.enabled = true;
-			currentAbilityCount++;
 			Destroy(placedDagger);
 			placedDagger = null;
 			daggerActive = false;
+
+			GameEvents.OnGadgetPlaced?.Invoke(this);
 
 		}
 	}
