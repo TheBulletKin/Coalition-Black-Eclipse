@@ -54,7 +54,7 @@ public class CoinTossAbility : CharacterAbility
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
 	{
-		
+		SoundEmitterHandler.instance.EmitDetectableSound(emittedSound, targetVecPos);
 	}
 
 	private void CreateDistraction(Vector3 position, Vector3 normal)

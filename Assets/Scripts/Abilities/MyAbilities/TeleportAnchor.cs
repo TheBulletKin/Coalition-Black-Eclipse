@@ -12,6 +12,7 @@ public class TeleportAnchor : CharacterAbility
 	[SerializeField] private float arcHeight = 5f;
 	[SerializeField] private float launchForce = 20f;	
 	public bool anchorActive = false;
+	public bool anchorThrown = false;
 	public Vector3 teleportPosition;
 
 	public override void Init(AbilitySystem owner)
@@ -19,6 +20,7 @@ public class TeleportAnchor : CharacterAbility
 		base.Init(owner);		
 		teleportPosition = Vector3.zero;
 		anchorActive = false;
+		anchorThrown = false;
 	}	
 
 	private void CreateAnchor(Vector3 position, Vector3 normal)
@@ -29,6 +31,7 @@ public class TeleportAnchor : CharacterAbility
 			anchor.transform.up = normal;
 			anchorObject = anchor.GetComponent<TeleportAnchorObject>();
 			anchorActive = true;
+			anchorThrown = false;
 			//Set here to allow for picking up the object again with interact
 			anchorObject.relatedAbility = this;
 			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;		
@@ -47,7 +50,7 @@ public class TeleportAnchor : CharacterAbility
 	}
 	public override void Use(AbilitySystem owner)
 	{
-		if (currentAbilityCount > 0)
+		if (currentAbilityCount > 0 && anchorActive == false && anchorThrown == false)
 		{
 
 			GameObject projectile = Instantiate(anchorProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
@@ -64,8 +67,9 @@ public class TeleportAnchor : CharacterAbility
 				projectileScript.SetAnchorCallback(CreateAnchor);
 			}
 			currentAbilityCount--;
+			anchorThrown = true;
 		}
-		else if (anchorActive == true)
+		else if (anchorActive == true && anchorThrown == false)
 		{
 			TeleportToAnchor(owner);
 		}
