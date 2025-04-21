@@ -7,7 +7,14 @@ public class MultipleChoiceMenu : MonoBehaviour
 {
     public List<MultipleChoiceItem> listItems;
 
-    public void ShowSelectedDetails(MultipleChoiceItem listItem)
+    //Added temporarily so the the cursor remains unlocked on the main menu
+	private void Start()
+	{
+		Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+	}
+
+	public void ShowSelectedDetails(MultipleChoiceItem listItem)
     {
         foreach (MultipleChoiceItem item in listItems) 
         {

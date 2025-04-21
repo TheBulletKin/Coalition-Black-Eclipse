@@ -151,8 +151,7 @@ public class AbilitySystem : MonoBehaviour, IToggleable
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnUseItemPressed -= PersonalUseItem;
-		InputManager.Instance.OnAbilityChangePressed -= SetActiveAbility;
+		
 	}
 
 	public void EnableControl()

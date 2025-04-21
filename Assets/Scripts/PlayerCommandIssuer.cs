@@ -97,7 +97,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		currentGroupOrTeammateIndex = groupIndex;
 		selectingGroup = true;
 		OnTeammateOrGroupChanged?.Invoke(groupIndex, true);
-		Debug.Log("Group selected: " + groupIndex);
+		//Debug.Log("Group selected: " + groupIndex);
 	}
 
 	private void ChangeCurrentTeammate(int teammateIndex)
@@ -105,7 +105,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		currentGroupOrTeammateIndex = teammateIndex;
 		selectingGroup = false;
 		OnTeammateOrGroupChanged?.Invoke(teammateIndex, false);
-		Debug.Log("Teammate selected: " + teammateIndex);
+		//Debug.Log("Teammate selected: " + teammateIndex);
 	}
 	
 	private void ExecuteCommands(int goCode)

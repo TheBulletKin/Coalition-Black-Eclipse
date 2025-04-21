@@ -139,11 +139,11 @@ public class PlayerMovementController : MonoBehaviour, IToggleable
 	{
 		if (InputManager.Instance != null)
 		{
-			InputManager.Instance.OnCrouchPressed -= HandleCrouch;
-			InputManager.Instance.OnSprintPressed -= HandleSprint;
-			InputManager.Instance.OnSprintReleased -= HandleSprintReleased;
-			InputManager.Instance.OnJumpPressed -= HandleJumpPressed;
-			InputManager.Instance.OnJumpReleased -= HandleJumpReleased;
+			//InputManager.Instance.OnCrouchPressed -= HandleCrouch;
+			//InputManager.Instance.OnSprintPressed -= HandleSprint;
+			//InputManager.Instance.OnSprintReleased -= HandleSprintReleased;
+			//InputManager.Instance.OnJumpPressed -= HandleJumpPressed;
+			//InputManager.Instance.OnJumpReleased -= HandleJumpReleased;
 		}
 
 	}

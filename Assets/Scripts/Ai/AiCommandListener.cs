@@ -122,7 +122,7 @@ public class AiCommandListener : MonoBehaviour, IToggleable
 
 		currentExecutingCommand = null;
 		commands.Remove(command);
-		Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
+		//Debug.Log("Command completed. Executing next task in sequence in " + gameObject.name);
 
 		DrawWaypointPaths();
 

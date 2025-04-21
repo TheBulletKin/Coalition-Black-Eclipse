@@ -93,12 +93,14 @@ public class InputManager : MonoBehaviour
 		UnsubscribeTopDownInputMaps();
 	}
 
-	private void OnDestroy()
+	private void OnDisable()
 	{
 		UnsubscribeFPSInputMaps();
 		UnsubscribeTopDownInputMaps();
 
 		controls.Disable();
+		instance = null;
+		Destroy(gameObject);
 	}
 
 	public void DisableFPSMaps()

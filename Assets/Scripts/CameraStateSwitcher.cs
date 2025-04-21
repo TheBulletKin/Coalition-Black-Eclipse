@@ -123,8 +123,7 @@ public class CameraStateSwitcher : MonoBehaviour
 
 	private void OnDestroy()
 	{
-		InputManager.Instance.OnMapViewExitPressed -= SwitchToPlayer;
-		InputManager.Instance.OnMapViewEnterPressed -= SwitchToMap;
+		
 	}
 
 	public void SwitchTarget(ControllableEntity newPlayer)
