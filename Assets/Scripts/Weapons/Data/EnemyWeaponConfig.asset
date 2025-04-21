@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 2
   weaponName: G3A3 Rifle
-  weaponDamage: 24
+  weaponDamage: 1
   weaponRange: 43
   firingAngle: 103.3
   maxAmmo: 30
