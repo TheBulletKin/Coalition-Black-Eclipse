@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,8 @@ public class HelpKeybindManager : MonoBehaviour
 	//Temporary just for demo sake
 	public GameObject keybindPanel;
 	public GameObject helpPanelKeybind;
+	public TextMeshProUGUI keybindText;
+
 
 	//temp to act as menu manager for escape key press
 	public GameObject exitPanel;
@@ -18,7 +21,18 @@ public class HelpKeybindManager : MonoBehaviour
 		if (Input.GetKeyDown(KeyCode.H))
 		{
 			keybindPanel.SetActive(!keybindPanel.activeSelf);
-			helpPanelKeybind.SetActive(!helpPanelKeybind.activeSelf);
+
+			//helpPanelKeybind.SetActive(!helpPanelKeybind.activeSelf);
+			if (keybindPanel.activeSelf)
+			{
+				keybindText.text = "Hide Keybinds";
+			}
+			else
+			{
+				keybindText.text = "Show Keybinds";
+			}
+
+
 		}
 
 		if (exitMenuOpened)
