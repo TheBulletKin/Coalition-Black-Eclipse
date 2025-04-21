@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c860728de57d454ab215e829b86b4ce, type: 3}
   m_Name: PistolFireSound
   m_EditorClassIdentifier: 
-  volume: 1
+  volume: 0.4
   pitch: 1
   loop: 0
   spatial: 1

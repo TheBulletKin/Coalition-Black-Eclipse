@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 1
   weaponName: Shotgun
-  weaponDamage: 80
-  weaponRange: 14.2
+  weaponDamage: 85
+  weaponRange: 20
   firingAngle: 79.7
   maxAmmo: 4
   fireRate: 58
@@ -27,13 +27,13 @@ MonoBehaviour:
   aimTimeAtEdge: 5
   aimTimeAtCentre: 0.2
   optimalAimCone: 22.89
-  baseSpreadAngle: 20
+  baseSpreadAngle: 10.4
   movementSpreadMultiplier: 1
   movementMultiplierWeighting: 0.25
-  rotationInfluence: 1
-  rotationalSpreadDecreaseSpeed: 100
-  rotationSpreadMax: 1
-  minRotSpeedForSpread: 1
+  rotationInfluence: 1.91
+  rotationalSpreadDecreaseSpeed: 1.24
+  rotationSpreadMax: 1.38
+  minRotSpeedForSpread: 40
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -58,8 +58,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  rotationCurveMultiplier: 1
-  maxRotationSpeed: 1
+  rotationCurveMultiplier: 3
+  maxRotationSpeed: 80
   gunfireSound: {fileID: 11400000, guid: fb09a4b3148c7ed47a308175b0d30856, type: 2}
   emitsSound: 1
   gunfireAudibleSound:

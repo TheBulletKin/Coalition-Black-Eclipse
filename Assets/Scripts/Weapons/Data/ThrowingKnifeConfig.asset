@@ -21,16 +21,19 @@ MonoBehaviour:
   fireRate: 80
   isAutomatic: 0
   reloadDuration: 1.9
-  spreadGainPerShot: 1
+  spreadGainPerShot: 12.2
   isShotgun: 0
   pelletsPerShot: 1
   aimTimeAtEdge: 0.5
   aimTimeAtCentre: 0
   optimalAimCone: 0
-  rotationInfluence: 1
-  rotationalSpreadDecreaseSpeed: 1
-  rotationSpreadMax: 1
-  minRotSpeedForSpread: 1
+  baseSpreadAngle: 1.5
+  movementSpreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
+  rotationInfluence: 15
+  rotationalSpreadDecreaseSpeed: 4.29
+  rotationSpreadMax: 11.59
+  minRotSpeedForSpread: 30
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:
@@ -55,8 +58,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  rotationCurveMultiplier: 1
-  maxRotationSpeed: 1
+  rotationCurveMultiplier: 3
+  maxRotationSpeed: 70
   gunfireSound: {fileID: 11400000, guid: 5ef058cf27aafa14790d1e746f206d17, type: 2}
   emitsSound: 1
   gunfireAudibleSound:

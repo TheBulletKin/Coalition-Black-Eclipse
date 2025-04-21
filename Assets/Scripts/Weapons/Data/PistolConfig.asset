@@ -25,15 +25,15 @@ MonoBehaviour:
   isShotgun: 0
   pelletsPerShot: 1
   aimTimeAtEdge: 0.5
-  aimTimeAtCentre: 0
+  aimTimeAtCentre: 0.1
   optimalAimCone: 20.36
   baseSpreadAngle: 4.5
   movementSpreadMultiplier: 1
   movementMultiplierWeighting: 0.25
-  rotationInfluence: 6
+  rotationInfluence: 20
   rotationalSpreadDecreaseSpeed: 5
   rotationSpreadMax: 3.99
-  minRotSpeedForSpread: 35
+  minRotSpeedForSpread: 45
   rotationInfluenceCurve:
     serializedVersion: 2
     m_Curve:

@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponType: 2
   weaponName: G3A3 Rifle
-  weaponDamage: 1
+  weaponDamage: 24
   weaponRange: 43
   firingAngle: 103.3
-  maxAmmo: 1
+  maxAmmo: 30
   fireRate: 60
   isAutomatic: 0
   reloadDuration: 1.5
@@ -27,6 +27,9 @@ MonoBehaviour:
   aimTimeAtEdge: 3
   aimTimeAtCentre: 0
   optimalAimCone: 21.93
+  baseSpreadAngle: 20
+  movementSpreadMultiplier: 1
+  movementMultiplierWeighting: 0.25
   rotationInfluence: 0
   rotationalSpreadDecreaseSpeed: 1
   rotationSpreadMax: 1
