@@ -17,8 +17,8 @@ MonoBehaviour:
   abilityIcon: {fileID: 0}
   abilityName: Dagger Blink
   hasCountLimit: 1
-  countLimit: 1
-  currentAbilityCount: 0
+  countLimit: 5
+  currentAbilityCount: 5
   daggerPrefab: {fileID: 331984391212392924, guid: 4bbc79599b0817c439a8bed91584d6ff,
     type: 3}
   daggerProjectile: {fileID: 331984391212392924, guid: a256d3c332770664da8b1467f1504550,
@@ -27,4 +27,5 @@ MonoBehaviour:
   arcHeight: 5
   launchForce: 30
   daggerActive: 0
+  daggerThrown: 0
   teleportPosition: {x: 0, y: 0, z: 0}
