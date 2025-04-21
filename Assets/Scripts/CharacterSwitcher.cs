@@ -91,5 +91,6 @@ public class CharacterSwitcher : MonoBehaviour
 		playerCamera.transform.parent = cameraPos.parent;
 		playerCamera.transform.localPosition = cameraPos.localPosition;
 		camController.TransferOwnership(newOwner);
+		camController.AimInDirection(newOwner.transform.forward);
 	}
 }

@@ -32,8 +32,8 @@ public class CameraController : MonoBehaviour
 
 	private void Start()
 	{
-		
-		
+
+
 		playerStartLocalRotation = Vector3.zero;
 		cameraStartLocalPosition = transform.localPosition;
 
@@ -95,5 +95,31 @@ public class CameraController : MonoBehaviour
 		playerTr = newOwner.transform;
 	}
 
-	
+	public void AimInDirection(Vector3 direction)
+	{
+		direction.y = 0f;
+		
+		if (direction == Vector3.zero)
+		{
+			return;
+		}
+		direction.Normalize();
+
+		Vector3 flatDir = new Vector3(direction.x, 0f, direction.z);
+		if (flatDir.sqrMagnitude > 0.001f)
+		{
+			cameraYaw = Quaternion.LookRotation(flatDir).eulerAngles.y;
+			if (playerTr != null)
+			{
+				playerTr.localEulerAngles = new Vector3(0f, cameraYaw, 0f);
+			}
+		}
+
+		float pitchAngle = Vector3.SignedAngle(flatDir, direction, Vector3.right); // rotate around X-axis
+		cameraPitch = Mathf.Clamp(pitchAngle, cameraPitchMin, cameraPitchMax);
+
+		transform.localEulerAngles = new Vector3(cameraPitch, 0f, 0f);
+	}
+
+
 }

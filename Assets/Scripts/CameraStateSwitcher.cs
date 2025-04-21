@@ -10,7 +10,7 @@ public class CameraStateSwitcher : MonoBehaviour
 	public Vector3 targetPos;
 	public Quaternion prevCameraAngle;
     public Transform topDownCameraPos;
-	public Camera camera;
+	
 	public float mapCamDistance = 25f;
 	private bool isMapView = false;
 
@@ -63,8 +63,8 @@ public class CameraStateSwitcher : MonoBehaviour
 		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 
-		camera.orthographic = true;
-		camera.orthographicSize = mapCamDistance;
+		Camera.main.orthographic = true;
+		Camera.main.orthographicSize = mapCamDistance;
 
 		OnCameraStateChanged?.Invoke(CameraStates.TOPDOWN);
 
@@ -87,7 +87,7 @@ public class CameraStateSwitcher : MonoBehaviour
 		camera.transform.position = playerCameraPos.position;
 
 		//Return to previous rotation
-		camera.transform.rotation = prevCameraAngle;
+		//camera.transform.rotation = prevCameraAngle;
 
 		isMapView = false;
 
