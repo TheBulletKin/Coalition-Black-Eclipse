@@ -5,6 +5,7 @@ using UnityEngine.AI;
 
 public class AiCommandListener : MonoBehaviour, IToggleable
 {
+	public ControllableEntity entity;
 	private List<ICommand> commands = new List<ICommand>();
 	bool canRunNextCommand = true;
 	public int groupIndex;
@@ -33,6 +34,7 @@ public class AiCommandListener : MonoBehaviour, IToggleable
 		teammateColour = new Color(teammateColour.r, teammateColour.g, teammateColour.b, 1.0f);
 		moveWaypointLine.startColor = teammateColour;
 		moveWaypointLine.endColor = teammateColour;
+		entity = GetComponent<ControllableEntity>();
 	}
 	private void Update()
 	{

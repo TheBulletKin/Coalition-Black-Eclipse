@@ -107,7 +107,7 @@ public class PlayerCommandIssuer : MonoBehaviour
 		OnTeammateOrGroupChanged?.Invoke(teammateIndex, false);
 		Debug.Log("Teammate selected: " + teammateIndex);
 	}
-
+	
 	private void ExecuteCommands(int goCode)
 	{
 		//goCode unused for the moment

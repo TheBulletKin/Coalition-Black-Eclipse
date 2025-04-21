@@ -6,6 +6,8 @@ using UnityEngine;
 public class PlayerUiImanager : MonoBehaviour, IToggleable
 {
 	[SerializeField] private ControllableEntity playerEntity;
+	[SerializeField] private ControllableEntity playerEntityHolder;
+	[SerializeField] private ControllableEntity commandedEntity;
 	[SerializeField] private TextMeshProUGUI currentAmmoText;
 	[SerializeField] private TextMeshProUGUI reserveAmmoText;
 	//Shooting system assigned in CharacterSwitcher
@@ -14,6 +16,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 	[SerializeField] private AbilitySystem abilitySystem;
 	[SerializeField] private RectTransform abilityHotbarContainer;
 	[SerializeField] private List<AbilityHotbarUiSlot> abilitySlots;
+	[SerializeField] private CameraStateSwitcher cameraStateSwitcher;	
 	public Color hotbarSelectedColour;
 	public int currentlySelectedHotbar;
 
@@ -28,6 +31,8 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 
 		//GameEvents.OnGadgetActivated += UpdateAbilityHotbar;
 		GameEvents.OnGadgetPlaced += UpdateAbilityHotbar;
+
+		CameraStateSwitcher.OnCameraStateChanged += ChangeTargetBasedOnState;
 
 		SelectHotbarSlot(0, 0);
 	}
@@ -94,10 +99,41 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 
 	}
 
-	public void changePlayerTarget(ControllableEntity newPlayer)
+	/// <summary>
+	/// Change the UI elements to match the information of the new player
+	/// </summary>
+	/// <param name="newPlayer"></param>
+	/// <param name="isTemp">When called after changing the teammate, this is true so it only updates the hotbar from the map view</param>
+	public void changePlayerTarget(ControllableEntity newPlayer, bool isTemp)
 	{
-		playerEntity = newPlayer;
-		shootingSystem = newPlayer.shootingSystem;
+		if (isTemp) //To change hotbar in map view
+		{
+			playerEntityHolder = newPlayer;
+		}
+		else
+		{
+			playerEntity = newPlayer;			
+		}
+
+		switch (cameraStateSwitcher.currentState)
+		{
+			case CameraStates.FPS:
+				ChangeTarget(playerEntity);
+				break;
+			case CameraStates.TOPDOWN:
+				if (playerEntityHolder != null)
+				{
+					ChangeTarget(playerEntityHolder);
+				}
+				break;
+			default:
+				break;
+		}		
+	}
+
+	private void ChangeTarget(ControllableEntity newEntity)
+	{
+		shootingSystem = newEntity.shootingSystem;
 		shootingSystem.OnUpdateAmmo += UpdateAmmoCounts;
 		shootingSystem.OnWeaponFired += UpdateAmmoCounts;
 
@@ -107,10 +143,28 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable
 		{
 			abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
 		}
-		abilitySystem = newPlayer.abilitySystem;
+		abilitySystem = newEntity.abilitySystem;
 		abilitySystem.OnAbilitySelected += SelectHotbarSlot;
-		UpdateAbilityHotbar(null);
-
-
+		UpdateAbilityHotbar(null);		
 	}
+
+	private void ChangeTargetBasedOnState(CameraStates cameraState)
+	{
+		switch (cameraState)
+		{
+			case CameraStates.FPS:
+				ChangeTarget(playerEntity);
+				break;
+			case CameraStates.TOPDOWN:
+				if (playerEntityHolder != null)
+				{
+					ChangeTarget(playerEntityHolder);
+				}
+
+				break;
+			default:
+				break;
+		}
+	}
+
 }

@@ -10,6 +10,7 @@ public class CameraStateSwitcher : MonoBehaviour
 	public Vector3 targetPos;
 	public Quaternion prevCameraAngle;
     public Transform topDownCameraPos;
+	public CameraStates currentState;
 	
 	public float mapCamDistance = 25f;
 	private bool isMapView = false;
@@ -78,6 +79,8 @@ public class CameraStateSwitcher : MonoBehaviour
 			
 			teammate.aiDetection.visionCone.SetActive(true);
 		}
+
+		currentState = CameraStates.TOPDOWN;
 	}
 
 	private void SwitchToPlayer()
@@ -114,6 +117,8 @@ public class CameraStateSwitcher : MonoBehaviour
 		{
 			teammate.aiDetection.visionCone.SetActive(false);
 		}
+
+		currentState = CameraStates.FPS;
 	}
 
 	private void OnDestroy()

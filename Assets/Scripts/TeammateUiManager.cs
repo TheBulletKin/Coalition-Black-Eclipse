@@ -21,6 +21,7 @@ public class TeammateUiManager : MonoBehaviour
 	[SerializeField] private float maxScale = 1.0f;
 	[SerializeField] private float maxDistance = 50f;
 	[SerializeField] private float distanceBeforeDownscaling = 10f;
+	public PlayerUiImanager playerUiManager;
 
 	private List<UiElement> teammateWorldMarkerElements = new List<UiElement>();
 
@@ -97,6 +98,8 @@ public class TeammateUiManager : MonoBehaviour
 				activeCard.ToggleAsActiveTeammate(true);
 
 				teammateToUiNameplate[pair.Key].ToggleAsActiveTeammate(true);
+
+				
 			}
 			//If it's just an individual selected
 			else if (!isGroup && teammateOrGroupIndex == player.GetTeammates().IndexOf(pair.Key))
@@ -105,6 +108,9 @@ public class TeammateUiManager : MonoBehaviour
 				activeCard.ToggleAsActiveTeammate(true);
 
 				teammateToUiNameplate[pair.Key].ToggleAsActiveTeammate(true);
+
+				//Temporary to update hotbar slot on character selection
+				playerUiManager.changePlayerTarget(pair.Key.entity, true);
 			}
 		}		
 	}
