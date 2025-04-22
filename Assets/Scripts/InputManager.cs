@@ -308,6 +308,7 @@ public class InputManager : MonoBehaviour, IInitialisable
 			case "f1":
 
 				//OnAiGroupSelectedPressed?.Invoke(0);
+
 				break;
 			case "f2":
 
