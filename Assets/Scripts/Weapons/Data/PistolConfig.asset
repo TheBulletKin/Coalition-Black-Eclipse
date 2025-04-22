@@ -29,7 +29,7 @@ MonoBehaviour:
   optimalAimCone: 20.36
   baseSpreadAngle: 4.5
   movementSpreadMultiplier: 1
-  movementMultiplierWeighting: 0.25
+  movementMultiplierWeighting: 0.97
   rotationInfluence: 20
   rotationalSpreadDecreaseSpeed: 5
   rotationSpreadMax: 3.99
