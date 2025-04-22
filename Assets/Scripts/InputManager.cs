@@ -303,19 +303,19 @@ public class InputManager : MonoBehaviour, IInitialisable
 		{
 			case "backquote":
 
-				OnAiGroupSelectedPressed?.Invoke(-1);
+				//OnAiGroupSelectedPressed?.Invoke(-1);
 				break;
 			case "f1":
 
-				OnAiGroupSelectedPressed?.Invoke(0);
+				//OnAiGroupSelectedPressed?.Invoke(0);
 				break;
 			case "f2":
 
-				OnAiGroupSelectedPressed?.Invoke(1);
+				//OnAiGroupSelectedPressed?.Invoke(1);
 				break;
 			case "f3":
 
-				OnAiGroupSelectedPressed?.Invoke(2);
+				//OnAiGroupSelectedPressed?.Invoke(2);
 				break;
 			default:
 				break;

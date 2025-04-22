@@ -16,6 +16,6 @@ MonoBehaviour:
   playerCastAbilityType: 1
   abilityIcon: {fileID: 0}
   abilityName: Grapple
-  hasCountLimit: 0
-  countLimit: 0
-  currentAbilityCount: 0
+  hasCountLimit: 1
+  countLimit: 3
+  currentAbilityCount: 3
