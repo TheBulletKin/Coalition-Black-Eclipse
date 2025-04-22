@@ -26,11 +26,15 @@ public class DecoyAbility : CharacterAbility, IGadget
 
 	public override void Use(AbilitySystem owner, RaycastHit targetPos)
 	{
-		GameObject newDecoy = Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
-		EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
-		currentAbilityCount--;
+		if (currentAbilityCount > 0)
+		{
+			GameObject newDecoy = Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
+			EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
+			currentAbilityCount--;
 
-		GameEvents.OnGadgetPlaced(this);
+			GameEvents.OnGadgetPlaced(this);
+		}
+
 	}
 
 	public override void Use(AbilitySystem owner, Vector3 targetVecPos)
