@@ -45,6 +45,11 @@ public class ControllableEntity : MonoBehaviour, IInitialisable
 
 	}
 
+	/* Each playable entity has all the components required to allow for ai control and player control.
+	 * To take control, it will run a method on each that disables the ai control components while enabling player control ones.
+	 * Losing control will do the inverse
+	 * 
+	 */
 	public void TakeControl()
 	{
 		if (toggleableComponents == null)
@@ -77,6 +82,8 @@ public class ControllableEntity : MonoBehaviour, IInitialisable
 	{
 		//Previously didn't unsubscribe to the fire and shoot methods when dead. This is a temp fix.
 		shootingSystem.DisableControl();
+		abilitySystem.DisableControl();
+		
 	}
 
 	public void AddStatusEffect(IStatusEffect effect)

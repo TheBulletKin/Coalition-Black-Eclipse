@@ -10,6 +10,7 @@ public class ProximitySensorProjectile : MonoBehaviour
 
 	public void SetSensorCallback(Action<Vector3, Vector3> callback)
 	{
+		//Handle the proximity sensor creation script on the ability script itself instead of the projectile
 		onLandedCallback = callback;
 	}
 
@@ -17,7 +18,6 @@ public class ProximitySensorProjectile : MonoBehaviour
 	{		
 		Destroy(gameObject, 6.0f);
 	}
-
 
 	private void OnCollisionEnter(Collision collision)
 	{

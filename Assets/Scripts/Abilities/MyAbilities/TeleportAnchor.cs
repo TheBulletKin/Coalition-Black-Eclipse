@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.UI.GridLayoutGroup;
@@ -5,15 +6,20 @@ using static UnityEngine.UI.GridLayoutGroup;
 [CreateAssetMenu(fileName = "TeleportAnchorAbility", menuName = "Abilities/Teleport Anchor")]
 public class TeleportAnchor : CharacterAbility
 {
-	public GameObject anchorPrefab;
-	public GameObject anchorProjectile;
-	public TeleportAnchorObject anchorObject;
-	[SerializeField] private float travelDuration = 1.5f;
-	[SerializeField] private float arcHeight = 5f;
-	[SerializeField] private float launchForce = 20f;	
-	public bool anchorActive = false;
-	public bool anchorThrown = false;
-	public Vector3 teleportPosition;
+	[Header("Required prefabs")]
+	[SerializeField] private GameObject anchorPrefab;
+	[SerializeField] private GameObject anchorProjectile;
+	[SerializeField] private TeleportAnchorObject anchorObject;
+
+	[Header("Projectile attributes")]
+	[SerializeField] private float travelDuration = 1.5f;	
+	[SerializeField] private float launchForce = 20f;
+
+	[Header("Debug")]
+	[SerializeField] private bool anchorActive = false;
+	[SerializeField] private bool anchorThrown = false;
+	[SerializeField] private Vector3 teleportPosition;
+	
 
 	public override void Init(AbilitySystem owner)
 	{
@@ -32,14 +38,14 @@ public class TeleportAnchor : CharacterAbility
 			anchorObject = anchor.GetComponent<TeleportAnchorObject>();
 			anchorActive = true;
 			anchorThrown = false;
-			//Set here to allow for picking up the object again with interact
-			anchorObject.relatedAbility = this;
+
+			anchorObject.SetPickupCallback(PickupAnchor);			
+			
 			teleportPosition = anchor.transform.position + Vector3.up * 1.5f;		
 
 			GameEvents.OnGadgetPlaced?.Invoke(anchorObject);
 		}
 	}
-
 
 	private void TeleportToAnchor(AbilitySystem owner)
 	{
@@ -69,7 +75,7 @@ public class TeleportAnchor : CharacterAbility
 			currentAbilityCount--;
 			anchorThrown = true;
 		}
-		else if (anchorActive == true && anchorThrown == false)
+		else if (anchorActive == true && anchorThrown == false && anchorObject != null)
 		{
 			TeleportToAnchor(owner);
 		}
@@ -102,5 +108,16 @@ public class TeleportAnchor : CharacterAbility
 			TeleportToAnchor(owner);
 
 		}
+	}
+
+	//Will need to adjust later to take in a specific anchor object when multiple anchors can be placed
+	private void PickupAnchor()
+	{
+		currentAbilityCount = 1;
+		anchorActive = false;
+		teleportPosition = default;
+
+		GameEvents.OnGadgetDestroyed(anchorObject);
+		Destroy(anchorObject.gameObject);
 	}
 }

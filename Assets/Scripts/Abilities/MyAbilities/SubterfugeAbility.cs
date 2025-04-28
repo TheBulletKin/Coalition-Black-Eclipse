@@ -5,14 +5,12 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "SubterfugeAbility", menuName = "Abilities/Subterfuge")]
 public class SubterfugeAbility : CharacterAbility, IGadget
-{
-	//Temporary while better solution found
-
-	public bool IsDisguised => isDisguised;
+{	
 	private bool isDisguised = false;
 
 	public Transform GadgetTransform => entityVisibility.transform;
 
+	
 	public EntityVisibility entityVisibility;
 	public ControllableEntity entity;
 
@@ -29,12 +27,12 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 
 	public override void Use(AbilitySystem owner)
 	{
-		/* Temporary setup to get this working
-		 * Will get the entity visibility component and start a duration on that
-		 */
 
 		if (entityVisibility == null)
 		{
+			//Currently, since abilities are held on scriptableObjects, these values are shared.
+			//So only one character can have this ability for now.
+			//Will therefore assign the character to affect when first used and tie the ability to them.
 			entityVisibility = owner.gameObject.GetComponent<EntityVisibility>();
 		}
 
@@ -49,7 +47,6 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 			Debug.LogWarning("SubterfugeAbility: Affected entity is null");
 			return;
 		}
-
 
 		if (currentAbilityCount <= 0)
 		{
@@ -84,12 +81,15 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 
 	public void OnDisguiseDurationFinished()
 	{
+		//Used to update the UI when the duration is complete.
 		GameEvents.OnGadgetDeactivated(this);
 		GameEvents.OnGadgetDestroyed(this);
 	}
 
 	private void TriggerDisguise(AbilitySystem owner)
 	{
+		//Created before the introduction of the hidden status effect. Will change it soon to fit with that system.
+		//At the moment it will just directly use the visibility component
 		entityVisibility = owner.gameObject.GetComponent<EntityVisibility>();
 
 		if (entityVisibility != null)
@@ -104,9 +104,7 @@ public class SubterfugeAbility : CharacterAbility, IGadget
 
 			//broadcast so ui gadget manager can create Ui elements
 			GameEvents.OnGadgetPlaced(this);
-			GameEvents.OnGadgetActivated(this);
-
-			
+			GameEvents.OnGadgetActivated(this);			
 		}
 		else
 		{

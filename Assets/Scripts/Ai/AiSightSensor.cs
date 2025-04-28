@@ -7,21 +7,22 @@ using static UnityEngine.GraphicsBuffer;
 
 public class AiSightSensor : MonoBehaviour
 {
-
+	[field: Header("Debug")]
 	[field: SerializeField] public Health currentTarget { get; private set; }
+	//Will handle shooting here too, will decouple them eventually
 	public ShootingSystem shootingSystem;
 	public List<Health> visibleEntities;
-	private float pingInteval = 0.25f;
-	private float pingTimer = 0.0f;
-	
+	public bool entityIsDetected { get; private set; }
+	public bool isEngagingEnemy = false;
+
+	[Header("Visual detection attributes")]
+	[SerializeField] private float pingInterval = 0.25f;
+	private float pingTimer = 0.0f;	
 	[Tooltip("How detected the player is, from 0 to 1")]
 	[field: SerializeField]
 	public float detectionValue { get; private set; }
 
-
-	[SerializeField] private AiVisionConfig visionConfig;
-	public bool entityIsDetected { get; private set; }
-	public bool isEngagingEnemy = false;
+	[SerializeField] private AiVisionConfig visionConfig;	
 
 
 	private Ray ray;
@@ -40,7 +41,7 @@ public class AiSightSensor : MonoBehaviour
 	{
 		float deltaTime = Time.deltaTime;
 		pingTimer += deltaTime;
-		if (pingTimer >= pingInteval)
+		if (pingTimer >= pingInterval)
 		{
 			//If any enemy is in sight, increment detection. Reduce if not visible
 

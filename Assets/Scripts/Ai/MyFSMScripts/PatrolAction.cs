@@ -8,10 +8,12 @@ using UnityEngine.AI;
 [CreateAssetMenu(menuName = "FSM/Actions/Patrol")]
 public class PatrolAction : FSMAction
 {
+
+	//Since SOs are shared, independant data cannot be held so it will currently update all info per ai
+	//Not particularly good performance wise as it's constantly swapping values, will consider another approach later when
+	//   abilities are tackled also
 	public override void Execute(BaseStateMachine stateMachine)
-	{
-		//It can ask for the component here, then the state machine will hold it. 
-		//So the state machine doesn't necessarily need to hold them all.
+	{		
 		NavMeshAgent navMeshAgent = stateMachine.enemyEntity.navMeshAgent;
 		PatrolPointsSystem patrolPoints = stateMachine.enemyEntity.patrolPoints;
 		AIMovement aiMovement = stateMachine.aiBrain.aiMovement;

@@ -30,7 +30,7 @@ public class GrapplePullAbility : CharacterAbility, IGadget
 				{
 					Vector3 newPosition = owner.GetCastposition() + (owner.GetAimDirection() * 4.0f);
 
-					//Was getting the body hitbox, set it to the parent for the time being
+					//Was getting the body hitbox before, set it to the parent for the time being
 					target.transform.parent.transform.position = newPosition;
 					currentAbilityCount--;
 

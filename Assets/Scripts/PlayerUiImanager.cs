@@ -30,7 +30,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 	/// </summary>
 	/// <returns></returns>
 	public void Initialize()
-	{		
+	{
 
 		if (Instance == null)
 		{
@@ -44,7 +44,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 		if (currentAmmoText == null || reserveAmmoText == null)
 		{
 			Debug.LogError("Assign all UI elements in the UIManager");
-			
+
 		}
 
 		//GameEvents.OnGadgetActivated += UpdateAbilityHotbar;
@@ -54,7 +54,7 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 
 		SelectHotbarSlot(0, 0);
 
-		
+
 	}
 
 	private void Update()
@@ -79,17 +79,24 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 		{
 			if (currentIndex < abilitySystem.abilities.Count && abilitySystem.abilities[currentIndex] != null)
 			{
-				slot.gameObject.SetActive(true);
-				slot.ChangeHotbarSlotDetails(abilitySystem.abilities[currentIndex]);
-				if (slot.isSelected)
+				if (slot.gameObject != null)
 				{
-					SelectHotbarSlot(abilitySystem.currentAbilityIndex, currentlySelectedHotbar);
+					slot.gameObject.SetActive(true);
+					slot.ChangeHotbarSlotDetails(abilitySystem.abilities[currentIndex]);
+					if (slot.isSelected)
+					{
+						SelectHotbarSlot(abilitySystem.currentAbilityIndex, currentlySelectedHotbar);
+					}
 				}
+
 
 			}
 			else //When no ability exists for the current index
 			{
-				slot.gameObject.SetActive(false);
+				if (slot.gameObject != null)
+				{
+					slot.gameObject.SetActive(false);
+				}
 			}
 
 			currentIndex++;
@@ -160,12 +167,12 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 				abilitySystem.OnAbilitySelected -= SelectHotbarSlot;
 			}
 
-			
+
 		}
 
 		shootingSystem = newEntity.shootingSystem;
 		abilitySystem = newEntity.abilitySystem;
-		
+
 		//If the target change is done to view abilities on other entities, keep it so that hotbar changes come from changes to the controlled character rather than the target
 		if (flag)
 		{
@@ -197,5 +204,10 @@ public class PlayerUiImanager : MonoBehaviour, IToggleable, IInitialisable
 		}
 	}
 
-	
+	private void OnDestroy()
+	{
+		GameEvents.OnGadgetPlaced -= UpdateAbilityHotbar;
+	}
+
+
 }

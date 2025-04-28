@@ -7,17 +7,23 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class HiddenVeil : MonoBehaviour, IGadget
 {
 	private HiddenStatusEffect hiddenStatusEffect = new HiddenStatusEffect();
-	private List<ShootingSystem> teammatesInVeil = new List<ShootingSystem>();
+	//Hold the entities currently in the veil so that shooting can break it
+	[SerializeField] private List<ShootingSystem> teammatesInVeil = new List<ShootingSystem>();
 	public float radius;
-
+	
 	private Action<ControllableEntity, HiddenVeil> OnVeilEnter;
 	private Action<ControllableEntity, HiddenVeil> OnVeilExit;
 
 	public Transform GadgetTransform => transform;
 
+
+	/* Hidden veil made up of two parts. This is the physical object, the other is the ability script itself
+	 * This component is placed on the in world hidden veil. It manages responding to entities entering and exiting the veil.
+	 * Uses Actions since the response to entities exiting and entering the veil is handled in the HiddenVeilAbility class
+	 */
+
 	private void Start()
 	{
-
 		//Used for when the veil is created and entities are already inside it
 		Collider[] colliders = Physics.OverlapSphere(transform.position, radius, LayerMask.GetMask("Default"));
 
@@ -52,6 +58,7 @@ public class HiddenVeil : MonoBehaviour, IGadget
 
 			if (shootingSystem != null && !teammatesInVeil.Contains(shootingSystem))
 			{
+				//Uses the shooting system's weapon fired event to clear this veil for simplicty sake
 				shootingSystem.OnWeaponFired += ClearVeil;
 				teammatesInVeil.Add(shootingSystem);
 				Debug.Log(other.gameObject.name + " entered veil");
@@ -61,13 +68,11 @@ public class HiddenVeil : MonoBehaviour, IGadget
 
 	private void OnTriggerExit(Collider other)
 	{
-
 		if (other.gameObject.CompareTag("Teammate"))
 		{
 			ControllableEntity entity = other.gameObject.GetComponent<ControllableEntity>();
 			if (entity)
 			{
-
 				OnVeilExit?.Invoke(entity, this);
 			}
 
@@ -82,7 +87,7 @@ public class HiddenVeil : MonoBehaviour, IGadget
 		}
 	}
 
-	//Consider alternatives if passing in the shooting system proves to be a hassle
+	
 	//Destroy the veil if the entity inside shoots
 	private void ClearVeil(ShootingSystem shootingSystem, int int1, int int2)
 	{
@@ -97,11 +102,6 @@ public class HiddenVeil : MonoBehaviour, IGadget
 			}
 		}
 		Destroy(gameObject.transform.parent.gameObject);
-	}
-
-	public void SetStatusEffect(HiddenStatusEffect hiddenStatusEffect)
-	{
-		this.hiddenStatusEffect = hiddenStatusEffect;
 	}
 
 	private void OnDrawGizmosSelected()

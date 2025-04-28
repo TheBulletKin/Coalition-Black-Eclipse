@@ -2,34 +2,36 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Teammate ai detection script
+/// </summary>
 public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 {
+	//Will later merge with the enemy ai solution
 	public ShootingSystem shootingSystem;
-	
-	
-	[SerializeField] private float engagementMaxRange;
-	[SerializeField] private float engagementOptimalRange;
 
-	[SerializeField] private float fireTimer = 0f;
-	[SerializeField] private float fireCooldown = 1f;
-
-	[SerializeField] private float detectionScanTimer = 0f;
-	[SerializeField] private float scanCooldown = 0.08f;
-
+	[Header("Detection attributes")]
 	[Tooltip("How detected the player is, from 0 to 1")]
 	[SerializeField] private float detectionValue = 0f;
 	[SerializeField] private float detectionIncreaseRate = 5f;
 	[SerializeField] private float detectionDecreaseRate = 2f;
 	[SerializeField] private float detectionThreshold = 100f;
+	[SerializeField] private float detectionScanTimer = 0f;
+	[SerializeField] private float scanCooldown = 0.08f;
 
+	[Header("Engage attributes")]
 	[SerializeField] private bool isAiming = false;
 	[SerializeField] private float aimTimer = 0f;
 	[SerializeField] private float aimDuration = 0.2f;
 	[SerializeField] private Transform targettedEnemy;
+	[SerializeField] private float fireTimer = 0f;
+	[SerializeField] private float fireCooldown = 1f;
 
-
+	[Header("Raycast layers")]
 	[SerializeField] private LayerMask enemyLayer;
 	[SerializeField] private LayerMask obstructionLayers;
+
+	[Header("Vision cone")]
 	[SerializeField] private Color visionConeColour;
 	[SerializeField] private Material visionConeMaterial;
 	public GameObject visionCone;
@@ -44,7 +46,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 	{
 		CreatePieSlice();
 
-	}	
+	}
 
 	private void Update()
 	{
@@ -74,7 +76,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 
 			if (entityToTarget != null && shootingSystem.CanFire())
 			{
-				EngageTarget(entityToTarget.transform);				
+				EngageTarget(entityToTarget.transform);
 			}
 		}
 
@@ -84,9 +86,13 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 			aimTimer += Time.deltaTime;
 			if (aimTimer >= aimDuration)
 			{
-				shootingSystem.Fire(targettedEnemy);
+				if (shootingSystem)
+				{
+					shootingSystem.Fire(targettedEnemy);
+				}
+
 				aimTimer = 0;
-				isAiming = false;				
+				isAiming = false;
 			}
 		}
 	}
@@ -263,7 +269,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 	{
 		isAiming = true;
 		targettedEnemy = targetTransform;
-		aimDuration = shootingSystem.GetAimTime(targetTransform.position, transform.forward);	
+		aimDuration = shootingSystem.GetAimTime(targetTransform.position, transform.forward);
 
 	}
 
@@ -316,7 +322,7 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 
 		MeshFilter meshFilter = visionCone.AddComponent<MeshFilter>();
 		MeshRenderer meshRenderer = visionCone.AddComponent<MeshRenderer>();
-		
+
 
 		meshRenderer.material = visionConeMaterial;
 

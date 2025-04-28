@@ -41,6 +41,7 @@ public class HiddenVeilAbility : CharacterAbility
 			GameObject newVeilObject = Instantiate(proxSensorPrefab, targetVecPos, Quaternion.identity);
 			HiddenVeil hiddenVeil = newVeilObject.GetComponentInChildren<HiddenVeil>();
 			
+			//Uses callback methods so that the functionality is handled in this script rather than the individual veil object
 			hiddenVeil.radius = veilRadius;
 			hiddenVeil.SetVeilEnterCallback(OnEnterVeil);
 			hiddenVeil.SetVeilExitCallback(OnExitVeil);

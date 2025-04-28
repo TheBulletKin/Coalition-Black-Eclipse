@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public abstract class CharacterAbility : ScriptableObject
 {
+	[Header("Ability Attributes")]
 	public AbilityTargetType aiCastAbilityType;
 	public AbilityTargetType playerCastAbilityType;
 	public Image abilityIcon;
@@ -14,14 +15,34 @@ public abstract class CharacterAbility : ScriptableObject
 	public int countLimit;
 	public int currentAbilityCount;	
 
-	//When no target
+	/// <summary>
+	/// Used when the ability requires no target (thrown projectile etc)
+	/// </summary>
+	/// <param name="owner"></param>
 	public abstract void Use(AbilitySystem owner);
-	//When targeting a specific gameobject
+	/// <summary>
+	/// When the ability is cast on a selected gameobject (status effects etc)
+	/// </summary>
+	/// <param name="owner"></param>
+	/// <param name="target"></param>
 	public abstract void Use(AbilitySystem owner, GameObject target);
-	//When targeting a raycast position
+	/// <summary>
+	/// When the ability cast requires a raycast to confirm placement
+	/// </summary>
+	/// <param name="owner"></param>
+	/// <param name="targetPos"></param>
 	public abstract void Use(AbilitySystem owner, RaycastHit targetPos);
-	//When targeting a precomputed position
+	/// <summary>
+	/// When the ability requires a targetted vec3 (placed gadgets etc)
+	/// </summary>
+	/// <param name="owner"></param>
+	/// <param name="targetVecPos"></param>
 	public abstract void Use(AbilitySystem owner, Vector3 targetVecPos);
+
+	/// <summary>
+	/// Set up ability counts
+	/// </summary>
+	/// <param name="owner"></param>
 	public virtual void Init(AbilitySystem owner)
 	{
 		currentAbilityCount = countLimit;

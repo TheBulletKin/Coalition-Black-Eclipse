@@ -29,9 +29,9 @@ public class DecoyAbility : CharacterAbility, IGadget
 		if (currentAbilityCount > 0)
 		{
 			GameObject newDecoy = Instantiate(decoyPrefab, targetPos.point, Quaternion.identity);
+			//Ai use the entity manager to look for targets to check against, so the decoy should be added there
 			EntityManager.Instance.AddNewDecoy(newDecoy.GetComponent<Decoy>());
 			currentAbilityCount--;
-
 			GameEvents.OnGadgetPlaced(this);
 		}
 

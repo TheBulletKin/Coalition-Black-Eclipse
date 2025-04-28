@@ -6,24 +6,30 @@ using UnityEngine.AI;
 public class AiCommandListener : MonoBehaviour, IToggleable
 {
 	public ControllableEntity entity;
+	[Header("Commands info")]
 	private List<ICommand> commands = new List<ICommand>();
-	bool canRunNextCommand = true;
-	public int groupIndex;
+	private bool canRunNextCommand = true;	
 	private int commandsTotal;
 	private ICommand currentExecutingCommand;
+
+	[Header("Teammate info")]
 	public Color teammateColour;
 	public string teammateName;
-	[SerializeField] private LineRenderer moveWaypointLine;
-	[SerializeField] private List<LineRenderer> lookWaypointLines;
-	[SerializeField] private float pathUpdateSpeed = 0.25f;
-	private float pathUpdateTimer = 0.0f;
-	private NavMeshTriangulation triangulation;
+	public int groupIndex;
+
+	[Header("Required prefabs")]
 	[SerializeField] private GameObject lineRendererHolder;
 	[SerializeField] private GameObject lineRendererPrefab;
 
+	public LineRenderer moveWaypointLine;
+	private List<LineRenderer> lookWaypointLines;
+	private float pathUpdateSpeed = 0.25f;
+	private float pathUpdateTimer = 0.0f;
+	private NavMeshTriangulation triangulation;
+
 	private Dictionary<ICommand, GameObject> commandToWaypoint = new Dictionary<ICommand, GameObject>();
 	private Dictionary<ICommand, LineRenderer> commandToLineRenderer = new Dictionary<ICommand, LineRenderer>();
-	
+
 	private void Awake()
 	{
 		triangulation = NavMesh.CalculateTriangulation();
@@ -44,7 +50,8 @@ public class AiCommandListener : MonoBehaviour, IToggleable
 		{
 			DrawWaypointPaths();
 			pathUpdateTimer = 0.0f;
-		} else
+		}
+		else
 		{
 			pathUpdateTimer += Time.deltaTime;
 		}

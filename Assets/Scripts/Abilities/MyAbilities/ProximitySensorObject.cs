@@ -1,22 +1,24 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ProximitySensorObject : MonoBehaviour, IInteractable
-{
+{	
+	//Sensor object has two parts, a small collider (this script) which allows for picking up on interaction
+	//Second part is a larger collider used to handle entering and exiting
 	
-	//Temporarily changed.
-	//Prox sensor object has a parent object with a small collider that detects raycasts, for picking it up
-	//Child is now just a trigger that ignores raycasts. needed two scripts to handle this behaviour
-	public ProxSensorAbility relatedAbility;
 	public ProximitySensorTrigger trigger;
-	
+
+	private event Action<ProximitySensorObject> OnSensorPickup;
 
 	public void Interact(GameObject instigator)
 	{
-		relatedAbility.currentAbilityCount++;
+		OnSensorPickup?.Invoke(this);
+	}
 
-		GameEvents.OnGadgetDestroyed(trigger);
-		Destroy(gameObject);
+	public void SetPickupCallback(Action<ProximitySensorObject> callback)
+	{
+		OnSensorPickup = callback;
 	}
 }

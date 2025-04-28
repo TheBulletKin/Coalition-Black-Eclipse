@@ -14,11 +14,9 @@ public class AIMovement : MonoBehaviour, IToggleable
 		public float lookRotationSpeed = 0.01f;
 	}
 
+	[Header("Look rotation attributes")]
 	[SerializeField] private RotationAndLookConfig rotationAndLookConfig;
-
-	public Vector3 lookTarget;
-	public bool isPieingTarget = false;
-	public float lookRotationDuration = 1f;
+	
 	private bool isPlayerControlled = false;
 
 	[Header("Footstep settings")]
@@ -31,14 +29,17 @@ public class AIMovement : MonoBehaviour, IToggleable
 	[Tooltip("Whether it emits a sound that the player can hear")]
 	[SerializeField] private bool emitsAudibleSound;
 
+	[Header("Debug")]
+	[SerializeField] private Vector3 lookTarget;
+	[SerializeField] private bool isPieingTarget = false;
+	[SerializeField] private float lookRotationDuration = 1f;
+
 
 	private void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
 		lastPosition = transform.position;
 	}
-
-
 
 	public void MoveTo(Vector3 targetPosition)
 	{

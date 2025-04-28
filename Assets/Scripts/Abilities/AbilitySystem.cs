@@ -1,21 +1,29 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 
 public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 {
+
 	public List<CharacterAbility> abilities;
 	public int currentAbilityIndex;
-	private Camera playerCamera;
-	public LayerMask hittableLayers;
+
+	[Header("Raycast attributes")]
+	[SerializeField] private Camera playerCamera;
+	[SerializeField] private LayerMask hittableLayers;
+
+	//Ability targeting values. Updated when an ability is cast to determine cast behaviour
 	private GameObject targettedObject;
 	private RaycastHit targetPos;
 	private Vector3 targetVecPos;
+
+	[Header("Player control")]
 	public bool isPlayerControlled = false;
-	//Temporary to send the issuer the currently selected ability
-	PlayerCommandIssuer commandIssuer;
+	
+	private PlayerCommandIssuer commandIssuer;
 
 	public event Action<int, int> OnAbilitySelected;
 
@@ -36,15 +44,19 @@ public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 		}
 	}
 
-	
-
 	public void CastAbility(int abilityIndex)
 	{
-		if (isPlayerControlled)
+		//Use the camera as the raycast position and direction if player controlled
+		if (isPlayerControlled && transform != null)
 		{
 			GetUseTargetDetails(playerCamera.transform.position, playerCamera.transform.forward);
-		} else 
+		} else
 		{
+			if (transform == null)
+			{
+				return;
+			}
+			//Otherwise use the Ai's transforms
 			GetUseTargetDetails(transform.position, targetVecPos - transform.position);
 		}
 
@@ -74,7 +86,7 @@ public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 	}
 
 	/// <summary>
-	/// Update the ability target details. Used before player ability cast and before ability command execution
+	/// Update the ability target details for the next ability cast. Used before player ability cast and before ability command execution
 	/// </summary>
 	/// <param name="targettedObject">Targetted gameObject</param>
 	/// <param name="targetPos">RaycastHit result</param>
@@ -107,19 +119,18 @@ public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 		}
 	}
 
+	//Performed when the ability change keybind is pressed
 	private void SetActiveAbility(int abilityIndex)
 	{
 		int lastAbilityIndex = currentAbilityIndex;
 		currentAbilityIndex = abilityIndex - 2;
-
-		//Temporary. Assume last changed ability is next ability to cast
+		
 		if (isPlayerControlled)
 		{
+			//Ensure the command issuer's ability index matches the ability slot that was just selected
 			commandIssuer.currentAbilityIndex = currentAbilityIndex;
 			OnAbilitySelected?.Invoke(currentAbilityIndex, lastAbilityIndex);
 		}
-		
-		
 	}
 
 	public Vector3 GetAimDirection()
@@ -153,11 +164,6 @@ public class AbilitySystem : MonoBehaviour, IToggleable, IInitialisable
 		isPlayerControlled = false;
 		InputManager.Instance.OnUseItemPressed -= PersonalUseItem;
 		InputManager.Instance.OnAbilityChangePressed -= SetActiveAbility;
-	}
-
-	private void OnDestroy()
-	{
-		
 	}
 
 	public void EnableControl()

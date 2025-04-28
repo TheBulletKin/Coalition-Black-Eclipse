@@ -13,9 +13,11 @@ public class State : BaseState
 
 	public override void Execute(BaseStateMachine machine)
 	{
+		//Actions are perfomed based on the state. patrol actions involve moving from waypoint to waypoint, for instance
 		foreach (var action in Action)
 			action.Execute(machine);
 
+		//Transitions run after the action to check whether the state should change
 		foreach (var transition in Transitions)
 			transition.Execute(machine);
 	}

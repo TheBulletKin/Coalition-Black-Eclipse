@@ -5,14 +5,17 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "DaggerBlinkAbility", menuName = "Abilities/Dagger Blink")]
 public class DaggerBlinkAbility : CharacterAbility, IGadget
 {
-	public GameObject daggerPrefab;
-	public GameObject daggerProjectile;
+	[Header("Required prefabs")]
+	[SerializeField] private GameObject daggerPrefab;
+	[SerializeField] private GameObject daggerProjectile;
+
+	[Header("Projectile attributes")]
 	[SerializeField] private float travelDuration = 1.5f;
 	[SerializeField] private float arcHeight = 5f;
 	[SerializeField] private float launchForce = 40f;
-	public bool daggerActive = false;
-	public bool daggerThrown = false;
-	public Vector3 teleportPosition;
+	[SerializeField] private bool daggerActive = false;
+	[SerializeField] private bool daggerThrown = false;
+	[SerializeField] private Vector3 teleportPosition;
 	private GameObject placedDagger;
 
 	public Transform GadgetTransform => placedDagger.transform;
@@ -40,8 +43,7 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 	public override void Use(AbilitySystem owner)
 	{
 		if (currentAbilityCount > 0 && daggerThrown == false && daggerActive == false)
-		{
-			//Currently gets the components it needs through getComponent on the newly created projectile
+		{		
 			GameObject projectile = Instantiate(daggerProjectile, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
 
 			Rigidbody rb = projectile.GetComponent<Rigidbody>();
@@ -62,10 +64,12 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 		}
 		else if (daggerActive == true)
 		{
+			//Currently gets the component directly, consider an alternative approach
 			CharacterController cont = owner.gameObject.GetComponent<CharacterController>();
 			cont.enabled = false;
 			owner.transform.position = teleportPosition;
 			cont.enabled = true;
+
 			Destroy(placedDagger);
 			placedDagger = null;
 			daggerActive = false;
@@ -88,11 +92,9 @@ public class DaggerBlinkAbility : CharacterAbility, IGadget
 	{
 		if (daggerActive == false)
 		{
-			if (currentAbilityCount > 0)
+			if (currentAbilityCount > 0)			
 			{
-
 				CreateDagger(targetVecPos, Vector3.up);
-
 
 				currentAbilityCount--;
 

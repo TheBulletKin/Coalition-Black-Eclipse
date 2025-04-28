@@ -5,11 +5,12 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
 	//Base camera variables
+	
+
+	[Header("Camera rotation values")]
 	[SerializeField] public bool canLookAround = true;
 	[SerializeField] private float lookSensitivity = 1f;
 	[SerializeField] private float lookSensModifier = 1.0f;
-
-	//Camera rotation values
 	[SerializeField] private float cameraPitch;
 	[SerializeField] private float cameraPitchMax = 90f;
 	[SerializeField] private float cameraPitchMin = -90f;
@@ -18,14 +19,14 @@ public class CameraController : MonoBehaviour
 	[SerializeField] private float cameraYawMin = 0f;
 	[SerializeField] private float cameraRoll;
 
-	//Camera position values
+	[Header("Camera position values")]
 	[SerializeField] private Vector3 targetPosition;
 	[SerializeField] private Vector3 currentPosition;
 
 	public Vector3 playerStartLocalRotation;
 	public Vector3 cameraStartLocalPosition;
 
-	//Attached player
+	[Header("Attached entities")]
 	public Transform playerTr;
 	// Assign player entity in inspector
 	[SerializeField] private PlayerEntity player;

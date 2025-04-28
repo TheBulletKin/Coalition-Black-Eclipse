@@ -16,41 +16,18 @@ public class BaseStateMachine : MonoBehaviour
 
 	[Header("Entity components")]
 	public EnemyEntity enemyEntity;
-	public AiBrain aiBrain;	
-
-	private Dictionary<Type, Component> cachedComponents;
+	public AiBrain aiBrain;		
 
 	private void Awake()
 	{
-		CurrentState = initialState;
-		cachedComponents = new Dictionary<Type, Component>();
+		CurrentState = initialState;		
 		enemyEntity = GetComponent<EnemyEntity>();
 		aiBrain = GetComponent<AiBrain>();
 	}
 
 	private void Update()
 	{
+		//Can slot in any state and have it execute it's own methods
 		CurrentState.Execute(this);
-	}
-
-	/*
-	* T is a generic type parameter, so this method can take any object of type Component
-	* Dictionary holds a metadata dataType, so Type myName = typeof(RigidBody) would return RigidBody
-	* Component is an actual component on an object.
-	* So if the type passed into the getComponent call has been called before, fetch it. Improves performance.
-	* Allows for it to work regardless of type if that type is a subclass of component.
-	* Good for when multiple different potential types run the same thing.
-	*/
-	public new T GetComponent<T>() where T : Component
-	{
-		if (cachedComponents.ContainsKey(typeof(T)))
-			return cachedComponents[typeof(T)] as T;
-
-		var component = base.GetComponent<T>();
-		if (component != null)
-		{
-			cachedComponents.Add(typeof(T), component);
-		}
-		return component;
 	}
 }

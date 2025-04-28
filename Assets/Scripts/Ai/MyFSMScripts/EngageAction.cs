@@ -7,9 +7,12 @@ using UnityEngine.AI;
 [CreateAssetMenu(menuName = "FSM/Actions/Engage")]
 public class EngageAction : FSMAction
 {
-	
-	//Getting the components dynamically means that nothing is stored in the SO. Badly optimised however
-	//If something was stored here, each ai would share state information. Will need a fix for this later
+	//Actions for the engage state. Boils down to chasing and looking at the targetted enemy.
+
+
+	//Since SOs are shared, independant data cannot be held so it will currently update all info per ai
+	//Not particularly good performance wise as it's constantly swapping values, will consider another approach later when
+	//   abilities are tackled also
 	public override void Execute(BaseStateMachine stateMachine)
 	{
 		NavMeshAgent navMeshAgent = stateMachine.GetComponent<NavMeshAgent>();

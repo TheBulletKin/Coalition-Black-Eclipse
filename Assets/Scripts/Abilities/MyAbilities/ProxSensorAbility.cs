@@ -5,11 +5,16 @@ using UnityEngine.InputSystem;
 
 [CreateAssetMenu(fileName = "ProxSensorAbility", menuName = "Abilities/Prox Sensor")]
 public class ProxSensorAbility : CharacterAbility
-{   
+{
+	[Header("Placement attributes")]
+	[Tooltip("Range required for ai to place gadget")]
 	[SerializeField] private float placementRange = 5f;
 	[SerializeField] private float launchForce = 20f;
+
+	[Header("Required prefabs")]
 	[SerializeField] private GameObject sensorObjectPrefab;
 	[SerializeField] private GameObject sensorProjectilePrefab;
+
 	[SerializeField] private List<ProximitySensorObject> activeSensors;
 
 	public override void Init(AbilitySystem owner)
@@ -23,7 +28,6 @@ public class ProxSensorAbility : CharacterAbility
 	{
 		if (currentAbilityCount > 0)
 		{
-
 			GameObject projectile = Instantiate(sensorProjectilePrefab, owner.GetCastposition() + owner.GetAimDirection() * 1.05f, Quaternion.identity);
 
 			Rigidbody rb = projectile.GetComponent<Rigidbody>();
@@ -68,9 +72,19 @@ public class ProxSensorAbility : CharacterAbility
 			proximitySensor.transform.up = normal;
 			ProximitySensorObject sensorObject = proximitySensor.GetComponent<ProximitySensorObject>();
 			activeSensors.Add(sensorObject);
-			sensorObject.relatedAbility = this;
+			
+			sensorObject.SetPickupCallback(PickupSensor);
 
 			GameEvents.OnGadgetPlaced?.Invoke(sensorObject.trigger);
 		}
+	}
+
+	private void PickupSensor(ProximitySensorObject objectToPickup)
+	{
+		currentAbilityCount++;
+		activeSensors.Remove(objectToPickup);
+
+		GameEvents.OnGadgetDestroyed(objectToPickup.trigger);
+		Destroy(objectToPickup.gameObject);
 	}
 }

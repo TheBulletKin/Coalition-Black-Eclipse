@@ -12,8 +12,6 @@ public class CoinTossAbility : CharacterAbility
 	[SerializeField] private float launchForce = 20f;
 	[SerializeField] private Sound emittedSound;
 
-
-
 	public override void Init(AbilitySystem owner)
 	{
 		base.Init(owner);
