@@ -558,7 +558,7 @@ RectTransform:
   m_GameObject: {fileID: 6406688359116389519}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.74367, y: 0.74367, z: 0.74367}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 86898704021952420}
@@ -611,6 +611,7 @@ MonoBehaviour:
   countImage: {fileID: 8108276958097083870}
   countText: {fileID: 7010901254126111648}
   defaultColour: {r: 1, g: 1, b: 1, a: 1}
+  isSelected: 0
 --- !u!1 &7713488351579994282
 GameObject:
   m_ObjectHideFlags: 0
