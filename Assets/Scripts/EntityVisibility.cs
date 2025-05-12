@@ -17,6 +17,7 @@ public class EntityVisibility : MonoBehaviour
 	//Used to apply
 	public ControllableEntity entity;
 
+	//Will hold all the things that can effect visibility for now, will change this later
 	[SerializeField] public List<HiddenVeil> activeVeils = new List<HiddenVeil>();
 
 	private void Start()
