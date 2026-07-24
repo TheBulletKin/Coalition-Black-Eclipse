@@ -38,6 +38,10 @@ public class AiDetectAndEngage : MonoBehaviour, IToggleable, IInitialisable
 
 	[SerializeField] private List<Health> enemiesSeen;
 
+
+	[Header("new swat system stuff")]
+	public List<Observable> ObservedThings = new List<Observable>();
+
 	/// <summary>
 	/// Requires: InputManager
 	/// </summary>
