@@ -10,5 +10,6 @@ public class Observable : MonoBehaviour
 public enum ObservableType
 {
     ENEMY,
-    MEMORYNODE
+    ROOM_MEMORYNODE,
+    THRESHOLD_MEMORYNODE
 }

@@ -13,7 +13,7 @@ TagManager:
   - 
   - Water
   - UI
-  - Enemy
+  - Observable
   - Fragile
   - Environment
   - CanHear

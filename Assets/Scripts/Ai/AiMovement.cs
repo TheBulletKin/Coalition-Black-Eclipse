@@ -30,7 +30,8 @@ public class AIMovement : MonoBehaviour, IToggleable
 	[SerializeField] private bool emitsAudibleSound;
 
 	[Header("Debug")]
-	[SerializeField] private Vector3 lookTarget;
+	[SerializeField] private Observable LookTarget;
+	[SerializeField] private Vector3 vectorLookTarget;
 	[SerializeField] private bool isPieingTarget = false;
 	[SerializeField] private float lookRotationDuration = 1f;
 
@@ -72,7 +73,7 @@ public class AIMovement : MonoBehaviour, IToggleable
 
 	public void SetLooking(Vector3 targetPosition)
 	{
-		lookTarget = targetPosition;
+		vectorLookTarget = targetPosition;
 		isPieingTarget = true;
 		agent.updateRotation = false;
 	}
@@ -103,7 +104,7 @@ public class AIMovement : MonoBehaviour, IToggleable
 	{
 		if (isPieingTarget)
 		{
-			Vector3 lookDirection = (lookTarget - gameObject.transform.position).normalized;
+			Vector3 lookDirection = (vectorLookTarget - gameObject.transform.position).normalized;
 			Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
 
 			transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationAndLookConfig.lookRotationSpeed * Time.deltaTime);

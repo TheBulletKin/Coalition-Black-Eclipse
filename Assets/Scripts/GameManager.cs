@@ -20,7 +20,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private CharacterSwitcher characterSwitcher;
 	[SerializeField] private TeammateUiManager teammateUiManager;
 	[SerializeField] private PlayerUiImanager playerUiImanager;
-		
+	[SerializeField] private TeamManager teamManager;
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -59,6 +60,8 @@ public class GameManager : MonoBehaviour
 		teammateUiManager.Initialize();
 		
 		enemyManager.Initialize();
+
+		teamManager.Initialize();
 		enemyMarkerManager.Initialize();
 
 		gameState = GameState.RUNNING;
